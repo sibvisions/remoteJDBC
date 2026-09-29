@@ -1,0 +1,15 @@
+backup/
+
+build/install
+build/temp
+
+WebContent/META-INF/
+WebContent/WEB-INF/lib/*
+!WebContent/WEB-INF/lib/
+!WebContent/WEB-INF/lib/jvxserialize.jar
+
+classes/
+test/db.properties
+
+*.class
+*.war
