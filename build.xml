@@ -1,0 +1,155 @@
+<project name="RemoteJDBC" default="start.complete" 
+	     xmlns:if="ant:if" 
+	     xmlns:unless="ant:unless">
+
+  <!-- 
+    ***************************************************************** 
+  	* information   
+  	***************************************************************** 
+  	-->
+
+  <description>Remote JDBC Driver</description>
+
+  <!-- 
+  	***************************************************************** 
+  	* global properties
+  	***************************************************************** 
+  	-->
+
+  <property name="jar.name.driver" value="rjdbc.jar" />
+  <property name="jar.name.server" value="rjdbcserver.jar" />
+	
+  <!-- 
+  	***************************************************************** 
+  	* general properties   
+  	***************************************************************** 
+  	-->
+
+  <property name="build" location="${basedir}/build" />
+  <property name="temp" location="${build}/temp" />
+  <property name="buildnumber" location="${build}/buildnumber" />
+
+  <property name="src.jdbc" location="${basedir}/src.jdbc" />
+  <property name="src.server" location="${basedir}/src.server" />
+	
+  <property name="webcontent" location="${basedir}/WebContent/" />	
+	
+  <property name="libs" location="${webcontent}/WEB-INF/lib" />
+  <property name="libs.server" location="${basedir}/lib" />
+	
+  <property name="classes.jdbc" location="${temp}/classes.jdbc" />
+  <property name="classes.server" location="${temp}/classes.server" />
+	 
+  <property name="install" location="${build}/install" />
+	
+  <!-- 
+	***************************************************************** 
+	* external taskdefinitions   
+	***************************************************************** 
+	-->	
+	
+  <!-- if(ant) suppport -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties"  classpath="${build}/ant-contrib.jar"/>
+	
+  
+  <!-- 
+	* cleanup tasks 
+	-->
+
+  <target name="clean.start">
+    <delete dir="${temp}" />
+    <delete dir="${install}" />
+  </target>
+
+  <target name="clean.stop">
+    <delete dir="${temp}" />
+  </target>
+
+  <!-- 
+	* compile, build tasks 
+	-->
+
+  <target name="compile">
+
+    <delete dir="${classes.jdbc}" />
+    <mkdir dir="${classes.jdbc}" />
+    <delete dir="${classes.server}" />
+    <mkdir dir="${classes.server}" />
+
+    <!-- compile the driver code -->
+    <javac srcdir="${src.jdbc}" destdir="${classes.jdbc}" debug="off" deprecation="on" source="11" target="11" encoding="UTF-8">
+      <classpath>
+        <fileset dir="${libs}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+
+    <!-- copy ressource files -->
+    <copy todir="${classes.jdbc}">
+      <fileset dir="${src.jdbc}">
+        <include name="**/*" />
+        <exclude name="**/*.java" />
+        <exclude name="**/package.html" />
+      </fileset>
+    </copy>
+  	
+    <!-- compile the server code -->
+    <javac srcdir="${src.server}" destdir="${classes.server}" debug="off" deprecation="on" source="11" target="11" encoding="UTF-8">
+      <classpath>
+        <fileset dir="${libs}">
+          <include name="*.jar" />
+        </fileset>
+        <fileset dir="${libs.server}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+
+    <!-- copy ressource files -->
+    <copy todir="${classes.server}">
+      <fileset dir="${src.server}">
+        <include name="**/*" />
+        <exclude name="**/*.java" />
+        <exclude name="**/package.html" />
+      </fileset>
+    </copy>
+
+  </target>
+	
+  <target name="jar" depends="compile">
+  	
+    <taskdef name="buildnr" classname="com.sibvisions.addons.ant.AntBuildNumber" classpath="${buildnumber}/addons.jar;${classes.jdbc}" />
+    <buildnr buildfile="${buildnumber}/buildnr.properties" class="com.sibvisions.rjdbc.RemoteDriver" versionfield="VERSION" name="RemoteJDBC"/> 
+
+    <jar jarfile="${install}/${jar.name.driver}" basedir="${classes.jdbc}">
+	  <manifest>
+        <attribute name="Implementation-Title" value="${build.versionstring}${build.nightly}"/>
+        <attribute name="Implementation-Version" value="b${build.number} ${build.date}${build.nightly}"/> 
+        <attribute name="Implementation-Vendor" value="SIB Visions GmbH"/>
+      </manifest>
+      <metainf dir="${webcontent}/META-INF">
+        <include name="services/**"/>
+      </metainf>
+    </jar>
+  	
+    <jar jarfile="${install}/${jar.name.server}" basedir="${classes.server}">
+	  <manifest>
+        <attribute name="Implementation-Title" value="${build.versionstring}${build.nightly}"/>
+        <attribute name="Implementation-Version" value="b${build.number} ${build.date}${build.nightly}"/> 
+        <attribute name="Implementation-Vendor" value="SIB Visions GmbH"/>
+      </manifest>
+    </jar>  	
+  	
+  </target>	
+  
+  <!-- 
+  	***************************************************************** 
+  	* PUBLIC START TASKS   
+  	***************************************************************** 
+  	-->
+
+  <target name="start.complete" depends="clean.start, jar, clean.stop" description="Creates the release libraries" />
+
+	
+</project>
