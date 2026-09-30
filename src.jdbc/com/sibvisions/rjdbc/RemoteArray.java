@@ -31,9 +31,9 @@ public class RemoteArray implements java.sql.Array
 {
     protected final RemoteClient client;
     
-    private Object array;
-
     protected final long id;
+
+    private Object array;
     
     private boolean arrayLoaded;
     private boolean freed;
@@ -61,6 +61,7 @@ public class RemoteArray implements java.sql.Array
     {
         client = pClient;
         id = pId;
+        
         array = pArray;
         arrayLoaded = pArrayLoaded;
     }

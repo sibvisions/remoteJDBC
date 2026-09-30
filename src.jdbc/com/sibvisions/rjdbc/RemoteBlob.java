@@ -34,7 +34,6 @@ public class RemoteBlob implements Blob
     protected final long id;
     
     private boolean freed;
-    
 
     /**
      * Creates a new {@code RemoteBlob} instance.
