@@ -73,9 +73,14 @@ final class RemoteOutputStream extends OutputStream
         if (closed)
         {
             return;
-        }
+        }        
         
         closed = true;
+        
+        if (client.isSessionClosed() || client.isSessionBroken())
+        {
+        	return;
+        }
         
         Map<String,Object> request = new HashMap<String,Object>();
         request.put(RemoteConstants.ACTION, "writeStream");
@@ -101,7 +106,7 @@ final class RemoteOutputStream extends OutputStream
      */
     private void ensureOpen() throws IOException
     {
-        if (closed)
+        if (closed || client.isSessionClosed() || client.isSessionBroken())
         {
             throw new IOException("Stream is closed");
         }

@@ -19,9 +19,12 @@
 
 package com.sibvisions.rjdbc;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Remote JDBC implementation of {@code Writer} functionality.
@@ -51,7 +54,7 @@ final class RemoteWriter extends Writer
 
     /** {@inheritDoc} */
     @Override
-    public void write(char[] pChars, int pOffset, int pLength)
+    public void write(char[] pChars, int pOffset, int pLength) throws IOException
     {
     	ensureOpen();
 
@@ -60,7 +63,7 @@ final class RemoteWriter extends Writer
 
     /** {@inheritDoc} */
     @Override
-    public void write(String pValue)
+    public void write(String pValue) throws IOException
     {
     	ensureOpen();
     	
@@ -82,7 +85,12 @@ final class RemoteWriter extends Writer
             return;
         }
         
-        closed = true;        
+        closed = true;
+        
+        if (client.isSessionClosed() || client.isSessionBroken())
+        {
+        	return;
+        }
         
         Map<String,Object> request = new HashMap<>();
         request.put(RemoteConstants.ACTION, "writeStream");
@@ -105,13 +113,13 @@ final class RemoteWriter extends Writer
     /**
      * Checks that the writer is still open.
      * 
-     * @throws RuntimeException if the writer is closed
+     * @throws IOException if the writer is closed
      */
-    private void ensureOpen()
+    private void ensureOpen() throws IOException
     {
-        if (closed)
+        if (closed || client.isSessionClosed() || client.isSessionBroken())
         {
-            throw new RuntimeException("Writer is closed");
+            throw new IOException("Writer is closed");
         }
     }     
 }
