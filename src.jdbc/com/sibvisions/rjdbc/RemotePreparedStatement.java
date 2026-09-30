@@ -42,6 +42,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ import java.util.Map;
 public class RemotePreparedStatement extends RemoteStatement 
 									 implements PreparedStatement
 {
-    private final List<Map<String,Object>> batchParameters = new ArrayList<>();
+    private final Map<Object, Map<String,Object>> currentParameters = new LinkedHashMap<>();
 
     private final List<List<Map<String,Object>>> batchRows = new ArrayList<>();
 
@@ -218,7 +219,7 @@ public class RemotePreparedStatement extends RemoteStatement
     {
     	ensureOpen();
     	
-        batchParameters.clear();
+        currentParameters.clear();
     }
 
     /** {@inheritDoc} */
@@ -248,9 +249,7 @@ public class RemotePreparedStatement extends RemoteStatement
     {
     	ensureOpen();
     	
-        batchRows.add(new ArrayList<>(batchParameters));
-        
-        batchParameters.clear();
+        batchRows.add(new ArrayList<>(currentParameters.values()));
     }
 
     /** {@inheritDoc} */
@@ -503,13 +502,7 @@ public class RemotePreparedStatement extends RemoteStatement
     {
     	ensureOpen();
     	
-    	if (!batchParameters.isEmpty())
-        {
-            batchRows.add(new ArrayList<>(batchParameters));
-            batchParameters.clear();
-        }
-
-        if (batchRows.isEmpty())
+    	if (batchRows.isEmpty())
         {
             return super.executeBatch();
         }
@@ -539,13 +532,7 @@ public class RemotePreparedStatement extends RemoteStatement
     {
     	ensureOpen();
     	
-    	if (!batchParameters.isEmpty())
-        {
-            batchRows.add(new ArrayList<>(batchParameters));
-            batchParameters.clear();
-        }
-
-        if (batchRows.isEmpty())
+    	if (batchRows.isEmpty())
         {
             return super.executeLargeBatch();
         }
@@ -570,7 +557,7 @@ public class RemotePreparedStatement extends RemoteStatement
      * @param pArgs the method arguments
      * @throws SQLException if the JDBC operation cannot be completed
      */
-    private void invokeSetter(String pMethod, Class<?>[] pParameterTypes, Object[] pArgs) throws SQLException
+    protected void invokeSetter(String pMethod, Class<?>[] pParameterTypes, Object[] pArgs) throws SQLException
     {
     	ensureOpen();
     	
@@ -586,7 +573,12 @@ public class RemotePreparedStatement extends RemoteStatement
         operation.put(RemoteConstants.PARAMETER_TYPES, names);
         operation.put(RemoteConstants.VALUE, encodeArgumentsForBatch(pArgs));
         
-        batchParameters.add(operation);
+        if (pArgs.length == 0)
+        {
+            throw new SQLException("Prepared statement setter requires a parameter identifier");
+        }
+
+        currentParameters.put(pArgs[0], operation);
     }
 
     /**
@@ -615,11 +607,9 @@ public class RemotePreparedStatement extends RemoteStatement
         Map<String,Object> request = new HashMap<String,Object>();
         request.put(RemoteConstants.ACTION, pAction);
         request.put(RemoteConstants.ID, id);
-        request.put(RemoteConstants.OPERATIONS, new ArrayList<Map<String,Object>>(batchParameters));
+        request.put(RemoteConstants.OPERATIONS, new ArrayList<Map<String,Object>>(currentParameters.values()));
         
         Object value = client.call(request).get(RemoteConstants.RESULT);
-        
-        batchParameters.clear();
 
         return value;
     }

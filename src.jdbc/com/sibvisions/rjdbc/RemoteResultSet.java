@@ -217,20 +217,28 @@ public class RemoteResultSet implements ResultSet
     @Override
     public void close() throws SQLException
     {
-        if (closed)
+    	if (closed)
         {
             return;
-
         }
-        
-        RemoteUtil.invoke(client, id, remoteInterface, "close", new Class<?>[]{}, new Object[]{}, void.class);
-        
-        rowCache = new Object[0][];
-        rowCacheIndex = 0;
-        rowNumber = 0;
-        endOfRows = true;
-        lastWasNull = false;
-        closed = true;
+
+    	try
+    	{
+	        if (!client.isSessionClosed() && !client.isSessionBroken())
+	        {
+	        	RemoteUtil.invoke(client, id, remoteInterface, "close", new Class<?>[]{}, new Object[]{}, void.class);
+	        }
+    	}
+    	finally
+    	{
+	        rowCache = new Object[0][];
+	        rowCacheIndex = 0;
+	        rowNumber = 0;
+	        endOfRows = true;
+	        lastWasNull = false;
+	        
+	        closed = true;
+    	}
     }
 
     /** {@inheritDoc} */
@@ -1679,7 +1687,6 @@ public class RemoteResultSet implements ResultSet
         if (closed || client.isSessionClosed() || client.isSessionBroken())
         {
             return true;
-
         }
 
         return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isClosed", new Class<?>[]{}, new Object[]{}, boolean.class);

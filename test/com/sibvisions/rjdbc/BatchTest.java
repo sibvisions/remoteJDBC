@@ -21,9 +21,11 @@ package com.sibvisions.rjdbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -74,13 +76,62 @@ public class BatchTest
         {
             try
             {
-                // Clean up the table
                 dropTableIfExists();
             }
             finally
             {
-                // Close the connection
                 connection.close();
+            }
+        }
+    }
+
+    /**
+     * Verifies that addBatch() stores the complete current parameter state.
+     *
+     * <p>The second batch row changes only the ID. The NAME parameter must
+     * retain the value from the first row. This is a regression test for the
+     * remote batch implementation, which previously sent only parameters
+     * changed since the previous addBatch().</p>
+     *
+     * @throws SQLException if the operation fails
+     */
+    @Test
+    public void testBatchRetainsUnchangedParameters() throws SQLException
+    {
+        String insertSql = "INSERT INTO test_data (id, name) VALUES (?, ?)";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(insertSql))
+        {
+            pstmt.setInt(1, 2001);
+            pstmt.setString(2, "A");
+            pstmt.addBatch();
+
+            // Only change parameter 1. Parameter 2 must still be "A".
+            pstmt.setInt(1, 2002);
+            pstmt.addBatch();
+
+            int[] updateCounts = pstmt.executeBatch();
+            connection.commit();
+
+            assertNotNull(updateCounts);
+            assertEquals(2, updateCounts.length);
+        }
+
+        try (PreparedStatement pstmt = connection.prepareStatement(
+                "SELECT name FROM test_data WHERE id = ?"))
+        {
+            pstmt.setInt(1, 2001);
+            try (ResultSet result = pstmt.executeQuery())
+            {
+                assertTrue(result.next());
+                assertEquals("A", result.getString(1));
+            }
+
+            pstmt.setInt(1, 2002);
+            try (ResultSet result = pstmt.executeQuery())
+            {
+                assertTrue(result.next());
+                assertEquals("A", result.getString(1));
             }
         }
     }

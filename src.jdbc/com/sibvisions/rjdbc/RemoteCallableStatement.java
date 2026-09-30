@@ -339,225 +339,175 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     @Override
     public void setURL(String pParameterName, URL pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setURL", new Class<?>[]{String.class, URL.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setURL", new Class<?>[]{String.class, URL.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNull(String pParameterName, int pSqlType) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setNull", new Class<?>[]{String.class, int.class}, new Object[]{pParameterName, pSqlType}, void.class);
+        invokeSetter("setNull", new Class<?>[]{String.class, int.class}, new Object[]{pParameterName, pSqlType});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBoolean(String pParameterName, boolean pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setBoolean", new Class<?>[]{String.class, boolean.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setBoolean", new Class<?>[]{String.class, boolean.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setByte(String pParameterName, byte pValue) throws SQLException
     {
-    	ensureOpen();
-
-        RemoteUtil.invoke(client, id, remoteInterface, "setByte", new Class<?>[]{String.class, byte.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setByte", new Class<?>[]{String.class, byte.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setShort(String pParameterName, short pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setShort", new Class<?>[]{String.class, short.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setShort", new Class<?>[]{String.class, short.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setInt(String pParameterName, int pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setInt", new Class<?>[]{String.class, int.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setInt", new Class<?>[]{String.class, int.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setLong(String pParameterName, long pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setLong", new Class<?>[]{String.class, long.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setLong", new Class<?>[]{String.class, long.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setFloat(String pParameterName, float pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setFloat", new Class<?>[]{String.class, float.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setFloat", new Class<?>[]{String.class, float.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setDouble(String pParameterName, double pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setDouble", new Class<?>[]{String.class, double.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setDouble", new Class<?>[]{String.class, double.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBigDecimal(String pParameterName, BigDecimal pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setBigDecimal", new Class<?>[]{String.class, BigDecimal.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setBigDecimal", new Class<?>[]{String.class, BigDecimal.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setString(String pParameterName, String pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setString", new Class<?>[]{String.class, String.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setString", new Class<?>[]{String.class, String.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBytes(String pParameterName, byte[] pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setBytes", new Class<?>[]{String.class, byte[].class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setBytes", new Class<?>[]{String.class, byte[].class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setDate(String pParameterName, Date pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setDate", new Class<?>[]{String.class, Date.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setDate", new Class<?>[]{String.class, Date.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setTime(String pParameterName, Time pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setTime", new Class<?>[]{String.class, Time.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setTime", new Class<?>[]{String.class, Time.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setTimestamp(String pParameterName, Timestamp pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setTimestamp", new Class<?>[]{String.class, Timestamp.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setTimestamp", new Class<?>[]{String.class, Timestamp.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setAsciiStream(String pParameterName, InputStream pValue, int pLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setAsciiStream", new Class<?>[]{String.class, InputStream.class, int.class}, new Object[]{pParameterName, pValue, pLength}, void.class);
+        invokeSetter("setAsciiStream", new Class<?>[]{String.class, InputStream.class, int.class}, new Object[]{pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBinaryStream(String pParameterName, InputStream pValue, int pLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setBinaryStream", new Class<?>[]{String.class, InputStream.class, int.class}, new Object[]{pParameterName, pValue, pLength}, void.class);
+        invokeSetter("setBinaryStream", new Class<?>[]{String.class, InputStream.class, int.class}, new Object[]{pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setObject(String pParameterName, Object pValue, int pTargetSqlType, int pScaleOrLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setObject", new Class<?>[]{String.class, Object.class, int.class, int.class}, new Object[]{pParameterName, pValue, pTargetSqlType, pScaleOrLength}, void.class);
+        invokeSetter("setObject", new Class<?>[]{String.class, Object.class, int.class, int.class}, new Object[]{pParameterName, pValue, pTargetSqlType, pScaleOrLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setObject(String pParameterName, Object pValue, int pTargetSqlType) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setObject", new Class<?>[]{String.class, Object.class, int.class}, new Object[]{pParameterName, pValue, pTargetSqlType}, void.class);
+        invokeSetter("setObject", new Class<?>[]{String.class, Object.class, int.class}, new Object[]{pParameterName, pValue, pTargetSqlType});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setObject(String pParameterName, Object pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setObject", new Class<?>[]{String.class, Object.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setObject", new Class<?>[]{String.class, Object.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setCharacterStream(String pParameterName, Reader pValue, int pLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setCharacterStream", new Class<?>[]{String.class, Reader.class, int.class}, new Object[]{pParameterName, pValue, pLength}, void.class);
+        invokeSetter("setCharacterStream", new Class<?>[]{String.class, Reader.class, int.class}, new Object[]{pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setDate(String pParameterName, Date pValue, Calendar pCalendar) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setDate", new Class<?>[]{String.class, Date.class, Calendar.class}, new Object[]{pParameterName, pValue, pCalendar}, void.class);
+        invokeSetter("setDate", new Class<?>[]{String.class, Date.class, Calendar.class}, new Object[]{pParameterName, pValue, pCalendar});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setTime(String pParameterName, Time pValue, Calendar pCalendar) throws SQLException
     {
-     	ensureOpen();
-    	
-     	RemoteUtil.invoke(client, id, remoteInterface, "setTime", new Class<?>[]{String.class, Time.class, Calendar.class}, new Object[]{pParameterName, pValue, pCalendar}, void.class);
+        invokeSetter("setTime", new Class<?>[]{String.class, Time.class, Calendar.class}, new Object[]{pParameterName, pValue, pCalendar});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setTimestamp(String pParameterName, Timestamp pValue, Calendar pCalendar) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setTimestamp", new Class<?>[]{String.class, Timestamp.class, Calendar.class}, new Object[]{pParameterName, pValue, pCalendar}, void.class);
+        invokeSetter("setTimestamp", new Class<?>[]{String.class, Timestamp.class, Calendar.class}, new Object[]{pParameterName, pValue, pCalendar});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNull(String pParameterName, int pSqlType, String pTypeName) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setNull", new Class<?>[]{String.class, int.class, String.class}, new Object[]{pParameterName, pSqlType, pTypeName}, void.class);
+        invokeSetter("setNull", new Class<?>[]{String.class, int.class, String.class}, new Object[]{pParameterName, pSqlType, pTypeName});
     }
 
     /** {@inheritDoc} */
@@ -789,63 +739,49 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     @Override
     public void setRowId(String pParameterName, RowId pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setRowId", new Class<?>[]{String.class, RowId.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setRowId", new Class<?>[]{String.class, RowId.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNString(String pParameterName, String pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setNString", new Class<?>[]{String.class, String.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setNString", new Class<?>[]{String.class, String.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNCharacterStream(String pParameterName, Reader pValue, long pLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setNCharacterStream", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength}, void.class);
+        invokeSetter("setNCharacterStream", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNClob(String pParameterName, NClob pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setNClob", new Class<?>[]{String.class, NClob.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setNClob", new Class<?>[]{String.class, NClob.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setClob(String pParameterName, Reader pValue, long pLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setClob", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength}, void.class);
+        invokeSetter("setClob", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBlob(String pParameterName, InputStream pValue, long pLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setBlob", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pParameterName, pValue, pLength}, void.class);
+        invokeSetter("setBlob", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNClob(String pParameterName, Reader pValue, long pLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setNClob", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength}, void.class);
+        invokeSetter("setNClob", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
@@ -870,9 +806,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     @Override
     public void setSQLXML(String pParameterName, SQLXML pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setSQLXML", new Class<?>[]{String.class, SQLXML.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setSQLXML", new Class<?>[]{String.class, SQLXML.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
@@ -951,108 +885,84 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     @Override
     public void setBlob(String pParameterName, Blob pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setBlob", new Class<?>[]{String.class, Blob.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setBlob", new Class<?>[]{String.class, Blob.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setClob(String pParameterName, Clob pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setClob", new Class<?>[]{String.class, Clob.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setClob", new Class<?>[]{String.class, Clob.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setAsciiStream(String pParameterName, InputStream pValue, long pLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setAsciiStream", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pParameterName, pValue, pLength}, void.class);
+        invokeSetter("setAsciiStream", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBinaryStream(String pParameterName, InputStream pValue, long pLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setBinaryStream", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pParameterName, pValue, pLength}, void.class);
+        invokeSetter("setBinaryStream", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setCharacterStream(String pParameterName, Reader pValue, long pLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setCharacterStream", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength}, void.class);
+        invokeSetter("setCharacterStream", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setAsciiStream(String pParameterName, InputStream pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setAsciiStream", new Class<?>[]{String.class, InputStream.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setAsciiStream", new Class<?>[]{String.class, InputStream.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBinaryStream(String pParameterName, InputStream pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setBinaryStream", new Class<?>[]{String.class, InputStream.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setBinaryStream", new Class<?>[]{String.class, InputStream.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setCharacterStream(String pParameterName, Reader pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setCharacterStream", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setCharacterStream", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNCharacterStream(String pParameterName, Reader pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setNCharacterStream", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setNCharacterStream", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setClob(String pParameterName, Reader pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setClob", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setClob", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBlob(String pParameterName, InputStream pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setBlob", new Class<?>[]{String.class, InputStream.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setBlob", new Class<?>[]{String.class, InputStream.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNClob(String pParameterName, Reader pValue) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setNClob", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue}, void.class);
+        invokeSetter("setNClob", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
@@ -1079,18 +989,14 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     @Override
     public void setObject(String pParameterName, Object pValue, SQLType pSqlType, int pScaleOrLength) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setObject", new Class<?>[]{String.class, Object.class, SQLType.class, int.class}, new Object[]{pParameterName, pValue, pSqlType, pScaleOrLength}, void.class);
+        invokeSetter("setObject", new Class<?>[]{String.class, Object.class, SQLType.class, int.class}, new Object[]{pParameterName, pValue, pSqlType, pScaleOrLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setObject(String pParameterName, Object pValue, SQLType pSqlType) throws SQLException
     {
-    	ensureOpen();
-    	
-        RemoteUtil.invoke(client, id, remoteInterface, "setObject", new Class<?>[]{String.class, Object.class, SQLType.class}, new Object[]{pParameterName, pValue, pSqlType}, void.class);
+        invokeSetter("setObject", new Class<?>[]{String.class, Object.class, SQLType.class}, new Object[]{pParameterName, pValue, pSqlType});
     }
 
     /** {@inheritDoc} */

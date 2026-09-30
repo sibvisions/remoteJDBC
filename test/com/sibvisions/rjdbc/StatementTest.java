@@ -383,6 +383,28 @@ public class StatementTest
 	        }
         }
     }
+    
+	/**
+	 * Verifies that closing a ResultSet after its Connection has been closed is harmless.
+	 */
+	@Test
+	public void testResultSetCloseAfterConnectionClose() throws Exception
+	{
+	    try (Connection connection = TestConnection.create();
+	         Statement statement = connection.createStatement();
+	         ResultSet resultSet = statement.executeQuery("SELECT 1 FROM DUAL"))
+	    {
+	        assertFalse(resultSet.isClosed());
+	
+	        connection.close();
+	
+	        assertTrue(resultSet.isClosed());
+	
+	        resultSet.close();
+	
+	        assertTrue(resultSet.isClosed());
+	    }
+	}    
 
     /**
      * Verifies the JDBC behavior for connection is valid lifecycle.

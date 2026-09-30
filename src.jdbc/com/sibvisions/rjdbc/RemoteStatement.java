@@ -121,11 +121,13 @@ public class RemoteStatement implements Statement
     @Override
     public void close() throws SQLException
     {
-        if (closed)
+        if (closed || client.isSessionClosed() || client.isSessionBroken())
         {
+        	closed = true;
+        	
             return;
-
         }
+        
         try
         {
             RemoteUtil.invoke(client, id, remoteInterface, "close", new Class<?>[]{}, new Object[]{}, void.class);
@@ -134,7 +136,6 @@ public class RemoteStatement implements Statement
         {
             closed = true;
         }
-
     }
 
     /** {@inheritDoc} */
@@ -450,7 +451,6 @@ public class RemoteStatement implements Statement
         if (closed || client.isSessionClosed() || client.isSessionBroken())
         {
             return true;
-
         }
 
         return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isClosed", new Class<?>[]{}, new Object[]{}, boolean.class);

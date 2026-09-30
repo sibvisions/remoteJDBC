@@ -73,6 +73,23 @@ public class CallableStatementTest
             "  RETURN P_VALUE * 3; " +
             "END;"
             );
+
+            statement.executeUpdate(
+            "CREATE TABLE RJDBC_TEST_BATCH (" +
+            "  ID NUMBER PRIMARY KEY," +
+            "  NAME VARCHAR2(100)" +
+            ")"
+            );
+
+            statement.executeUpdate(
+            "CREATE OR REPLACE PROCEDURE RJDBC_TEST_BATCH_PROC(" +
+            "  P_ID IN NUMBER," +
+            "  P_NAME IN VARCHAR2" +
+            ") AS " +
+            "BEGIN " +
+            "  INSERT INTO RJDBC_TEST_BATCH(ID, NAME) VALUES (P_ID, P_NAME); " +
+            "END;"
+            );
         }
     }
 
@@ -92,6 +109,8 @@ public class CallableStatementTest
 	            {
 	                statement.executeUpdate("DROP PROCEDURE RJDBC_TEST_PROC");
 	                statement.executeUpdate("DROP FUNCTION RJDBC_TEST_FUNC");
+	                statement.executeUpdate("DROP PROCEDURE RJDBC_TEST_BATCH_PROC");
+	                statement.executeUpdate("DROP TABLE RJDBC_TEST_BATCH");
 	            }
 	        }
 	        finally
@@ -100,6 +119,155 @@ public class CallableStatementTest
 	        }
     	}
     }
+
+	/**
+	 * Verifies that named callable parameters are preserved between batch rows.
+	 *
+	 * @throws Exception if the operation fails
+	 */
+    @Test
+    public void testNamedParametersInBatch() throws Exception
+    {
+        try (CallableStatement statement = connection.prepareCall("{call RJDBC_TEST_BATCH_PROC(?, ?)}"))
+        {
+            statement.setInt("P_ID", 1);
+            statement.setString("P_NAME", "First");
+            statement.addBatch();
+
+            statement.setInt("P_ID", 2);
+            statement.addBatch();
+
+            int[] updateCounts = statement.executeBatch();
+
+            assertEquals(2, updateCounts.length);
+        }
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(
+                     "SELECT ID, NAME FROM RJDBC_TEST_BATCH ORDER BY ID"))
+        {
+            assertTrue(resultSet.next());
+            assertEquals(1, resultSet.getInt("ID"));
+            assertEquals("First", resultSet.getString("NAME"));
+
+            assertTrue(resultSet.next());
+            assertEquals(2, resultSet.getInt("ID"));
+            assertEquals("First", resultSet.getString("NAME"));
+
+            assertFalse(resultSet.next());
+        }
+    }
+    
+    /**
+     * Verifis that named callable parameters are preserved between large batch rows.
+     * 
+     * @throws Exception if the operation fails
+     */
+	@Test
+	public void testNamedParametersInLargeBatch() throws Exception
+	{
+	    try (CallableStatement statement = connection.prepareCall("{call RJDBC_TEST_BATCH_PROC(?, ?)}"))
+	    {
+	        statement.setInt("P_ID", 1);
+	        statement.setString("P_NAME", "First");
+	        statement.addBatch();
+	
+	        statement.setInt("P_ID", 2);
+	        statement.addBatch();
+	
+	        long[] updateCounts = statement.executeLargeBatch();
+	
+	        assertNotNull(updateCounts);
+	        assertEquals(2, updateCounts.length);
+	    }
+	
+	    try (Statement statement = connection.createStatement();
+	         ResultSet resultSet = statement.executeQuery("SELECT ID, NAME FROM RJDBC_TEST_BATCH ORDER BY ID"))
+	    {
+	        assertTrue(resultSet.next());
+	        assertEquals(1, resultSet.getInt("ID"));
+	        assertEquals("First", resultSet.getString("NAME"));
+	
+	        assertTrue(resultSet.next());
+	        assertEquals(2, resultSet.getInt("ID"));
+	        assertEquals("First", resultSet.getString("NAME"));
+	
+	        assertFalse(resultSet.next());
+	    }
+	}    
+	
+	/**
+	 * Verifies clear parameters in batch.
+	 * 
+	 * @throws Exception if the operation fails
+	 */
+	@Test
+	public void testNamedParametersClearParametersInBatch() throws Exception
+	{
+	    try (CallableStatement statement = connection.prepareCall(
+	            "{call RJDBC_TEST_BATCH_PROC(?, ?)}"))
+	    {
+	        statement.setInt("P_ID", 1);
+	        statement.setString("P_NAME", "First");
+	        statement.addBatch();
+	
+	        statement.clearParameters();
+	
+	        statement.setInt("P_ID", 2);
+	        statement.setString("P_NAME", "Second");
+	        statement.addBatch();
+	
+	        int[] updateCounts = statement.executeBatch();
+	
+	        assertEquals(2, updateCounts.length);
+	    }
+	
+	    try (Statement statement = connection.createStatement();
+	         ResultSet resultSet = statement.executeQuery(
+	                 "SELECT ID, NAME FROM RJDBC_TEST_BATCH ORDER BY ID"))
+	    {
+	        assertTrue(resultSet.next());
+	        assertEquals(1, resultSet.getInt("ID"));
+	        assertEquals("First", resultSet.getString("NAME"));
+	
+	        assertTrue(resultSet.next());
+	        assertEquals(2, resultSet.getInt("ID"));
+	        assertEquals("Second", resultSet.getString("NAME"));
+	
+	        assertFalse(resultSet.next());
+	    }
+	}	
+	
+	@Test
+	public void testNamedParametersClearBatch() throws Exception
+	{
+	    try (CallableStatement statement = connection.prepareCall("{call RJDBC_TEST_BATCH_PROC(?, ?)}"))
+	    {
+	        statement.setInt("P_ID", 1);
+	        statement.setString("P_NAME", "First");
+	        statement.addBatch();
+	
+	        statement.clearBatch();
+	
+	        //Parameters should still be set
+	        statement.setInt("P_ID", 2);
+	        statement.addBatch();
+	
+	        int[] updateCounts = statement.executeBatch();
+	
+	        assertEquals(1, updateCounts.length);
+	    }
+	
+	    try (Statement statement = connection.createStatement();
+	         ResultSet resultSet = statement.executeQuery("SELECT ID, NAME FROM RJDBC_TEST_BATCH ORDER BY ID"))
+	    {
+	        assertTrue(resultSet.next());
+	        assertEquals(2, resultSet.getInt("ID"));
+	        assertEquals("First", resultSet.getString("NAME"));
+	
+	        assertFalse(resultSet.next());
+	    }
+	}	
 
 	/**
 	 * Verifies the JDBC behavior for in and out parameter.

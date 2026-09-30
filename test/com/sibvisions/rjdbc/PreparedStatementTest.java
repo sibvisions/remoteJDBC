@@ -33,7 +33,6 @@ import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -449,57 +448,269 @@ public class PreparedStatementTest
 	 * @throws Exception if the operation fails
 	 */
     @Test
-    public void testLargeBatch() throws Exception
-    {
-        try (Connection connection = TestConnection.create();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO " + TABLE + " (ID, NAME) VALUES (?, ?)"))
-        {
-            statement.setInt(1, 11013);
-            statement.setString(2, "A");
-            statement.addBatch();
-
-            statement.setInt(1, 11014);
-            statement.setString(2, "B");
-            statement.addBatch();
-
-            long[] counts = statement.executeLargeBatch();
-
-            assertNotNull(counts);
-            assertEquals(2, counts.length);
-
-            for (long count : counts)
-            {
-                assertTrue(count >= 0 
-                		   || count == Statement.SUCCESS_NO_INFO 
-                		   || count == Statement.EXECUTE_FAILED);
-            }
-        }
-    }
-
+	public void testLargeBatch() throws Exception
+	{
+	    try (Connection connection = TestConnection.create();
+	         PreparedStatement statement = connection.prepareStatement("INSERT INTO " + TABLE + " (ID, NAME) VALUES (?, ?)"))
+	    {
+	        statement.setInt(1, 11013);
+	        statement.setString(2, "A");
+	        statement.addBatch();
+	
+	        statement.setInt(1, 11014);
+	        statement.addBatch();
+	
+	        long[] counts = statement.executeLargeBatch();
+	
+	        assertNotNull(counts);
+	        assertEquals(2, counts.length);
+	    }
+	
+	    try (Connection connection = TestConnection.create();
+	         PreparedStatement statement = connection.prepareStatement("SELECT ID, NAME FROM " + TABLE + " WHERE ID IN (?, ?) ORDER BY ID"))
+	    {
+	        statement.setInt(1, 11013);
+	        statement.setInt(2, 11014);
+	
+	        try (ResultSet rs = statement.executeQuery())
+	        {
+	            assertTrue(rs.next());
+	            assertEquals(11013, rs.getInt("ID"));
+	            assertEquals("A", rs.getString("NAME"));
+	
+	            assertTrue(rs.next());
+	            assertEquals(11014, rs.getInt("ID"));
+	            assertEquals("A", rs.getString("NAME"));
+	
+	            assertFalse(rs.next());
+	        }
+	    }
+	}
+    
+	/**
+	 * Verifies the JDBC behavior for clear parameters after batch.
+	 * 
+	 * @throws Exception if the operation fails
+	 */
+    @Test
+	public void testClearParametersAfterBatch() throws Exception
+	{
+	    try (Connection connection = TestConnection.create();
+	         PreparedStatement statement = connection.prepareStatement("INSERT INTO TEST_TABLE (ID, NAME) VALUES (?, ?)"))
+	    {
+	        statement.setInt(1, 11015);
+	        statement.setString(2, "A");
+	        statement.addBatch();
+	
+	        statement.clearParameters();
+	
+	        statement.setInt(1, 11016);
+	        statement.setString(2, "B");
+	        statement.addBatch();
+	
+	        long[] counts = statement.executeLargeBatch();
+	
+	        assertNotNull(counts);
+	        assertEquals(2, counts.length);
+	    }
+	
+	    try (Connection connection = TestConnection.create();
+	         PreparedStatement statement = connection.prepareStatement("SELECT ID, NAME FROM TEST_TABLE WHERE ID IN (?, ?) ORDER BY ID"))
+	    {
+	        statement.setInt(1, 11015);
+	        statement.setInt(2, 11016);
+	
+	        try (ResultSet rs = statement.executeQuery())
+	        {
+	            assertTrue(rs.next());
+	            assertEquals(11015, rs.getInt("ID"));
+	            assertEquals("A", rs.getString("NAME"));
+	
+	            assertTrue(rs.next());
+	            assertEquals(11016, rs.getInt("ID"));
+	            assertEquals("B", rs.getString("NAME"));
+	
+	            assertFalse(rs.next());
+	        }
+	    }
+	}    
+    
 	/**
 	 * Verifies the JDBC behavior for clear batch.
 	 * 
 	 * @throws Exception if the operation fails
 	 */
     @Test
-    public void testClearBatch() throws Exception
-    {
-        try (Connection connection = TestConnection.create();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO " + TABLE + " (ID, NAME) VALUES (?, ?)"))
-        {
-            statement.setInt(1, 11015);
-            statement.setString(2, "A");
-            statement.addBatch();
+	public void testClearBatch() throws Exception
+	{
+	    try (Connection connection = TestConnection.create();
+	         PreparedStatement statement = connection.prepareStatement("INSERT INTO " + TABLE + " (ID, NAME) VALUES (?, ?)"))
+	    {
+	        statement.setInt(1, 11017);
+	        statement.setString(2, "A");
+	        statement.addBatch();
+	
+	        statement.clearBatch();
+	
+	        // Die aktuellen Parameter existieren weiterhin.
+	        statement.setInt(1, 11018);
+	        statement.addBatch();
+	
+	        long[] counts = statement.executeLargeBatch();
+	
+	        assertNotNull(counts);
+	        assertEquals(1, counts.length);
+	    }
+	
+	    try (Connection connection = TestConnection.create();
+	         PreparedStatement statement = connection.prepareStatement("SELECT ID, NAME FROM " + TABLE + " WHERE ID IN (?, ?) ORDER BY ID"))
+	    {
+	        statement.setInt(1, 11017);
+	        statement.setInt(2, 11018);
+	
+	        try (ResultSet rs = statement.executeQuery())
+	        {
+	            // 11017 wurde durch clearBatch() verworfen.
+	            assertTrue(rs.next());
+	            assertEquals(11018, rs.getInt("ID"));
+	            assertEquals("A", rs.getString("NAME"));
+	
+	            assertFalse(rs.next());
+	        }
+	    }
+	}	    
+    
+    /**
+     * Verifies multiple changes of same parameter between two batch calls.
+     * @throws Exception
+     */
+	@Test
+	public void testLatestParameterValueIsCapturedByAddBatch() throws Exception
+	{
+	    try (Connection connection = TestConnection.create();
+	    	 PreparedStatement statement = connection.prepareStatement("INSERT INTO " + TABLE + " (ID, NAME) VALUES (?, ?)"))
+	    {
+	        statement.setInt(1, 1);
+	        statement.setString(2, "A");
+	
+	        // Change parameter 2 before addBatch again
+	        statement.setString(2, "B");
+	        statement.addBatch();
+	
+	        statement.setInt(1, 2);
+	
+	        // Again: parameter 2 before addBatch
+	        statement.setString(2, "C");
+	        statement.setString(2, "D");
+	        statement.addBatch();
+	
+	        int[] updateCounts = statement.executeBatch();
+	
+	        assertNotNull(updateCounts);
+	        assertEquals(2, updateCounts.length);
+	    }
+	
+	    try (Connection connection = TestConnection.create();
+	    	 PreparedStatement statement = connection.prepareStatement("SELECT ID, NAME FROM " + TABLE + " WHERE ID IN (?, ?) ORDER BY ID"))
+	    {
+	        statement.setInt(1, 1);
+	        statement.setInt(2, 2);
+	
+	        try (ResultSet resultSet = statement.executeQuery())
+	        {
+	            assertTrue(resultSet.next());
+	            assertEquals(1, resultSet.getInt("ID"));
+	            assertEquals("B", resultSet.getString("NAME"));
+	
+	            assertTrue(resultSet.next());
+	            assertEquals(2, resultSet.getInt("ID"));
+	            assertEquals("D", resultSet.getString("NAME"));
+	
+	            assertFalse(resultSet.next());
+	        }
+	    }
+	}    
 
-            statement.clearBatch();
-
-            long[] counts = statement.executeLargeBatch();
-
-            assertNotNull(counts);
-            assertEquals(0, counts.length);
-        }
-    }
-
+	/**
+	 * Verifies that repeated addBatch() calls create independent batch rows.
+	 * 
+	 * @throws Exception if the operation fails
+	 */
+	@Test
+	public void testRepeatedAddBatchCreatesIndependentRows() throws Exception
+	{
+	    try (Connection connection = TestConnection.create();
+	    	 PreparedStatement statement = connection.prepareStatement("INSERT INTO TEST_TABLE (ID, NAME) VALUES (?, ?)"))
+	    {
+	        statement.setInt(1, 11021);
+	        statement.setString(2, "Same");
+	        statement.addBatch();
+	
+	        statement.setInt(1, 11022);
+	        statement.addBatch();
+	
+	        statement.setInt(1, 11023);
+	        statement.addBatch();
+	
+	        int[] updateCounts = statement.executeBatch();
+	
+	        assertNotNull(updateCounts);
+	        assertEquals(3, updateCounts.length);
+	    }
+	
+	    try (Connection connection = TestConnection.create();
+	    	 PreparedStatement statement = connection.prepareStatement("SELECT ID, NAME FROM TEST_TABLE WHERE ID IN (?, ?, ?) ORDER BY ID"))
+	    {
+	    	statement.setInt(1, 11021);
+	        statement.setInt(2, 11022);
+	        statement.setInt(3, 11023);
+	
+	        try (ResultSet resultSet = statement.executeQuery())
+	        {
+	            assertTrue(resultSet.next());
+	            assertEquals(11021, resultSet.getInt("ID"));
+	            assertEquals("Same", resultSet.getString("NAME"));
+	
+	            assertTrue(resultSet.next());
+	            assertEquals(11022, resultSet.getInt("ID"));
+	            assertEquals("Same", resultSet.getString("NAME"));
+	
+	            assertTrue(resultSet.next());
+	            assertEquals(11023, resultSet.getInt("ID"));
+	            assertEquals("Same", resultSet.getString("NAME"));
+	
+	            assertFalse(resultSet.next());
+	        }
+	    }
+	}	
+	
+	/**
+	 * Verifies that executing a batch twice does not execute the same rows again.
+	 * 
+	 * @throws Exception if the operation fails
+	 */
+	@Test
+	public void testExecuteBatchTwice() throws Exception
+	{
+	    try (Connection connection = TestConnection.create();
+	    	 PreparedStatement statement = connection.prepareStatement("INSERT INTO TEST_TABLE (ID, NAME) VALUES (?, ?)"))
+	    {
+	        statement.setInt(1, 11024);
+	        statement.setString(2, "First");
+	        statement.addBatch();
+	
+	        int[] firstCounts = statement.executeBatch();
+	
+	        assertNotNull(firstCounts);
+	        assertEquals(1, firstCounts.length);
+	
+	        int[] secondCounts = statement.executeBatch();
+	
+	        assertNotNull(secondCounts);
+	        assertEquals(0, secondCounts.length);
+	    }
+	}	
+	
 	/**
 	 * Verifies the JDBC behavior for parameter meta data.
 	 * 
