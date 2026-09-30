@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.io.IOException;
@@ -28,6 +27,8 @@ import java.util.Map;
 
 /**
  * Remote JDBC implementation of {@code Writer} functionality.
+ * 
+ * @author René Jahn
  */
 final class RemoteWriter extends Writer
 {
@@ -38,6 +39,7 @@ final class RemoteWriter extends Writer
     private final Map<String,Object> descriptor;
     
     private boolean closed;
+    
 
     /**
      * Creates a new {@code RemoteWriter} instance.

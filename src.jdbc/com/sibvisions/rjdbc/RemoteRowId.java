@@ -16,19 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.RowId;
 
 /**
  * Remote JDBC implementation of {@code RowId} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteRowId implements RowId
 {
     protected final RemoteClient client;
     
     protected final long id;
+    
 
     /**
      * Creates a new {@code RemoteRowId} instance.

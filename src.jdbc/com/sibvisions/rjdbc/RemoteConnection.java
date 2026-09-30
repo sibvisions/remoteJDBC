@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.Array;
@@ -41,7 +40,9 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 /**
-     * Establishes the requested JDBC connection and registers it in the remote session.
+ * Establishes the requested JDBC connection and registers it in the remote session.
+ * 
+ * @author René Jahn
  */
 public class RemoteConnection implements Connection
 {
@@ -52,6 +53,7 @@ public class RemoteConnection implements Connection
     protected final Class<?> remoteInterface;
     
     private volatile boolean closed;
+    
 
     /**
      * Establishes a connection to the remote JDBC endpoint.
@@ -80,7 +82,8 @@ public class RemoteConnection implements Connection
         
         for (String name : pProperties.stringPropertyNames())
         {
-            if (!RemoteConstants.JDBC_URL.equals(name))
+            if (!RemoteConstants.JDBC_URL.equals(name)
+                && !RemoteConstants.HTTP_REQUEST_TIMEOUT.equals(name))
             {
                 remoteProperties.put(name, pProperties.getProperty(name));
             }

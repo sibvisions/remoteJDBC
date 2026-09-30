@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import com.sibvisions.rad.remote.UniversalSerializer;
@@ -32,16 +31,21 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.Map;
 
 /**
-     * Handles the serialize operation for the remote JDBC resource.
+ * Handles the serialize operation for the remote JDBC resource.
+ * 
+ * @author René Jahn
  */
 final class RemoteClient
 {
     private final URI endpoint;
     
     private final HttpClient http;
+
+    private final Duration requestTimeout;
     
     private final UniversalSerializer serializer = new UniversalSerializer();
     
@@ -51,17 +55,20 @@ final class RemoteClient
     
     private volatile boolean connectedOnce;
 
+    
     /**
      * Creates a new {@code RemoteClient} instance.
      *
      * @param pUrl the url
+     * @param pRequestTimeoutMillis the HTTP request timeout in milliseconds
      * @throws SQLException if the operation fails
      */
-    RemoteClient(String pUrl) throws SQLException
+    RemoteClient(String pUrl, long pRequestTimeoutMillis) throws SQLException
     {
         try
         {
             endpoint = URI.create(pUrl);
+            requestTimeout = pRequestTimeoutMillis > 0 ? Duration.ofMillis(pRequestTimeoutMillis) : null;
             
             http = HttpClient.newBuilder()
         				.version(HttpClient.Version.HTTP_1_1)
@@ -104,11 +111,17 @@ final class RemoteClient
 
             byte[] payload = serialize(pRequest);
 
-            HttpRequest httpRequest = HttpRequest.newBuilder(endpoint)
-							            .header("Content-Type", "application/octet-stream")
-							            .header("Accept", "application/octet-stream")
-							            .POST(HttpRequest.BodyPublishers.ofByteArray(payload))
-							            .build();
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder(endpoint)
+                    .header("Content-Type", "application/octet-stream")
+                    .header("Accept", "application/octet-stream")
+                    .POST(HttpRequest.BodyPublishers.ofByteArray(payload));
+
+            if (requestTimeout != null)
+            {
+                requestBuilder.timeout(requestTimeout);
+            }
+
+            HttpRequest httpRequest = requestBuilder.build();
 
             HttpResponse<byte[]> response = http.send(httpRequest, HttpResponse.BodyHandlers.ofByteArray());
 

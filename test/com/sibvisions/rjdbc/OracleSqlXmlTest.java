@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.Connection;
@@ -33,12 +32,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Prepares test data required by the tests.
+ * Verifies the JDBC behavior for SQLXML for Oracle database.
+ * 
+ * @author René Jahn
  */
 public class OracleSqlXmlTest
 {
     private Connection connection;
 
+    
 	/**
 	 * Initializes the database objects and state required by the test class.
 	 * 

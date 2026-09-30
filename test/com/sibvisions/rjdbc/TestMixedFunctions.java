@@ -51,7 +51,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Supports the test scenario by handling set up callable objects.
+ * Verifies the general JDBC behavior.
+ * 
+ * @author René Jahn
  */
 public class TestMixedFunctions
 {

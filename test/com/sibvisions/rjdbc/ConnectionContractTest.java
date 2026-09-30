@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import static org.junit.Assert.*;
@@ -33,7 +32,9 @@ import java.sql.Statement;
 import org.junit.Test;
 
 /**
- * Verifies the JDBC behavior for commit rollback and auto commit.
+ * Verifies the JDBC behavior for connection.
+ * 
+ * @author René Jahn
  */
 public class ConnectionContractTest
 {

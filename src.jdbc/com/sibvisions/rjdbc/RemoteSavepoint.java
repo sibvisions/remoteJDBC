@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.SQLException;
@@ -24,12 +23,15 @@ import java.sql.Savepoint;
 
 /**
  * Remote JDBC implementation of {@code Savepoint} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteSavepoint implements Savepoint
 {
     protected final RemoteClient client;
     
     protected final long id;
+    
 
     /**
      * Creates a new {@code RemoteSavepoint} instance.

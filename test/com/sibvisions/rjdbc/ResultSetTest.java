@@ -44,7 +44,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Initializes the database objects and state required by the test class.
+ * Verifies the JDBC behavior for result set.
+ * 
+ * @author René Jahn
  */
 public class ResultSetTest
 {
@@ -54,6 +56,7 @@ public class ResultSetTest
 
     private Connection connection;
 
+    
     /**
      * Initializes the database objects and state required by the test class.
       *

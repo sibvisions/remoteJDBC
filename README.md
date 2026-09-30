@@ -403,10 +403,10 @@ The client detects communication failures and prevents further normal operations
 The server also supports session expiration:
 
 ```text
-idleTimeoutMinutes
+idleTimeout
 ```
 
-The default idle timeout is:
+The default idle timeout (in millis) is:
 
 ```text
 30 minutes

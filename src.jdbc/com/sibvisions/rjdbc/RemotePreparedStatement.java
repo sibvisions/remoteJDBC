@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.io.InputStream;
@@ -48,6 +47,8 @@ import java.util.Map;
 
 /**
  * Handles the invoke setter operation for the remote JDBC resource.
+ * 
+ * @author René Jahn
  */
 public class RemotePreparedStatement extends RemoteStatement 
 									 implements PreparedStatement

@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.io.ByteArrayInputStream;
@@ -31,6 +30,8 @@ import java.sql.SQLException;
 
 /**
  * Remote JDBC implementation of {@code Clob} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteClob implements Clob
 {
@@ -43,6 +44,7 @@ public class RemoteClob implements Clob
     private final boolean prefetched;
     private boolean valueLoaded;
     private boolean freed;
+    
 
     /**
      * Creates a new {@code RemoteClob} instance.

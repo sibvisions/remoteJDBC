@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import static org.junit.Assert.assertEquals;
@@ -41,12 +40,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Initializes the database objects and state required by the test class.
+ * Verifies the JDBC behavior for prepared statement.
+ * 
+ * @author René Jahn
  */
 public class PreparedStatementTest
 {
     private static final String TABLE = "TEST_TABLE";
 
+    
 	/**
 	 * Initializes the database objects and state required by the test class.
 	 * 

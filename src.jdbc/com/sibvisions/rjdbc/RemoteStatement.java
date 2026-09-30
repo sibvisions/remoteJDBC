@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.Connection;
@@ -27,16 +26,19 @@ import java.sql.Statement;
 
 /**
  * Remote JDBC implementation of {@code Statement} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteStatement implements Statement
 {
     protected final RemoteClient client;
     
-    protected final long id;
-    
     protected final Class<?> remoteInterface;
     
+    protected final long id;
+
     private volatile boolean closed;
+    
 
     /**
      * Creates a new {@code RemoteStatement} instance.

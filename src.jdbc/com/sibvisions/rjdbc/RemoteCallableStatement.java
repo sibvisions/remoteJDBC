@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.io.InputStream;
@@ -41,6 +40,8 @@ import java.util.Map;
 
 /**
  * Remote JDBC implementation of {@code CallableStatement} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteCallableStatement extends RemotePreparedStatement 
 									 implements CallableStatement

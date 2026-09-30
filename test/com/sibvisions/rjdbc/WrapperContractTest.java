@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import static org.junit.Assert.assertFalse;
@@ -35,7 +34,9 @@ import java.sql.Wrapper;
 import org.junit.Test;
 
 /**
- * Verifies the JDBC behavior for connection wrapper contract.
+ * Verifies the JDBC object wrapping.
+ * 
+ * @author René Jahn
  */
 public class WrapperContractTest
 {

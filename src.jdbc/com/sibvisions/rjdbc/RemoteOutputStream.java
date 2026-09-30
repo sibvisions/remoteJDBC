@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.io.*;
@@ -25,6 +24,8 @@ import java.util.*;
 
 /**
  * Remote JDBC implementation of {@code OutputStream} functionality.
+ * 
+ * @author René Jahn
  */
 final class RemoteOutputStream extends OutputStream
 {
@@ -35,6 +36,7 @@ final class RemoteOutputStream extends OutputStream
 	private final Map<String,Object> descriptor;
     
     private boolean closed;
+    
 
     /**
      * Creates a new {@code RemoteOutputStream} instance.

@@ -21,9 +21,10 @@
         -->  
     </servlet>
     
+     
     <servlet-mapping>
         <servlet-name>JdbcServlet</servlet-name>
         <url-pattern>/jdbc/*</url-pattern>
     </servlet-mapping>
-    
+
 </web-app>

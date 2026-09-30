@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.SQLException;
@@ -25,12 +24,15 @@ import java.util.Map;
 
 /**
  * Remote JDBC implementation of {@code Struct} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteStruct implements Struct
 {
     protected final RemoteClient client;
     
     protected final long id;
+    
 
     /**
      * Creates a new {@code RemoteStruct} instance.

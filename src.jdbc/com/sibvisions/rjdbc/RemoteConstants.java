@@ -16,11 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 /**
  * Remote JDBC implementation of {@code Constants} functionality.
+ * 
+ * @author René Jahn
  */
 interface RemoteConstants
 {
@@ -28,6 +29,7 @@ interface RemoteConstants
     static final String ID = "id";
     static final String URL = "url";
     static final String JDBC_URL = "jdbcUrl";
+    static final String HTTP_REQUEST_TIMEOUT = "httpRequestTimeout";
     static final String USER = "user";
     static final String PASSWORD = "password";
     static final String PROPERTIES = "properties";

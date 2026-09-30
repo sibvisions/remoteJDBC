@@ -16,13 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.NClob;
 
 /**
  * Remote JDBC implementation of {@code NClob} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteNClob extends RemoteClob 
                          implements NClob

@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.ResultSetMetaData;
@@ -24,19 +23,24 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Client-side ResultSetMetaData with one-shot metadata snapshot. */
+/** 
+ * Client-side ResultSetMetaData with one-shot metadata snapshot.
+ *  
+ * @author René Jahn
+ */
 public class RemoteResultSetMetaData implements ResultSetMetaData
 {
     protected final RemoteClient client;
     
-    protected final long id;
-    
     protected final Class<?> remoteInterface;
     
     private volatile Object[][] columns;
+
+    protected final long id;
     
     private volatile int count = -1;
 
+    
     /**
      * Creates a new {@code RemoteResultSetMetaData} instance.
      *

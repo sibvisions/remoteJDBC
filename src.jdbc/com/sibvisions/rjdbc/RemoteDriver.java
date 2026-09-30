@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.Connection;
@@ -31,6 +30,8 @@ import java.util.logging.Logger;
 
 /**
  * Remote JDBC implementation of {@code Driver} functionality.
+ * 
+ * @author René Jahn
  */
 public final class RemoteDriver implements Driver
 {
@@ -41,6 +42,9 @@ public final class RemoteDriver implements Driver
 
     public static final String VERSION = "" + MAJOR + "." + MINOR;
 
+    private static final long DEFAULT_HTTP_REQUEST_TIMEOUT = 300000L;
+
+    
     static
     {
         try
@@ -78,7 +82,27 @@ public final class RemoteDriver implements Driver
 
         }
 
-        return RemoteConnection.connect(new RemoteClient(endpoint), endpoint, properties);
+        long requestTimeout = DEFAULT_HTTP_REQUEST_TIMEOUT;
+        String timeoutValue = properties.getProperty(RemoteConstants.HTTP_REQUEST_TIMEOUT);
+
+        if (timeoutValue != null && !timeoutValue.trim().isEmpty())
+        {
+            try
+            {
+                requestTimeout = Long.parseLong(timeoutValue);
+            }
+            catch (NumberFormatException e)
+            {
+                throw new SQLException("Invalid HTTP request timeout: " + timeoutValue, e);
+            }
+
+            if (requestTimeout < 0)
+            {
+                throw new SQLException("HTTP request timeout must be >= 0");
+            }
+        }
+
+        return RemoteConnection.connect(new RemoteClient(endpoint, requestTimeout), endpoint, properties);
     }
 
     /** {@inheritDoc} */
@@ -94,6 +118,7 @@ public final class RemoteDriver implements Driver
     {
         List<DriverPropertyInfo> result = new ArrayList<>();
         boolean hasJdbcUrl = false;
+        boolean hasHttpRequestTimeout = false;
 
         if (pInfo != null)
         {
@@ -102,6 +127,11 @@ public final class RemoteDriver implements Driver
                 if (RemoteConstants.JDBC_URL.equals(name))
                 {
                     hasJdbcUrl = true;
+
+                }
+                else if (RemoteConstants.HTTP_REQUEST_TIMEOUT.equals(name))
+                {
+                    hasHttpRequestTimeout = true;
 
                 }
                 result.add(new DriverPropertyInfo(name, pInfo.getProperty(name)));
@@ -114,6 +144,13 @@ public final class RemoteDriver implements Driver
         if (!hasJdbcUrl)
         {
             result.add(new DriverPropertyInfo(RemoteConstants.JDBC_URL, null));
+
+        }
+
+        if (!hasHttpRequestTimeout)
+        {
+            result.add(new DriverPropertyInfo(RemoteConstants.HTTP_REQUEST_TIMEOUT,
+                                              String.valueOf(DEFAULT_HTTP_REQUEST_TIMEOUT)));
 
         }
 

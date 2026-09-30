@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -42,6 +41,8 @@ import org.xml.sax.InputSource;
 
 /**
  * Verifies the JDBC behavior for blob.
+ * 
+ * @author René Jahn
  */
 public class LobAndSpecialTypesTest
 {

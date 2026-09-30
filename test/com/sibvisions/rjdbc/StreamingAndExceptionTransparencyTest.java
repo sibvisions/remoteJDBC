@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import static org.junit.Assert.assertEquals;
@@ -36,7 +35,9 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * Verifies the JDBC behavior for character streaming from remote result set.
+ * Verifies the JDBC behavior for streaming and transparent exceptions.
+ * 
+ * @author René Jahn
  */
 public class StreamingAndExceptionTransparencyTest
 {

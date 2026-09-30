@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.util.concurrent.Executor;
@@ -25,15 +24,18 @@ import java.util.concurrent.Executor;
  * Client-side handle for a server-side Executor belonging to the JDBC session.
  * The local execute method remains a normal Executor operation; JDBC methods
  * such as Connection.abort use the remote id when the executor crosses the wire.
+ * 
+ * @author René Jahn
  */
 public final class RemoteExecutor implements Executor
 {
     protected final RemoteClient client;
+
+    private final Executor localExecutor;
     
     protected final long id;
-    
-    private final Executor localExecutor;
 
+    
     /**
      * Creates a new {@code RemoteExecutor} instance.
      *

@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.Array;
@@ -26,18 +25,21 @@ import java.util.Map;
 
 /**
  * Remote JDBC implementation of {@code Array} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteArray implements java.sql.Array
 {
     protected final RemoteClient client;
     
-    protected final long id;
-
     private Object array;
+
+    protected final long id;
     
     private boolean arrayLoaded;
     private boolean freed;
 
+    
     /**
      * Creates a new {@code RemoteArray} instance.
      *

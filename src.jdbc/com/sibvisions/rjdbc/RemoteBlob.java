@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.io.InputStream;
@@ -26,6 +25,8 @@ import java.sql.SQLException;
 
 /**
  * Remote JDBC implementation of {@code Blob} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteBlob implements Blob
 {
@@ -34,6 +35,7 @@ public class RemoteBlob implements Blob
     protected final long id;
     
     private boolean freed;
+    
 
     /**
      * Creates a new {@code RemoteBlob} instance.

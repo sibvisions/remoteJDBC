@@ -31,7 +31,9 @@ import java.sql.Connection;
 import org.junit.Test;
 
 /**
- * Tests the lifecycle behavior of remote output streams and writers.
+ * Verifies the JDBC behavior for streaming.
+ * 
+ * @author René Jahn
  */
 public class StreamTest
 {

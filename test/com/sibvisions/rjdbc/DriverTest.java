@@ -16,45 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Supports the test scenario by handling main.
+ * Simmple driver verification.
+ * 
+ * @author René Jahn
  */
 public final class DriverTest
 {
     /**
-	 * Supports the test scenario by handling main.
+	 * Tests JDBC Url.
 	 * 
-	 * @param pArgs the arguments
-	 * @throws Exception if the operation fails
+	 * @throws SQLException if the operation fails
 	 */
-    public static void main(String[] pArgs) throws Exception
+	@Test
+    public void testJDBCUrl() throws SQLException
     {
         Driver driver = new RemoteDriver();
 
-        if (!driver.acceptsURL("jdbc:rjdbc:https://localhost/remote-jdbc"))
-        {
-            throw new AssertionError("URL not accepted");
-        }
-        
-        if (driver.acceptsURL("jdbc:postgresql://localhost/test"))
-        {
-            throw new AssertionError("PostgreSQL URL incorrectly accepted");
-        }
-        
-        if (DriverManager.getDriver("jdbc:rjdbc:https://localhost/remote-jdbc").getClass() != RemoteDriver.class)
-        {
-            throw new AssertionError("Driver not registered");
-        }
-        
-        System.out.println("OK");
+        Assert.assertTrue("URL not accepted", driver.acceptsURL("jdbc:rjdbc:https://localhost/remote-jdbc"));
+        Assert.assertFalse("PostgreSQL URL incorrectly accepted", driver.acceptsURL("jdbc:postgresql://localhost/test"));
+        Assert.assertTrue("Driver not registered", DriverManager.getDriver("jdbc:rjdbc:https://localhost/remote-jdbc").getClass() == RemoteDriver.class);
     }
 
     /**

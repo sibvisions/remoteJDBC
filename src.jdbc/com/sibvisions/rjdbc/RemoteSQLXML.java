@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.io.ByteArrayInputStream;
@@ -51,17 +50,19 @@ import com.sibvisions.util.xml.XmlNode;
 
 /**
  * Remote JDBC implementation of {@code SQLXML} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteSQLXML implements SQLXML
 {
     protected final RemoteClient client;
     
-    protected final long id;
-
     private Result pendingResult;
     
     private XmlNode cachedXmlNode;
     
+    protected final long id;
+
     private boolean xmlLoaded;
     private boolean freed;
 

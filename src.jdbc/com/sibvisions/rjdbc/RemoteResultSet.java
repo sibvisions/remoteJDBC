@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import java.io.ByteArrayInputStream;
@@ -49,12 +48,12 @@ import java.util.Map;
 
 /**
  * Remote JDBC implementation of {@code ResultSet} functionality.
+ * 
+ * @author René Jahn
  */
 public class RemoteResultSet implements ResultSet
 {
     protected final RemoteClient client;
-    
-    protected final long id;
     
     protected final Class<?> remoteInterface;
 
@@ -63,6 +62,8 @@ public class RemoteResultSet implements ResultSet
     /** client-side row cache. A block is fetched with one remote request. */
     private Object[][] rowCache = new Object[0][];
 
+    protected final long id;
+    
     private int rowCacheIndex = -1;
     private int rowNumber = 0;
     private int fetchSize = 1000;
@@ -75,6 +76,7 @@ public class RemoteResultSet implements ResultSet
     private boolean onInsertRow;
     private boolean serverUpdatePositioned;
 
+    
     /**
      * Creates a new {@code RemoteResultSet} instance.
      *

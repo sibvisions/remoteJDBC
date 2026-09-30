@@ -36,11 +36,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Initializes the database objects and state required by the test class.
+ * Verifies the JDBC behavior for statement.
+ * 
+ * @author René Jahn
  */
 public class StatementTest
 {
     private static final String TABLE = "TEST_TABLE";
+    
 
     /**
      * Initializes the database objects and state required by the test class.

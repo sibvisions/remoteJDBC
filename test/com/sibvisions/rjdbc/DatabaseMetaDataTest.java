@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import static org.junit.Assert.assertEquals;
@@ -36,11 +35,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Initializes the database objects and state required by the test class.
+ * Verifies the JDBC behavior for database metadata.
+ * 
+ * @author René Jahn
  */
 public class DatabaseMetaDataTest
 {
     private Connection connection;
+    
 
 	/**
 	 * Initializes the database objects and state required by the test class.

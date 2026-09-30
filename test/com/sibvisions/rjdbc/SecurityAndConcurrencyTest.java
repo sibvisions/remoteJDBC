@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package com.sibvisions.rjdbc;
 
 import static org.junit.Assert.assertEquals;
@@ -42,7 +41,9 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 /**
- * Verifies the JDBC behavior for connection state isolation.
+ * Verifies the JDBC behavior for security and concurrency.
+ * 
+ * @author René Jahn
  */
 public class SecurityAndConcurrencyTest
 {
