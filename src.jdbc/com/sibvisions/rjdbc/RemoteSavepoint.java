@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -70,13 +70,13 @@ public class RemoteSavepoint implements Savepoint
     @Override
     public int getSavepointId() throws SQLException
     {
-        return (int)RemoteUtil.invoke(client, id, Savepoint.class, "getSavepointId", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, Savepoint.class, "getSavepointId", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getSavepointName() throws SQLException
     {
-        return (String)RemoteUtil.invoke(client, id, Savepoint.class, "getSavepointName", new Class<?>[]{}, new Object[]{}, String.class);
+        return (String)RemoteUtil.invoke(client, id, Savepoint.class, "getSavepointName", new Class<?>[] {}, new Object[] {}, String.class);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -108,7 +108,7 @@ public class RemoteClob implements Clob
             return cachedValue.length();
         }
 
-        return (long)RemoteUtil.invoke(client, id, remoteInterface(), "length", new Class<?>[]{}, new Object[]{}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface(), "length", new Class<?>[] {}, new Object[] {}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -135,7 +135,7 @@ public class RemoteClob implements Clob
             return cachedValue.substring((int)pPosition - 1, (int)end);
         }
 
-        return (String)RemoteUtil.invoke(client, id, remoteInterface(), "getSubString", new Class<?>[]{long.class, int.class}, new Object[]{pPosition, pLength}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface(), "getSubString", new Class<?>[] {long.class, int.class}, new Object[] {pPosition, pLength}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -149,7 +149,7 @@ public class RemoteClob implements Clob
             return new StringReader(cachedValue);
         }
 
-        return (Reader)RemoteUtil.invoke(client, id, remoteInterface(), "getCharacterStream", new Class<?>[]{}, new Object[]{}, Reader.class);
+        return (Reader)RemoteUtil.invoke(client, id, remoteInterface(), "getCharacterStream", new Class<?>[] {}, new Object[] {}, Reader.class);
     }
 
     /** {@inheritDoc} */
@@ -163,7 +163,7 @@ public class RemoteClob implements Clob
             return new ByteArrayInputStream(cachedValue.getBytes(StandardCharsets.US_ASCII));
         }
 
-        return (InputStream)RemoteUtil.invoke(client, id, remoteInterface(), "getAsciiStream", new Class<?>[]{}, new Object[]{}, InputStream.class);
+        return (InputStream)RemoteUtil.invoke(client, id, remoteInterface(), "getAsciiStream", new Class<?>[] {}, new Object[] {}, InputStream.class);
     }
 
     /** {@inheritDoc} */
@@ -172,7 +172,7 @@ public class RemoteClob implements Clob
     {
         ensureOpen();
 
-        return (long)RemoteUtil.invoke(client, id, remoteInterface(), "position", new Class<?>[]{String.class, long.class}, new Object[]{pSearchstr, pStart}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface(), "position", new Class<?>[] {String.class, long.class}, new Object[] {pSearchstr, pStart}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -181,7 +181,7 @@ public class RemoteClob implements Clob
     {
         ensureOpen();
 
-        return (long)RemoteUtil.invoke(client, id, remoteInterface(), "position", new Class<?>[]{Clob.class, long.class}, new Object[]{pSearchstr, pStart}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface(), "position", new Class<?>[] {Clob.class, long.class}, new Object[] {pSearchstr, pStart}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -190,7 +190,7 @@ public class RemoteClob implements Clob
     {
         ensureOpen();
         
-        int result = (int)RemoteUtil.invoke(client, id, remoteInterface(), "setString", new Class<?>[]{long.class, String.class}, new Object[]{pPosition, pStr}, int.class);
+        int result = (int)RemoteUtil.invoke(client, id, remoteInterface(), "setString", new Class<?>[] {long.class, String.class}, new Object[] {pPosition, pStr}, int.class);
         
         invalidateCache();
 
@@ -203,7 +203,7 @@ public class RemoteClob implements Clob
     {
         ensureOpen();
         
-        int result = (int)RemoteUtil.invoke(client, id, remoteInterface(), "setString", new Class<?>[]{long.class, String.class, int.class, int.class}, new Object[]{pPosition, pStr, pOffset, pLength}, int.class);
+        int result = (int)RemoteUtil.invoke(client, id, remoteInterface(), "setString", new Class<?>[] {long.class, String.class, int.class, int.class}, new Object[] {pPosition, pStr, pOffset, pLength}, int.class);
         
         invalidateCache();
 
@@ -216,7 +216,7 @@ public class RemoteClob implements Clob
     {
         ensureOpen();
         
-        OutputStream stream = (OutputStream)RemoteUtil.invoke(client, id, remoteInterface(), "setAsciiStream", new Class<?>[]{long.class}, new Object[]{pPosition}, OutputStream.class);
+        OutputStream stream = (OutputStream)RemoteUtil.invoke(client, id, remoteInterface(), "setAsciiStream", new Class<?>[] {long.class}, new Object[] {pPosition}, OutputStream.class);
         
         invalidateCache();
 
@@ -229,7 +229,7 @@ public class RemoteClob implements Clob
     {
         ensureOpen();
         
-        Writer w = (Writer)RemoteUtil.invoke(client, id, remoteInterface(), "setCharacterStream", new Class<?>[]{long.class}, new Object[]{pPosition}, Writer.class); 
+        Writer w = (Writer)RemoteUtil.invoke(client, id, remoteInterface(), "setCharacterStream", new Class<?>[] {long.class}, new Object[] {pPosition}, Writer.class); 
         
         invalidateCache();
 
@@ -242,7 +242,7 @@ public class RemoteClob implements Clob
     {
         ensureOpen();
         
-        RemoteUtil.invoke(client, id, remoteInterface(), "truncate", new Class<?>[]{long.class}, new Object[]{pLength}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface(), "truncate", new Class<?>[] {long.class}, new Object[] {pLength}, void.class);
         
         invalidateCache();
     }
@@ -262,7 +262,7 @@ public class RemoteClob implements Clob
 
         if (!prefetched)
         {
-            RemoteUtil.invoke(client, id, remoteInterface(), "free", new Class<?>[]{}, new Object[]{}, void.class);
+            RemoteUtil.invoke(client, id, remoteInterface(), "free", new Class<?>[] {}, new Object[] {}, void.class);
         }
         
         cachedValue = null;
@@ -287,7 +287,7 @@ public class RemoteClob implements Clob
             return new StringReader(cachedValue.substring((int)pPos - 1, (int)(pPos - 1L + pLength)));
         }
 
-        return (Reader)RemoteUtil.invoke(client, id, remoteInterface(), "getCharacterStream", new Class<?>[]{long.class, long.class}, new Object[]{pPos, pLength}, Reader.class);
+        return (Reader)RemoteUtil.invoke(client, id, remoteInterface(), "getCharacterStream", new Class<?>[] {long.class, long.class}, new Object[] {pPos, pLength}, Reader.class);
     }
 
     /**

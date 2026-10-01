@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -124,7 +124,7 @@ public class RemoteSQLXML implements SQLXML
             return;
         }
         
-        RemoteUtil.invoke(client, id, SQLXML.class, "free", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, SQLXML.class, "free", new Class<?>[] {}, new Object[] {}, void.class);
         
         freed = true;
         pendingResult = null;
@@ -145,7 +145,7 @@ public class RemoteSQLXML implements SQLXML
     {
         checkFreed();
 
-        return (OutputStream)RemoteUtil.invoke(client, id, SQLXML.class, "setBinaryStream", new Class<?>[]{}, new Object[]{}, OutputStream.class);
+        return (OutputStream)RemoteUtil.invoke(client, id, SQLXML.class, "setBinaryStream", new Class<?>[] {}, new Object[] {}, OutputStream.class);
     }
 
     /** {@inheritDoc} */
@@ -163,7 +163,7 @@ public class RemoteSQLXML implements SQLXML
     {
         checkFreed();
 
-        return (Writer)RemoteUtil.invoke(client, id, SQLXML.class, "setCharacterStream", new Class<?>[]{}, new Object[]{}, Writer.class);
+        return (Writer)RemoteUtil.invoke(client, id, SQLXML.class, "setCharacterStream", new Class<?>[] {}, new Object[] {}, Writer.class);
     }
 
     /** {@inheritDoc} */
@@ -181,7 +181,7 @@ public class RemoteSQLXML implements SQLXML
     {
         checkFreed();
         
-        RemoteUtil.invoke(client, id, SQLXML.class, "setString", new Class<?>[]{String.class}, new Object[]{pValue}, void.class);
+        RemoteUtil.invoke(client, id, SQLXML.class, "setString", new Class<?>[] {String.class}, new Object[] {pValue}, void.class);
         
         try
         {
@@ -340,7 +340,7 @@ public class RemoteSQLXML implements SQLXML
             return cachedString();
         }
         
-        String value = (String)RemoteUtil.invoke(client, id, SQLXML.class, "getString", new Class<?>[]{}, new Object[]{}, String.class);
+        String value = (String)RemoteUtil.invoke(client, id, SQLXML.class, "getString", new Class<?>[] {}, new Object[] {}, String.class);
         
         try
         {
@@ -375,7 +375,7 @@ public class RemoteSQLXML implements SQLXML
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.transform(resultAsSource(pendingResult), new StreamResult(writer));
             
-            RemoteUtil.invoke(client, id, SQLXML.class, "setString", new Class<?>[]{String.class}, new Object[]{writer.toString()}, void.class);
+            RemoteUtil.invoke(client, id, SQLXML.class, "setString", new Class<?>[] {String.class}, new Object[] {writer.toString()}, void.class);
             
             pendingResult = null;
         }

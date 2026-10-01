@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -63,7 +63,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{int.class, int.class}, new Object[]{pParameterIndex, pSqlType}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {int.class, int.class}, new Object[] {pParameterIndex, pSqlType}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -72,7 +72,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{int.class, int.class, int.class}, new Object[]{pParameterIndex, pSqlType, pScale}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {int.class, int.class, int.class}, new Object[] {pParameterIndex, pSqlType, pScale}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -81,7 +81,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "wasNull", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "wasNull", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -90,7 +90,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getString", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getString", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -99,7 +99,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "getBoolean", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "getBoolean", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -108,7 +108,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (byte)RemoteUtil.invoke(client, id, remoteInterface, "getByte", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, byte.class);
+        return (byte)RemoteUtil.invoke(client, id, remoteInterface, "getByte", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, byte.class);
     }
 
     /** {@inheritDoc} */
@@ -117,7 +117,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (short)RemoteUtil.invoke(client, id, remoteInterface, "getShort", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, short.class);
+        return (short)RemoteUtil.invoke(client, id, remoteInterface, "getShort", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, short.class);
     }
 
     /** {@inheritDoc} */
@@ -126,7 +126,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getInt", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getInt", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -135,7 +135,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, remoteInterface, "getLong", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface, "getLong", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -144,7 +144,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (float)RemoteUtil.invoke(client, id, remoteInterface, "getFloat", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, float.class);
+        return (float)RemoteUtil.invoke(client, id, remoteInterface, "getFloat", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, float.class);
     }
 
     /** {@inheritDoc} */
@@ -153,7 +153,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (double)RemoteUtil.invoke(client, id, remoteInterface, "getDouble", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, double.class);
+        return (double)RemoteUtil.invoke(client, id, remoteInterface, "getDouble", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, double.class);
     }
 
     /** {@inheritDoc} */
@@ -162,7 +162,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (BigDecimal)RemoteUtil.invoke(client, id, remoteInterface, "getBigDecimal", new Class<?>[]{int.class, int.class}, new Object[]{pParameterIndex, pScale}, BigDecimal.class);
+        return (BigDecimal)RemoteUtil.invoke(client, id, remoteInterface, "getBigDecimal", new Class<?>[] {int.class, int.class}, new Object[] {pParameterIndex, pScale}, BigDecimal.class);
     }
 
     /** {@inheritDoc} */
@@ -171,7 +171,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (byte[]) RemoteUtil.invoke(client, id, remoteInterface, "getBytes", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, byte[].class);
+        return (byte[])RemoteUtil.invoke(client, id, remoteInterface, "getBytes", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, byte[].class);
     }
 
     /** {@inheritDoc} */
@@ -180,7 +180,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Date)RemoteUtil.invoke(client, id, remoteInterface, "getDate", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, Date.class);
+        return (Date)RemoteUtil.invoke(client, id, remoteInterface, "getDate", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, Date.class);
     }
 
     /** {@inheritDoc} */
@@ -189,7 +189,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Time)RemoteUtil.invoke(client, id, remoteInterface, "getTime", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, Time.class);
+        return (Time)RemoteUtil.invoke(client, id, remoteInterface, "getTime", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, Time.class);
     }
 
     /** {@inheritDoc} */
@@ -198,7 +198,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Timestamp)RemoteUtil.invoke(client, id, remoteInterface, "getTimestamp", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, Timestamp.class);
+        return (Timestamp)RemoteUtil.invoke(client, id, remoteInterface, "getTimestamp", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, Timestamp.class);
     }
 
     /** {@inheritDoc} */
@@ -207,7 +207,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Object)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, Object.class);
+        return (Object)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, Object.class);
     }
 
     /** {@inheritDoc} */
@@ -216,7 +216,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (BigDecimal)RemoteUtil.invoke(client, id, remoteInterface, "getBigDecimal", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, BigDecimal.class);
+        return (BigDecimal)RemoteUtil.invoke(client, id, remoteInterface, "getBigDecimal", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, BigDecimal.class);
     }
 
     /** {@inheritDoc} */
@@ -225,7 +225,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Object)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[]{int.class, Map.class}, new Object[]{pParameterIndex, pMap}, Object.class);
+        return (Object)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[] {int.class, Map.class}, new Object[] {pParameterIndex, pMap}, Object.class);
     }
 
     /** {@inheritDoc} */
@@ -234,7 +234,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Ref)RemoteUtil.invoke(client, id, remoteInterface, "getRef", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, Ref.class);
+        return (Ref)RemoteUtil.invoke(client, id, remoteInterface, "getRef", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, Ref.class);
     }
 
     /** {@inheritDoc} */
@@ -243,7 +243,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Blob)RemoteUtil.invoke(client, id, remoteInterface, "getBlob", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, Blob.class);
+        return (Blob)RemoteUtil.invoke(client, id, remoteInterface, "getBlob", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, Blob.class);
     }
 
     /** {@inheritDoc} */
@@ -252,7 +252,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Clob)RemoteUtil.invoke(client, id, remoteInterface, "getClob", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, Clob.class);
+        return (Clob)RemoteUtil.invoke(client, id, remoteInterface, "getClob", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, Clob.class);
     }
 
     /** {@inheritDoc} */
@@ -261,7 +261,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Array)RemoteUtil.invoke(client, id, remoteInterface, "getArray", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, Array.class);
+        return (Array)RemoteUtil.invoke(client, id, remoteInterface, "getArray", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, Array.class);
     }
 
     /** {@inheritDoc} */
@@ -270,7 +270,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Date)RemoteUtil.invoke(client, id, remoteInterface, "getDate", new Class<?>[]{int.class, Calendar.class}, new Object[]{pParameterIndex, pCalendar}, Date.class);
+        return (Date)RemoteUtil.invoke(client, id, remoteInterface, "getDate", new Class<?>[] {int.class, Calendar.class}, new Object[] {pParameterIndex, pCalendar}, Date.class);
     }
 
     /** {@inheritDoc} */
@@ -279,7 +279,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Time)RemoteUtil.invoke(client, id, remoteInterface, "getTime", new Class<?>[]{int.class, Calendar.class}, new Object[]{pParameterIndex, pCalendar}, Time.class);
+        return (Time)RemoteUtil.invoke(client, id, remoteInterface, "getTime", new Class<?>[] {int.class, Calendar.class}, new Object[] {pParameterIndex, pCalendar}, Time.class);
     }
 
     /** {@inheritDoc} */
@@ -288,7 +288,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Timestamp)RemoteUtil.invoke(client, id, remoteInterface, "getTimestamp", new Class<?>[]{int.class, Calendar.class}, new Object[]{pParameterIndex, pCalendar}, Timestamp.class);
+        return (Timestamp)RemoteUtil.invoke(client, id, remoteInterface, "getTimestamp", new Class<?>[] {int.class, Calendar.class}, new Object[] {pParameterIndex, pCalendar}, Timestamp.class);
     }
 
     /** {@inheritDoc} */
@@ -297,7 +297,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{int.class, int.class, String.class}, new Object[]{pParameterIndex, pSqlType, pScale}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {int.class, int.class, String.class}, new Object[] {pParameterIndex, pSqlType, pScale}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -306,7 +306,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{String.class, int.class}, new Object[]{pParameterName, pSqlType}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {String.class, int.class}, new Object[] {pParameterName, pSqlType}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -315,7 +315,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{String.class, int.class, int.class}, new Object[]{pParameterName, pSqlType, pScale}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {String.class, int.class, int.class}, new Object[] {pParameterName, pSqlType, pScale}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -324,7 +324,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{String.class, int.class, String.class}, new Object[]{pParameterName, pSqlType, pScale}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {String.class, int.class, String.class}, new Object[] {pParameterName, pSqlType, pScale}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -333,182 +333,182 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (URL)RemoteUtil.invoke(client, id, remoteInterface, "getURL", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, URL.class);
+        return (URL)RemoteUtil.invoke(client, id, remoteInterface, "getURL", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, URL.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void setURL(String pParameterName, URL pValue) throws SQLException
     {
-        invokeSetter("setURL", new Class<?>[]{String.class, URL.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setURL", new Class<?>[] {String.class, URL.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNull(String pParameterName, int pSqlType) throws SQLException
     {
-        invokeSetter("setNull", new Class<?>[]{String.class, int.class}, new Object[]{pParameterName, pSqlType});
+        invokeSetter("setNull", new Class<?>[] {String.class, int.class}, new Object[] {pParameterName, pSqlType});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBoolean(String pParameterName, boolean pValue) throws SQLException
     {
-        invokeSetter("setBoolean", new Class<?>[]{String.class, boolean.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setBoolean", new Class<?>[] {String.class, boolean.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setByte(String pParameterName, byte pValue) throws SQLException
     {
-        invokeSetter("setByte", new Class<?>[]{String.class, byte.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setByte", new Class<?>[] {String.class, byte.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setShort(String pParameterName, short pValue) throws SQLException
     {
-        invokeSetter("setShort", new Class<?>[]{String.class, short.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setShort", new Class<?>[] {String.class, short.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setInt(String pParameterName, int pValue) throws SQLException
     {
-        invokeSetter("setInt", new Class<?>[]{String.class, int.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setInt", new Class<?>[] {String.class, int.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setLong(String pParameterName, long pValue) throws SQLException
     {
-        invokeSetter("setLong", new Class<?>[]{String.class, long.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setLong", new Class<?>[] {String.class, long.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setFloat(String pParameterName, float pValue) throws SQLException
     {
-        invokeSetter("setFloat", new Class<?>[]{String.class, float.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setFloat", new Class<?>[] {String.class, float.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setDouble(String pParameterName, double pValue) throws SQLException
     {
-        invokeSetter("setDouble", new Class<?>[]{String.class, double.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setDouble", new Class<?>[] {String.class, double.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBigDecimal(String pParameterName, BigDecimal pValue) throws SQLException
     {
-        invokeSetter("setBigDecimal", new Class<?>[]{String.class, BigDecimal.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setBigDecimal", new Class<?>[] {String.class, BigDecimal.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setString(String pParameterName, String pValue) throws SQLException
     {
-        invokeSetter("setString", new Class<?>[]{String.class, String.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setString", new Class<?>[] {String.class, String.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBytes(String pParameterName, byte[] pValue) throws SQLException
     {
-        invokeSetter("setBytes", new Class<?>[]{String.class, byte[].class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setBytes", new Class<?>[] {String.class, byte[].class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setDate(String pParameterName, Date pValue) throws SQLException
     {
-        invokeSetter("setDate", new Class<?>[]{String.class, Date.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setDate", new Class<?>[] {String.class, Date.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setTime(String pParameterName, Time pValue) throws SQLException
     {
-        invokeSetter("setTime", new Class<?>[]{String.class, Time.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setTime", new Class<?>[] {String.class, Time.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setTimestamp(String pParameterName, Timestamp pValue) throws SQLException
     {
-        invokeSetter("setTimestamp", new Class<?>[]{String.class, Timestamp.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setTimestamp", new Class<?>[] {String.class, Timestamp.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setAsciiStream(String pParameterName, InputStream pValue, int pLength) throws SQLException
     {
-        invokeSetter("setAsciiStream", new Class<?>[]{String.class, InputStream.class, int.class}, new Object[]{pParameterName, pValue, pLength});
+        invokeSetter("setAsciiStream", new Class<?>[] {String.class, InputStream.class, int.class}, new Object[] {pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBinaryStream(String pParameterName, InputStream pValue, int pLength) throws SQLException
     {
-        invokeSetter("setBinaryStream", new Class<?>[]{String.class, InputStream.class, int.class}, new Object[]{pParameterName, pValue, pLength});
+        invokeSetter("setBinaryStream", new Class<?>[] {String.class, InputStream.class, int.class}, new Object[] {pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setObject(String pParameterName, Object pValue, int pTargetSqlType, int pScaleOrLength) throws SQLException
     {
-        invokeSetter("setObject", new Class<?>[]{String.class, Object.class, int.class, int.class}, new Object[]{pParameterName, pValue, pTargetSqlType, pScaleOrLength});
+        invokeSetter("setObject", new Class<?>[] {String.class, Object.class, int.class, int.class}, new Object[] {pParameterName, pValue, pTargetSqlType, pScaleOrLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setObject(String pParameterName, Object pValue, int pTargetSqlType) throws SQLException
     {
-        invokeSetter("setObject", new Class<?>[]{String.class, Object.class, int.class}, new Object[]{pParameterName, pValue, pTargetSqlType});
+        invokeSetter("setObject", new Class<?>[] {String.class, Object.class, int.class}, new Object[] {pParameterName, pValue, pTargetSqlType});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setObject(String pParameterName, Object pValue) throws SQLException
     {
-        invokeSetter("setObject", new Class<?>[]{String.class, Object.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setObject", new Class<?>[] {String.class, Object.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setCharacterStream(String pParameterName, Reader pValue, int pLength) throws SQLException
     {
-        invokeSetter("setCharacterStream", new Class<?>[]{String.class, Reader.class, int.class}, new Object[]{pParameterName, pValue, pLength});
+        invokeSetter("setCharacterStream", new Class<?>[] {String.class, Reader.class, int.class}, new Object[] {pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setDate(String pParameterName, Date pValue, Calendar pCalendar) throws SQLException
     {
-        invokeSetter("setDate", new Class<?>[]{String.class, Date.class, Calendar.class}, new Object[]{pParameterName, pValue, pCalendar});
+        invokeSetter("setDate", new Class<?>[] {String.class, Date.class, Calendar.class}, new Object[] {pParameterName, pValue, pCalendar});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setTime(String pParameterName, Time pValue, Calendar pCalendar) throws SQLException
     {
-        invokeSetter("setTime", new Class<?>[]{String.class, Time.class, Calendar.class}, new Object[]{pParameterName, pValue, pCalendar});
+        invokeSetter("setTime", new Class<?>[] {String.class, Time.class, Calendar.class}, new Object[] {pParameterName, pValue, pCalendar});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setTimestamp(String pParameterName, Timestamp pValue, Calendar pCalendar) throws SQLException
     {
-        invokeSetter("setTimestamp", new Class<?>[]{String.class, Timestamp.class, Calendar.class}, new Object[]{pParameterName, pValue, pCalendar});
+        invokeSetter("setTimestamp", new Class<?>[] {String.class, Timestamp.class, Calendar.class}, new Object[] {pParameterName, pValue, pCalendar});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNull(String pParameterName, int pSqlType, String pTypeName) throws SQLException
     {
-        invokeSetter("setNull", new Class<?>[]{String.class, int.class, String.class}, new Object[]{pParameterName, pSqlType, pTypeName});
+        invokeSetter("setNull", new Class<?>[] {String.class, int.class, String.class}, new Object[] {pParameterName, pSqlType, pTypeName});
     }
 
     /** {@inheritDoc} */
@@ -517,7 +517,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getString", new Class<?>[]{String.class}, new Object[]{pParameterName}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getString", new Class<?>[] {String.class}, new Object[] {pParameterName}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -526,7 +526,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "getBoolean", new Class<?>[]{String.class}, new Object[]{pParameterName}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "getBoolean", new Class<?>[] {String.class}, new Object[] {pParameterName}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -535,7 +535,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (byte)RemoteUtil.invoke(client, id, remoteInterface, "getByte", new Class<?>[]{String.class}, new Object[]{pParameterName}, byte.class);
+        return (byte)RemoteUtil.invoke(client, id, remoteInterface, "getByte", new Class<?>[] {String.class}, new Object[] {pParameterName}, byte.class);
     }
 
     /** {@inheritDoc} */
@@ -544,7 +544,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (short)RemoteUtil.invoke(client, id, remoteInterface, "getShort", new Class<?>[]{String.class}, new Object[]{pParameterName}, short.class);
+        return (short)RemoteUtil.invoke(client, id, remoteInterface, "getShort", new Class<?>[] {String.class}, new Object[] {pParameterName}, short.class);
     }
 
     /** {@inheritDoc} */
@@ -553,7 +553,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getInt", new Class<?>[]{String.class}, new Object[]{pParameterName}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getInt", new Class<?>[] {String.class}, new Object[] {pParameterName}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -562,7 +562,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, remoteInterface, "getLong", new Class<?>[]{String.class}, new Object[]{pParameterName}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface, "getLong", new Class<?>[] {String.class}, new Object[] {pParameterName}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -571,7 +571,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (float)RemoteUtil.invoke(client, id, remoteInterface, "getFloat", new Class<?>[]{String.class}, new Object[]{pParameterName}, float.class);
+        return (float)RemoteUtil.invoke(client, id, remoteInterface, "getFloat", new Class<?>[] {String.class}, new Object[] {pParameterName}, float.class);
     }
 
     /** {@inheritDoc} */
@@ -580,7 +580,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (double)RemoteUtil.invoke(client, id, remoteInterface, "getDouble", new Class<?>[]{String.class}, new Object[]{pParameterName}, double.class);
+        return (double)RemoteUtil.invoke(client, id, remoteInterface, "getDouble", new Class<?>[] {String.class}, new Object[] {pParameterName}, double.class);
     }
 
     /** {@inheritDoc} */
@@ -589,7 +589,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (byte[]) RemoteUtil.invoke(client, id, remoteInterface, "getBytes", new Class<?>[]{String.class}, new Object[]{pParameterName}, byte[].class);
+        return (byte[])RemoteUtil.invoke(client, id, remoteInterface, "getBytes", new Class<?>[] {String.class}, new Object[] {pParameterName}, byte[].class);
     }
 
     /** {@inheritDoc} */
@@ -598,7 +598,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Date)RemoteUtil.invoke(client, id, remoteInterface, "getDate", new Class<?>[]{String.class}, new Object[]{pParameterName}, Date.class);
+        return (Date)RemoteUtil.invoke(client, id, remoteInterface, "getDate", new Class<?>[] {String.class}, new Object[] {pParameterName}, Date.class);
     }
 
     /** {@inheritDoc} */
@@ -607,7 +607,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Time)RemoteUtil.invoke(client, id, remoteInterface, "getTime", new Class<?>[]{String.class}, new Object[]{pParameterName}, Time.class);
+        return (Time)RemoteUtil.invoke(client, id, remoteInterface, "getTime", new Class<?>[] {String.class}, new Object[] {pParameterName}, Time.class);
     }
 
     /** {@inheritDoc} */
@@ -616,7 +616,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Timestamp)RemoteUtil.invoke(client, id, remoteInterface, "getTimestamp", new Class<?>[]{String.class}, new Object[]{pParameterName}, Timestamp.class);
+        return (Timestamp)RemoteUtil.invoke(client, id, remoteInterface, "getTimestamp", new Class<?>[] {String.class}, new Object[] {pParameterName}, Timestamp.class);
     }
 
     /** {@inheritDoc} */
@@ -625,7 +625,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Object)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[]{String.class}, new Object[]{pParameterName}, Object.class);
+        return (Object)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[] {String.class}, new Object[] {pParameterName}, Object.class);
     }
 
     /** {@inheritDoc} */
@@ -634,7 +634,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (BigDecimal)RemoteUtil.invoke(client, id, remoteInterface, "getBigDecimal", new Class<?>[]{String.class}, new Object[]{pParameterName}, BigDecimal.class);
+        return (BigDecimal)RemoteUtil.invoke(client, id, remoteInterface, "getBigDecimal", new Class<?>[] {String.class}, new Object[] {pParameterName}, BigDecimal.class);
     }
 
     /** {@inheritDoc} */
@@ -643,7 +643,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Object)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[]{String.class, Map.class}, new Object[]{pParameterName, pMap}, Object.class);
+        return (Object)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[] {String.class, Map.class}, new Object[] {pParameterName, pMap}, Object.class);
     }
 
     /** {@inheritDoc} */
@@ -652,7 +652,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Ref)RemoteUtil.invoke(client, id, remoteInterface, "getRef", new Class<?>[]{String.class}, new Object[]{pParameterName}, Ref.class);
+        return (Ref)RemoteUtil.invoke(client, id, remoteInterface, "getRef", new Class<?>[] {String.class}, new Object[] {pParameterName}, Ref.class);
     }
 
     /** {@inheritDoc} */
@@ -661,7 +661,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Blob)RemoteUtil.invoke(client, id, remoteInterface, "getBlob", new Class<?>[]{String.class}, new Object[]{pParameterName}, Blob.class);
+        return (Blob)RemoteUtil.invoke(client, id, remoteInterface, "getBlob", new Class<?>[] {String.class}, new Object[] {pParameterName}, Blob.class);
     }
 
     /** {@inheritDoc} */
@@ -670,7 +670,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Clob)RemoteUtil.invoke(client, id, remoteInterface, "getClob", new Class<?>[]{String.class}, new Object[]{pParameterName}, Clob.class);
+        return (Clob)RemoteUtil.invoke(client, id, remoteInterface, "getClob", new Class<?>[] {String.class}, new Object[] {pParameterName}, Clob.class);
     }
 
     /** {@inheritDoc} */
@@ -679,7 +679,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Array)RemoteUtil.invoke(client, id, remoteInterface, "getArray", new Class<?>[]{String.class}, new Object[]{pParameterName}, Array.class);
+        return (Array)RemoteUtil.invoke(client, id, remoteInterface, "getArray", new Class<?>[] {String.class}, new Object[] {pParameterName}, Array.class);
     }
 
     /** {@inheritDoc} */
@@ -688,7 +688,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Date)RemoteUtil.invoke(client, id, remoteInterface, "getDate", new Class<?>[]{String.class, Calendar.class}, new Object[]{pParameterName, pCalendar}, Date.class);
+        return (Date)RemoteUtil.invoke(client, id, remoteInterface, "getDate", new Class<?>[] {String.class, Calendar.class}, new Object[] {pParameterName, pCalendar}, Date.class);
     }
 
     /** {@inheritDoc} */
@@ -697,7 +697,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Time)RemoteUtil.invoke(client, id, remoteInterface, "getTime", new Class<?>[]{String.class, Calendar.class}, new Object[]{pParameterName, pCalendar}, Time.class);
+        return (Time)RemoteUtil.invoke(client, id, remoteInterface, "getTime", new Class<?>[] {String.class, Calendar.class}, new Object[] {pParameterName, pCalendar}, Time.class);
     }
 
     /** {@inheritDoc} */
@@ -706,7 +706,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Timestamp)RemoteUtil.invoke(client, id, remoteInterface, "getTimestamp", new Class<?>[]{String.class, Calendar.class}, new Object[]{pParameterName, pCalendar}, Timestamp.class);
+        return (Timestamp)RemoteUtil.invoke(client, id, remoteInterface, "getTimestamp", new Class<?>[] {String.class, Calendar.class}, new Object[] {pParameterName, pCalendar}, Timestamp.class);
     }
 
     /** {@inheritDoc} */
@@ -715,7 +715,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (URL)RemoteUtil.invoke(client, id, remoteInterface, "getURL", new Class<?>[]{String.class}, new Object[]{pParameterName}, URL.class);
+        return (URL)RemoteUtil.invoke(client, id, remoteInterface, "getURL", new Class<?>[] {String.class}, new Object[] {pParameterName}, URL.class);
     }
 
     /** {@inheritDoc} */
@@ -724,7 +724,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (RowId)RemoteUtil.invoke(client, id, remoteInterface, "getRowId", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, RowId.class);
+        return (RowId)RemoteUtil.invoke(client, id, remoteInterface, "getRowId", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, RowId.class);
     }
 
     /** {@inheritDoc} */
@@ -733,56 +733,56 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (RowId)RemoteUtil.invoke(client, id, remoteInterface, "getRowId", new Class<?>[]{String.class}, new Object[]{pParameterName}, RowId.class);
+        return (RowId)RemoteUtil.invoke(client, id, remoteInterface, "getRowId", new Class<?>[] {String.class}, new Object[] {pParameterName}, RowId.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void setRowId(String pParameterName, RowId pValue) throws SQLException
     {
-        invokeSetter("setRowId", new Class<?>[]{String.class, RowId.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setRowId", new Class<?>[] {String.class, RowId.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNString(String pParameterName, String pValue) throws SQLException
     {
-        invokeSetter("setNString", new Class<?>[]{String.class, String.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setNString", new Class<?>[] {String.class, String.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNCharacterStream(String pParameterName, Reader pValue, long pLength) throws SQLException
     {
-        invokeSetter("setNCharacterStream", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength});
+        invokeSetter("setNCharacterStream", new Class<?>[] {String.class, Reader.class, long.class}, new Object[] {pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNClob(String pParameterName, NClob pValue) throws SQLException
     {
-        invokeSetter("setNClob", new Class<?>[]{String.class, NClob.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setNClob", new Class<?>[] {String.class, NClob.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setClob(String pParameterName, Reader pValue, long pLength) throws SQLException
     {
-        invokeSetter("setClob", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength});
+        invokeSetter("setClob", new Class<?>[] {String.class, Reader.class, long.class}, new Object[] {pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBlob(String pParameterName, InputStream pValue, long pLength) throws SQLException
     {
-        invokeSetter("setBlob", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pParameterName, pValue, pLength});
+        invokeSetter("setBlob", new Class<?>[] {String.class, InputStream.class, long.class}, new Object[] {pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNClob(String pParameterName, Reader pValue, long pLength) throws SQLException
     {
-        invokeSetter("setNClob", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength});
+        invokeSetter("setNClob", new Class<?>[] {String.class, Reader.class, long.class}, new Object[] {pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
@@ -791,7 +791,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (NClob)RemoteUtil.invoke(client, id, remoteInterface, "getNClob", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, NClob.class);
+        return (NClob)RemoteUtil.invoke(client, id, remoteInterface, "getNClob", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, NClob.class);
     }
 
     /** {@inheritDoc} */
@@ -800,14 +800,14 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (NClob)RemoteUtil.invoke(client, id, remoteInterface, "getNClob", new Class<?>[]{String.class}, new Object[]{pParameterName}, NClob.class);
+        return (NClob)RemoteUtil.invoke(client, id, remoteInterface, "getNClob", new Class<?>[] {String.class}, new Object[] {pParameterName}, NClob.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void setSQLXML(String pParameterName, SQLXML pValue) throws SQLException
     {
-        invokeSetter("setSQLXML", new Class<?>[]{String.class, SQLXML.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setSQLXML", new Class<?>[] {String.class, SQLXML.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
@@ -816,7 +816,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (SQLXML)RemoteUtil.invoke(client, id, remoteInterface, "getSQLXML", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, SQLXML.class);
+        return (SQLXML)RemoteUtil.invoke(client, id, remoteInterface, "getSQLXML", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, SQLXML.class);
     }
 
     /** {@inheritDoc} */
@@ -825,7 +825,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (SQLXML)RemoteUtil.invoke(client, id, remoteInterface, "getSQLXML", new Class<?>[]{String.class}, new Object[]{pParameterName}, SQLXML.class);
+        return (SQLXML)RemoteUtil.invoke(client, id, remoteInterface, "getSQLXML", new Class<?>[] {String.class}, new Object[] {pParameterName}, SQLXML.class);
     }
 
     /** {@inheritDoc} */
@@ -834,7 +834,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getNString", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getNString", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -843,7 +843,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getNString", new Class<?>[]{String.class}, new Object[]{pParameterName}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getNString", new Class<?>[] {String.class}, new Object[] {pParameterName}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -852,7 +852,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Reader)RemoteUtil.invoke(client, id, remoteInterface, "getNCharacterStream", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, Reader.class);
+        return (Reader)RemoteUtil.invoke(client, id, remoteInterface, "getNCharacterStream", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, Reader.class);
     }
 
     /** {@inheritDoc} */
@@ -861,7 +861,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Reader)RemoteUtil.invoke(client, id, remoteInterface, "getNCharacterStream", new Class<?>[]{String.class}, new Object[]{pParameterName}, Reader.class);
+        return (Reader)RemoteUtil.invoke(client, id, remoteInterface, "getNCharacterStream", new Class<?>[] {String.class}, new Object[] {pParameterName}, Reader.class);
     }
 
     /** {@inheritDoc} */
@@ -870,7 +870,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Reader)RemoteUtil.invoke(client, id, remoteInterface, "getCharacterStream", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, Reader.class);
+        return (Reader)RemoteUtil.invoke(client, id, remoteInterface, "getCharacterStream", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, Reader.class);
     }
 
     /** {@inheritDoc} */
@@ -879,91 +879,91 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (Reader)RemoteUtil.invoke(client, id, remoteInterface, "getCharacterStream", new Class<?>[]{String.class}, new Object[]{pParameterName}, Reader.class);
+        return (Reader)RemoteUtil.invoke(client, id, remoteInterface, "getCharacterStream", new Class<?>[] {String.class}, new Object[] {pParameterName}, Reader.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBlob(String pParameterName, Blob pValue) throws SQLException
     {
-        invokeSetter("setBlob", new Class<?>[]{String.class, Blob.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setBlob", new Class<?>[] {String.class, Blob.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setClob(String pParameterName, Clob pValue) throws SQLException
     {
-        invokeSetter("setClob", new Class<?>[]{String.class, Clob.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setClob", new Class<?>[] {String.class, Clob.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setAsciiStream(String pParameterName, InputStream pValue, long pLength) throws SQLException
     {
-        invokeSetter("setAsciiStream", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pParameterName, pValue, pLength});
+        invokeSetter("setAsciiStream", new Class<?>[] {String.class, InputStream.class, long.class}, new Object[] {pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBinaryStream(String pParameterName, InputStream pValue, long pLength) throws SQLException
     {
-        invokeSetter("setBinaryStream", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pParameterName, pValue, pLength});
+        invokeSetter("setBinaryStream", new Class<?>[] {String.class, InputStream.class, long.class}, new Object[] {pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setCharacterStream(String pParameterName, Reader pValue, long pLength) throws SQLException
     {
-        invokeSetter("setCharacterStream", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pParameterName, pValue, pLength});
+        invokeSetter("setCharacterStream", new Class<?>[] {String.class, Reader.class, long.class}, new Object[] {pParameterName, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setAsciiStream(String pParameterName, InputStream pValue) throws SQLException
     {
-        invokeSetter("setAsciiStream", new Class<?>[]{String.class, InputStream.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setAsciiStream", new Class<?>[] {String.class, InputStream.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBinaryStream(String pParameterName, InputStream pValue) throws SQLException
     {
-        invokeSetter("setBinaryStream", new Class<?>[]{String.class, InputStream.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setBinaryStream", new Class<?>[] {String.class, InputStream.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setCharacterStream(String pParameterName, Reader pValue) throws SQLException
     {
-        invokeSetter("setCharacterStream", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setCharacterStream", new Class<?>[] {String.class, Reader.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNCharacterStream(String pParameterName, Reader pValue) throws SQLException
     {
-        invokeSetter("setNCharacterStream", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setNCharacterStream", new Class<?>[] {String.class, Reader.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setClob(String pParameterName, Reader pValue) throws SQLException
     {
-        invokeSetter("setClob", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setClob", new Class<?>[] {String.class, Reader.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setBlob(String pParameterName, InputStream pValue) throws SQLException
     {
-        invokeSetter("setBlob", new Class<?>[]{String.class, InputStream.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setBlob", new Class<?>[] {String.class, InputStream.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setNClob(String pParameterName, Reader pValue) throws SQLException
     {
-        invokeSetter("setNClob", new Class<?>[]{String.class, Reader.class}, new Object[]{pParameterName, pValue});
+        invokeSetter("setNClob", new Class<?>[] {String.class, Reader.class}, new Object[] {pParameterName, pValue});
     }
 
     /** {@inheritDoc} */
@@ -973,7 +973,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (T)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[]{int.class, Class.class}, new Object[]{pParameterIndex, pType}, Object.class);
+        return (T)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[] {int.class, Class.class}, new Object[] {pParameterIndex, pType}, Object.class);
     }
 
     /** {@inheritDoc} */
@@ -983,21 +983,21 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        return (T)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[]{String.class, Class.class}, new Object[]{pParameterName, pType}, Object.class);
+        return (T)RemoteUtil.invoke(client, id, remoteInterface, "getObject", new Class<?>[] {String.class, Class.class}, new Object[] {pParameterName, pType}, Object.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void setObject(String pParameterName, Object pValue, SQLType pSqlType, int pScaleOrLength) throws SQLException
     {
-        invokeSetter("setObject", new Class<?>[]{String.class, Object.class, SQLType.class, int.class}, new Object[]{pParameterName, pValue, pSqlType, pScaleOrLength});
+        invokeSetter("setObject", new Class<?>[] {String.class, Object.class, SQLType.class, int.class}, new Object[] {pParameterName, pValue, pSqlType, pScaleOrLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void setObject(String pParameterName, Object pValue, SQLType pSqlType) throws SQLException
     {
-        invokeSetter("setObject", new Class<?>[]{String.class, Object.class, SQLType.class}, new Object[]{pParameterName, pValue, pSqlType});
+        invokeSetter("setObject", new Class<?>[] {String.class, Object.class, SQLType.class}, new Object[] {pParameterName, pValue, pSqlType});
     }
 
     /** {@inheritDoc} */
@@ -1006,7 +1006,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{int.class, SQLType.class}, new Object[]{pParameterIndex, pSqlType}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {int.class, SQLType.class}, new Object[] {pParameterIndex, pSqlType}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -1015,7 +1015,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{int.class, SQLType.class, int.class}, new Object[]{pParameterIndex, pSqlType, pScale}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {int.class, SQLType.class, int.class}, new Object[] {pParameterIndex, pSqlType, pScale}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -1024,7 +1024,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{int.class, SQLType.class, String.class}, new Object[]{pParameterIndex, pSqlType, pScale}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {int.class, SQLType.class, String.class}, new Object[] {pParameterIndex, pSqlType, pScale}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -1033,7 +1033,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{String.class, SQLType.class}, new Object[]{pParameterIndex, pSqlType}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {String.class, SQLType.class}, new Object[] {pParameterIndex, pSqlType}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -1042,7 +1042,7 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{String.class, SQLType.class, int.class}, new Object[]{pParameterIndex, pSqlType, pScale}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {String.class, SQLType.class, int.class}, new Object[] {pParameterIndex, pSqlType, pScale}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -1051,6 +1051,6 @@ public class RemoteCallableStatement extends RemotePreparedStatement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[]{String.class, SQLType.class, String.class}, new Object[]{pParameterIndex, pSqlType, pScale}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "registerOutParameter", new Class<?>[] {String.class, SQLType.class, String.class}, new Object[] {pParameterIndex, pSqlType, pScale}, void.class);
     }
 }

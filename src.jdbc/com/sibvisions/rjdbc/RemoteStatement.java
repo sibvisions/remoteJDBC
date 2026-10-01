@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -107,7 +107,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (ResultSet)RemoteUtil.invoke(client, id, remoteInterface, "executeQuery", new Class<?>[]{String.class}, new Object[]{pSql}, ResultSet.class);
+        return (ResultSet)RemoteUtil.invoke(client, id, remoteInterface, "executeQuery", new Class<?>[] {String.class}, new Object[] {pSql}, ResultSet.class);
     }
 
     /** {@inheritDoc} */
@@ -116,7 +116,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
 
-    	return (int)RemoteUtil.invoke(client, id, remoteInterface, "executeUpdate", new Class<?>[]{String.class}, new Object[]{pSql}, int.class);
+    	return (int)RemoteUtil.invoke(client, id, remoteInterface, "executeUpdate", new Class<?>[] {String.class}, new Object[] {pSql}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -132,7 +132,7 @@ public class RemoteStatement implements Statement
         
         try
         {
-            RemoteUtil.invoke(client, id, remoteInterface, "close", new Class<?>[]{}, new Object[]{}, void.class);
+            RemoteUtil.invoke(client, id, remoteInterface, "close", new Class<?>[] {}, new Object[] {}, void.class);
         }
         finally
         {
@@ -146,7 +146,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
 
-    	return (int)RemoteUtil.invoke(client, id, remoteInterface, "getMaxFieldSize", new Class<?>[]{}, new Object[]{}, int.class);
+    	return (int)RemoteUtil.invoke(client, id, remoteInterface, "getMaxFieldSize", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -155,7 +155,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
 
-    	RemoteUtil.invoke(client, id, remoteInterface, "setMaxFieldSize", new Class<?>[]{int.class}, new Object[]{pMax}, void.class);
+    	RemoteUtil.invoke(client, id, remoteInterface, "setMaxFieldSize", new Class<?>[] {int.class}, new Object[] {pMax}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -164,7 +164,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
 
-    	return (int)RemoteUtil.invoke(client, id, remoteInterface, "getMaxRows", new Class<?>[]{}, new Object[]{}, int.class);
+    	return (int)RemoteUtil.invoke(client, id, remoteInterface, "getMaxRows", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -173,7 +173,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
 
-    	RemoteUtil.invoke(client, id, remoteInterface, "setMaxRows", new Class<?>[]{int.class}, new Object[]{pMax}, void.class);
+    	RemoteUtil.invoke(client, id, remoteInterface, "setMaxRows", new Class<?>[] {int.class}, new Object[] {pMax}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -182,7 +182,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-    	RemoteUtil.invoke(client, id, remoteInterface, "setEscapeProcessing", new Class<?>[]{boolean.class}, new Object[]{pEscapeProcessing}, void.class);
+    	RemoteUtil.invoke(client, id, remoteInterface, "setEscapeProcessing", new Class<?>[] {boolean.class}, new Object[] {pEscapeProcessing}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -191,7 +191,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getQueryTimeout", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getQueryTimeout", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -200,7 +200,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setQueryTimeout", new Class<?>[]{int.class}, new Object[]{pSeconds}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setQueryTimeout", new Class<?>[] {int.class}, new Object[] {pSeconds}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -209,7 +209,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "cancel", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "cancel", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -218,7 +218,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (SQLWarning)RemoteUtil.invoke(client, id, remoteInterface, "getWarnings", new Class<?>[]{}, new Object[]{}, SQLWarning.class);
+        return (SQLWarning)RemoteUtil.invoke(client, id, remoteInterface, "getWarnings", new Class<?>[] {}, new Object[] {}, SQLWarning.class);
     }
 
     /** {@inheritDoc} */
@@ -227,7 +227,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "clearWarnings", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "clearWarnings", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -236,7 +236,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setCursorName", new Class<?>[]{String.class}, new Object[]{pName}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setCursorName", new Class<?>[] {String.class}, new Object[] {pName}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -245,7 +245,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "execute", new Class<?>[]{String.class}, new Object[]{pSql}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "execute", new Class<?>[] {String.class}, new Object[] {pSql}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -254,7 +254,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (ResultSet)RemoteUtil.invoke(client, id, remoteInterface, "getResultSet", new Class<?>[]{}, new Object[]{}, ResultSet.class);
+        return (ResultSet)RemoteUtil.invoke(client, id, remoteInterface, "getResultSet", new Class<?>[] {}, new Object[] {}, ResultSet.class);
     }
 
     /** {@inheritDoc} */
@@ -263,7 +263,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getUpdateCount", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getUpdateCount", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -272,7 +272,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "getMoreResults", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "getMoreResults", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -281,7 +281,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setFetchDirection", new Class<?>[]{int.class}, new Object[]{pDirection}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setFetchDirection", new Class<?>[] {int.class}, new Object[] {pDirection}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -290,7 +290,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getFetchDirection", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getFetchDirection", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -299,7 +299,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-    	RemoteUtil.invoke(client, id, remoteInterface, "setFetchSize", new Class<?>[]{int.class}, new Object[]{pRows}, void.class);
+    	RemoteUtil.invoke(client, id, remoteInterface, "setFetchSize", new Class<?>[] {int.class}, new Object[] {pRows}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -308,7 +308,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getFetchSize", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getFetchSize", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -317,7 +317,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getResultSetConcurrency", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getResultSetConcurrency", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -326,7 +326,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getResultSetType", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getResultSetType", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -335,7 +335,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "addBatch", new Class<?>[]{String.class}, new Object[]{pSql}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "addBatch", new Class<?>[] {String.class}, new Object[] {pSql}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -344,7 +344,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "clearBatch", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "clearBatch", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -353,7 +353,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int[]) RemoteUtil.invoke(client, id, remoteInterface, "executeBatch", new Class<?>[]{}, new Object[]{}, int[].class);
+        return (int[]) RemoteUtil.invoke(client, id, remoteInterface, "executeBatch", new Class<?>[] {}, new Object[] {}, int[].class);
     }
 
     /** {@inheritDoc} */
@@ -362,7 +362,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (Connection)RemoteUtil.invoke(client, id, remoteInterface, "getConnection", new Class<?>[]{}, new Object[]{}, Connection.class);
+        return (Connection)RemoteUtil.invoke(client, id, remoteInterface, "getConnection", new Class<?>[] {}, new Object[] {}, Connection.class);
     }
 
     /** {@inheritDoc} */
@@ -371,7 +371,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "getMoreResults", new Class<?>[]{int.class}, new Object[]{pCurrent}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "getMoreResults", new Class<?>[] {int.class}, new Object[] {pCurrent}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -380,7 +380,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (ResultSet)RemoteUtil.invoke(client, id, remoteInterface, "getGeneratedKeys", new Class<?>[]{}, new Object[]{}, ResultSet.class);
+        return (ResultSet)RemoteUtil.invoke(client, id, remoteInterface, "getGeneratedKeys", new Class<?>[] {}, new Object[] {}, ResultSet.class);
     }
 
     /** {@inheritDoc} */
@@ -389,7 +389,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "executeUpdate", new Class<?>[]{String.class, int.class}, new Object[]{pSql, pAutoGeneratedKeys}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "executeUpdate", new Class<?>[] {String.class, int.class}, new Object[] {pSql, pAutoGeneratedKeys}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -398,7 +398,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "executeUpdate", new Class<?>[]{String.class, int[].class}, new Object[]{pSql, pColumnIndexes}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "executeUpdate", new Class<?>[] {String.class, int[].class}, new Object[] {pSql, pColumnIndexes}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -407,7 +407,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "executeUpdate", new Class<?>[]{String.class, String[].class}, new Object[]{pSql, pColumnNames}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "executeUpdate", new Class<?>[] {String.class, String[].class}, new Object[] {pSql, pColumnNames}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -416,7 +416,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "execute", new Class<?>[]{String.class, int.class}, new Object[]{pSql, pAutoGeneratedKeys}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "execute", new Class<?>[] {String.class, int.class}, new Object[] {pSql, pAutoGeneratedKeys}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -425,7 +425,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "execute", new Class<?>[]{String.class, int[].class}, new Object[]{pSql, pColumnIndexes}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "execute", new Class<?>[] {String.class, int[].class}, new Object[] {pSql, pColumnIndexes}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -434,7 +434,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "execute", new Class<?>[]{String.class, String[].class}, new Object[]{pSql, pColumnNames}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "execute", new Class<?>[] {String.class, String[].class}, new Object[] {pSql, pColumnNames}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -443,7 +443,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getResultSetHoldability", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getResultSetHoldability", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -455,7 +455,7 @@ public class RemoteStatement implements Statement
             return true;
         }
 
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isClosed", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isClosed", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -464,7 +464,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setPoolable", new Class<?>[]{boolean.class}, new Object[]{pPoolable}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setPoolable", new Class<?>[] {boolean.class}, new Object[] {pPoolable}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -473,7 +473,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isPoolable", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isPoolable", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -482,7 +482,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "closeOnCompletion", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "closeOnCompletion", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -491,7 +491,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isCloseOnCompletion", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isCloseOnCompletion", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -500,7 +500,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, remoteInterface, "getLargeUpdateCount", new Class<?>[]{}, new Object[]{}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface, "getLargeUpdateCount", new Class<?>[] {}, new Object[] {}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -509,7 +509,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setLargeMaxRows", new Class<?>[]{long.class}, new Object[]{pLargeMaxRows}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setLargeMaxRows", new Class<?>[] {long.class}, new Object[] {pLargeMaxRows}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -518,7 +518,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, remoteInterface, "getLargeMaxRows", new Class<?>[]{}, new Object[]{}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface, "getLargeMaxRows", new Class<?>[] {}, new Object[] {}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -527,7 +527,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (long[]) RemoteUtil.invoke(client, id, remoteInterface, "executeLargeBatch", new Class<?>[]{}, new Object[]{}, long[].class);
+        return (long[]) RemoteUtil.invoke(client, id, remoteInterface, "executeLargeBatch", new Class<?>[] {}, new Object[] {}, long[].class);
     }
 
     /** {@inheritDoc} */
@@ -536,7 +536,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, remoteInterface, "executeLargeUpdate", new Class<?>[]{String.class}, new Object[]{pSql}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface, "executeLargeUpdate", new Class<?>[] {String.class}, new Object[] {pSql}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -545,7 +545,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, remoteInterface, "executeLargeUpdate", new Class<?>[]{String.class, int.class}, new Object[]{pSql, pAutoGeneratedKeys}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface, "executeLargeUpdate", new Class<?>[] {String.class, int.class}, new Object[] {pSql, pAutoGeneratedKeys}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -554,7 +554,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, remoteInterface, "executeLargeUpdate", new Class<?>[]{String.class, int[].class}, new Object[]{pSql, pColumnIndexes}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface, "executeLargeUpdate", new Class<?>[] {String.class, int[].class}, new Object[] {pSql, pColumnIndexes}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -563,7 +563,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, remoteInterface, "executeLargeUpdate", new Class<?>[]{String.class, String[].class}, new Object[]{pSql, pColumnNames}, long.class);
+        return (long)RemoteUtil.invoke(client, id, remoteInterface, "executeLargeUpdate", new Class<?>[] {String.class, String[].class}, new Object[] {pSql, pColumnNames}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -572,7 +572,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "enquoteLiteral", new Class<?>[]{String.class}, new Object[]{pVal}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "enquoteLiteral", new Class<?>[] {String.class}, new Object[] {pVal}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -581,7 +581,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "enquoteIdentifier", new Class<?>[]{String.class, boolean.class}, new Object[]{pIdentifier, pAlwaysQuote}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "enquoteIdentifier", new Class<?>[] {String.class, boolean.class}, new Object[] {pIdentifier, pAlwaysQuote}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -590,7 +590,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isSimpleIdentifier", new Class<?>[]{String.class}, new Object[]{pIdentifier}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isSimpleIdentifier", new Class<?>[] {String.class}, new Object[] {pIdentifier}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -599,7 +599,7 @@ public class RemoteStatement implements Statement
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "enquoteNCharLiteral", new Class<?>[]{String.class}, new Object[]{pVal}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "enquoteNCharLiteral", new Class<?>[] {String.class}, new Object[] {pVal}, String.class);
     }
     
     /**

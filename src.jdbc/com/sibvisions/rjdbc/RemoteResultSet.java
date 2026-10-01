@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -228,7 +228,7 @@ public class RemoteResultSet implements ResultSet
     	{
 	        if (!client.isSessionClosed() && !client.isSessionBroken())
 	        {
-	        	RemoteUtil.invoke(client, id, remoteInterface, "close", new Class<?>[]{}, new Object[]{}, void.class);
+	        	RemoteUtil.invoke(client, id, remoteInterface, "close", new Class<?>[] {}, new Object[] {}, void.class);
 	        }
     	}
     	finally
@@ -646,7 +646,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
 
-        return (SQLWarning)RemoteUtil.invoke(client, id, remoteInterface, "getWarnings", new Class<?>[]{}, new Object[]{}, SQLWarning.class);
+        return (SQLWarning)RemoteUtil.invoke(client, id, remoteInterface, "getWarnings", new Class<?>[] {}, new Object[] {}, SQLWarning.class);
     }
 
     /** {@inheritDoc} */
@@ -654,7 +654,7 @@ public class RemoteResultSet implements ResultSet
     public void clearWarnings() throws SQLException
     {
         ensureOpen();
-        RemoteUtil.invoke(client, id, remoteInterface, "clearWarnings", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "clearWarnings", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -663,7 +663,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
 
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getCursorName", new Class<?>[]{}, new Object[]{}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getCursorName", new Class<?>[] {}, new Object[] {}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -674,7 +674,7 @@ public class RemoteResultSet implements ResultSet
 
         if (metaDataCache == null)
         {
-            metaDataCache = (ResultSetMetaData)RemoteUtil.invoke(client, id, remoteInterface, "getMetaData", new Class<?>[]{}, new Object[]{}, ResultSetMetaData.class);
+            metaDataCache = (ResultSetMetaData)RemoteUtil.invoke(client, id, remoteInterface, "getMetaData", new Class<?>[] {}, new Object[] {}, ResultSetMetaData.class);
             
             populateColumnCache(metaDataCache);
         }
@@ -821,7 +821,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
         
-        RemoteUtil.invoke(client, id, remoteInterface, "beforeFirst", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "beforeFirst", new Class<?>[] {}, new Object[] {}, void.class);
         
         invalidateRows();
     }
@@ -832,7 +832,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
         
-        RemoteUtil.invoke(client, id, remoteInterface, "afterLast", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "afterLast", new Class<?>[] {}, new Object[] {}, void.class);
         
         rowCache = new Object[0][];
         rowCacheIndex = 0;
@@ -847,7 +847,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
         
-        boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "first", new Class<?>[]{}, new Object[]{}, boolean.class);
+        boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "first", new Class<?>[] {}, new Object[] {}, boolean.class);
 
         return refreshCurrentRow(result);
     }
@@ -858,7 +858,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
         
-        boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "last", new Class<?>[]{}, new Object[]{}, boolean.class);
+        boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "last", new Class<?>[] {}, new Object[] {}, boolean.class);
 
         return refreshCurrentRow(result);
     }
@@ -878,7 +878,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
         
-        boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[]{int.class}, new Object[]{pRow}, boolean.class);
+        boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[] {int.class}, new Object[] {pRow}, boolean.class);
 
         return refreshCurrentRow(result);
     }
@@ -889,7 +889,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
         
-        boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "relative", new Class<?>[]{int.class}, new Object[]{pRows}, boolean.class);
+        boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "relative", new Class<?>[] {int.class}, new Object[] {pRows}, boolean.class);
 
         return refreshCurrentRow(result);
     }
@@ -920,14 +920,14 @@ public class RemoteResultSet implements ResultSet
 
         if (rowCacheIndex == 0 && rowNumber > 1)
         {
-            boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[]{int.class}, new Object[]{rowNumber - 1}, boolean.class);
+            boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[] {int.class}, new Object[] {rowNumber - 1}, boolean.class);
 
             return refreshCurrentRow(result);
         }
 
         if (rowCacheIndex == 0 && rowNumber == 1)
         {
-            RemoteUtil.invoke(client, id, remoteInterface, "beforeFirst", new Class<?>[]{}, new Object[]{}, void.class);
+            RemoteUtil.invoke(client, id, remoteInterface, "beforeFirst", new Class<?>[] {}, new Object[] {}, void.class);
             
             invalidateRows();
 
@@ -937,7 +937,7 @@ public class RemoteResultSet implements ResultSet
         // If we are after-last (including after an empty/failed traversal),
         // the server cursor is positioned consistently and can move back to
         // the final row.
-        boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "previous", new Class<?>[]{}, new Object[]{}, boolean.class);
+        boolean result = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "previous", new Class<?>[] {}, new Object[] {}, boolean.class);
 
         return refreshCurrentRow(result);
     }
@@ -948,7 +948,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
         
-        RemoteUtil.invoke(client, id, remoteInterface, "setFetchDirection", new Class<?>[]{int.class}, new Object[]{pDirection}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setFetchDirection", new Class<?>[] {int.class}, new Object[] {pDirection}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -957,7 +957,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
 
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getFetchDirection", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getFetchDirection", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -989,7 +989,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
 
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getType", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getType", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -998,7 +998,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
 
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getConcurrency", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getConcurrency", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -1007,7 +1007,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
 
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "rowUpdated", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "rowUpdated", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -1016,7 +1016,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
 
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "rowInserted", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "rowInserted", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -1025,273 +1025,273 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
 
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "rowDeleted", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "rowDeleted", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNull(int pColumnIndex) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNull", new Class<?>[]{int.class}, new Object[]{pColumnIndex});
+        invokeCurrentRowUpdate("updateNull", new Class<?>[] {int.class}, new Object[] {pColumnIndex});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBoolean(int pColumnIndex, boolean pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBoolean", new Class<?>[]{int.class, boolean.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateBoolean", new Class<?>[] {int.class, boolean.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateByte(int pColumnIndex, byte pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateByte", new Class<?>[]{int.class, byte.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateByte", new Class<?>[] {int.class, byte.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateShort(int pColumnIndex, short pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateShort", new Class<?>[]{int.class, short.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateShort", new Class<?>[] {int.class, short.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateInt(int pColumnIndex, int pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateInt", new Class<?>[]{int.class, int.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateInt", new Class<?>[] {int.class, int.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateLong(int pColumnIndex, long pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateLong", new Class<?>[]{int.class, long.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateLong", new Class<?>[] {int.class, long.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateFloat(int pColumnIndex, float pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateFloat", new Class<?>[]{int.class, float.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateFloat", new Class<?>[] {int.class, float.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateDouble(int pColumnIndex, double pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateDouble", new Class<?>[]{int.class, double.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateDouble", new Class<?>[] {int.class, double.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBigDecimal(int pColumnIndex, BigDecimal pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBigDecimal", new Class<?>[]{int.class, BigDecimal.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateBigDecimal", new Class<?>[] {int.class, BigDecimal.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateString(int pColumnIndex, String pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateString", new Class<?>[]{int.class, String.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateString", new Class<?>[] {int.class, String.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBytes(int pColumnIndex, byte[] pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBytes", new Class<?>[]{int.class, byte[].class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateBytes", new Class<?>[] {int.class, byte[].class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateDate(int pColumnIndex, Date pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateDate", new Class<?>[]{int.class, Date.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateDate", new Class<?>[] {int.class, Date.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateTime(int pColumnIndex, Time pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateTime", new Class<?>[]{int.class, Time.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateTime", new Class<?>[] {int.class, Time.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateTimestamp(int pColumnIndex, Timestamp pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateTimestamp", new Class<?>[]{int.class, Timestamp.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateTimestamp", new Class<?>[] {int.class, Timestamp.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAsciiStream(int pColumnIndex, InputStream pValue, int pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[]{int.class, InputStream.class, int.class}, new Object[]{pColumnIndex, pValue, pLength});
+        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[] {int.class, InputStream.class, int.class}, new Object[] {pColumnIndex, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBinaryStream(int pColumnIndex, InputStream pValue, int pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[]{int.class, InputStream.class, int.class}, new Object[]{pColumnIndex, pValue, pLength});
+        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[] {int.class, InputStream.class, int.class}, new Object[] {pColumnIndex, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateCharacterStream(int pColumnIndex, Reader pValue, int pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[]{int.class, Reader.class, int.class}, new Object[]{pColumnIndex, pValue, pLength});
+        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[] {int.class, Reader.class, int.class}, new Object[] {pColumnIndex, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateObject(int pColumnIndex, Object pValue, int pScaleOrLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateObject", new Class<?>[]{int.class, Object.class, int.class}, new Object[]{pColumnIndex, pValue, pScaleOrLength});
+        invokeCurrentRowUpdate("updateObject", new Class<?>[] {int.class, Object.class, int.class}, new Object[] {pColumnIndex, pValue, pScaleOrLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateObject(int pColumnIndex, Object pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateObject", new Class<?>[]{int.class, Object.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateObject", new Class<?>[] {int.class, Object.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNull(String pColumnLabel) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNull", new Class<?>[]{String.class}, new Object[]{pColumnLabel});
+        invokeCurrentRowUpdate("updateNull", new Class<?>[] {String.class}, new Object[] {pColumnLabel});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBoolean(String pColumnLabel, boolean pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBoolean", new Class<?>[]{String.class, boolean.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateBoolean", new Class<?>[] {String.class, boolean.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateByte(String pColumnLabel, byte pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateByte", new Class<?>[]{String.class, byte.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateByte", new Class<?>[] {String.class, byte.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateShort(String pColumnLabel, short pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateShort", new Class<?>[]{String.class, short.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateShort", new Class<?>[] {String.class, short.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateInt(String pColumnLabel, int pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateInt", new Class<?>[]{String.class, int.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateInt", new Class<?>[] {String.class, int.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateLong(String pColumnLabel, long pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateLong", new Class<?>[]{String.class, long.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateLong", new Class<?>[] {String.class, long.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateFloat(String pColumnLabel, float pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateFloat", new Class<?>[]{String.class, float.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateFloat", new Class<?>[] {String.class, float.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateDouble(String pColumnLabel, double pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateDouble", new Class<?>[]{String.class, double.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateDouble", new Class<?>[] {String.class, double.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBigDecimal(String pColumnLabel, BigDecimal pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBigDecimal", new Class<?>[]{String.class, BigDecimal.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateBigDecimal", new Class<?>[] {String.class, BigDecimal.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateString(String pColumnLabel, String pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateString", new Class<?>[]{String.class, String.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateString", new Class<?>[] {String.class, String.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBytes(String pColumnLabel, byte[] pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBytes", new Class<?>[]{String.class, byte[].class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateBytes", new Class<?>[] {String.class, byte[].class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateDate(String pColumnLabel, Date pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateDate", new Class<?>[]{String.class, Date.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateDate", new Class<?>[] {String.class, Date.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateTime(String pColumnLabel, Time pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateTime", new Class<?>[]{String.class, Time.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateTime", new Class<?>[] {String.class, Time.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateTimestamp(String pColumnLabel, Timestamp pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateTimestamp", new Class<?>[]{String.class, Timestamp.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateTimestamp", new Class<?>[] {String.class, Timestamp.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAsciiStream(String pColumnLabel, InputStream pValue, int pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[]{String.class, InputStream.class, int.class}, new Object[]{pColumnLabel, pValue, pLength});
+        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[] {String.class, InputStream.class, int.class}, new Object[] {pColumnLabel, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBinaryStream(String pColumnLabel, InputStream pValue, int pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[]{String.class, InputStream.class, int.class}, new Object[]{pColumnLabel, pValue, pLength});
+        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[] {String.class, InputStream.class, int.class}, new Object[] {pColumnLabel, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateCharacterStream(String pColumnLabel, Reader pValue, int pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[]{String.class, Reader.class, int.class}, new Object[]{pColumnLabel, pValue, pLength});
+        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[] {String.class, Reader.class, int.class}, new Object[] {pColumnLabel, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateObject(String pColumnLabel, Object pValue, int pScaleOrLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateObject", new Class<?>[]{String.class, Object.class, int.class}, new Object[]{pColumnLabel, pValue, pScaleOrLength});
+        invokeCurrentRowUpdate("updateObject", new Class<?>[] {String.class, Object.class, int.class}, new Object[] {pColumnLabel, pValue, pScaleOrLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateObject(String pColumnLabel, Object pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateObject", new Class<?>[]{String.class, Object.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateObject", new Class<?>[] {String.class, Object.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
@@ -1300,14 +1300,14 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
         
-        RemoteUtil.invoke(client, id, remoteInterface, "insertRow", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "insertRow", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateRow() throws SQLException
     {
-        invokeCurrentRowUpdate("updateRow", new Class<?>[]{}, new Object[]{});
+        invokeCurrentRowUpdate("updateRow", new Class<?>[] {}, new Object[] {});
         
         refreshCurrentRow(true);
     }
@@ -1320,10 +1320,10 @@ public class RemoteResultSet implements ResultSet
 
         if (!onInsertRow && rowNumber > 0)
         {
-            RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[]{int.class}, new Object[]{rowNumber}, boolean.class);
+            RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[] {int.class}, new Object[] {rowNumber}, boolean.class);
         }
         
-        RemoteUtil.invoke(client, id, remoteInterface, "deleteRow", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "deleteRow", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -1334,10 +1334,10 @@ public class RemoteResultSet implements ResultSet
 
         if (!onInsertRow && rowNumber > 0)
         {
-            RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[]{int.class}, new Object[]{rowNumber}, boolean.class);
+            RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[] {int.class}, new Object[] {rowNumber}, boolean.class);
         }
         
-        RemoteUtil.invoke(client, id, remoteInterface, "refreshRow", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "refreshRow", new Class<?>[] {}, new Object[] {}, void.class);
         
         refreshCurrentRow(true);
     }
@@ -1350,10 +1350,10 @@ public class RemoteResultSet implements ResultSet
 
         if (!onInsertRow && rowNumber > 0)
         {
-            RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[]{int.class}, new Object[]{rowNumber}, boolean.class);
+            RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[] {int.class}, new Object[] {rowNumber}, boolean.class);
         }
         
-        RemoteUtil.invoke(client, id, remoteInterface, "cancelRowUpdates", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "cancelRowUpdates", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -1362,7 +1362,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
         
-        RemoteUtil.invoke(client, id, remoteInterface, "moveToInsertRow", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "moveToInsertRow", new Class<?>[] {}, new Object[] {}, void.class);
         
         onInsertRow = true;
     }
@@ -1373,7 +1373,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
         
-        RemoteUtil.invoke(client, id, remoteInterface, "moveToCurrentRow", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "moveToCurrentRow", new Class<?>[] {}, new Object[] {}, void.class);
         
         onInsertRow = false;
     }
@@ -1384,7 +1384,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
 
-        return (Statement)RemoteUtil.invoke(client, id, remoteInterface, "getStatement", new Class<?>[]{}, new Object[]{}, Statement.class);
+        return (Statement)RemoteUtil.invoke(client, id, remoteInterface, "getStatement", new Class<?>[] {}, new Object[] {}, Statement.class);
     }
 
     /** {@inheritDoc} */
@@ -1593,56 +1593,56 @@ public class RemoteResultSet implements ResultSet
     @Override
     public void updateRef(int pColumnIndex, Ref pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateRef", new Class<?>[]{int.class, Ref.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateRef", new Class<?>[] {int.class, Ref.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateRef(String pColumnLabel, Ref pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateRef", new Class<?>[]{String.class, Ref.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateRef", new Class<?>[] {String.class, Ref.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBlob(int pColumnIndex, Blob pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBlob", new Class<?>[]{int.class, Blob.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateBlob", new Class<?>[] {int.class, Blob.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBlob(String pColumnLabel, Blob pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBlob", new Class<?>[]{String.class, Blob.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateBlob", new Class<?>[] {String.class, Blob.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateClob(int pColumnIndex, Clob pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateClob", new Class<?>[]{int.class, Clob.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateClob", new Class<?>[] {int.class, Clob.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateClob(String pColumnLabel, Clob pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateClob", new Class<?>[]{String.class, Clob.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateClob", new Class<?>[] {String.class, Clob.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateArray(int pColumnIndex, Array pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateArray", new Class<?>[]{int.class, Array.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateArray", new Class<?>[] {int.class, Array.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateArray(String pColumnLabel, Array pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateArray", new Class<?>[]{String.class, Array.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateArray", new Class<?>[] {String.class, Array.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
@@ -1663,14 +1663,14 @@ public class RemoteResultSet implements ResultSet
     @Override
     public void updateRowId(int pColumnIndex, RowId pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateRowId", new Class<?>[]{int.class, RowId.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateRowId", new Class<?>[] {int.class, RowId.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateRowId(String pColumnLabel, RowId pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateRowId", new Class<?>[]{String.class, RowId.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateRowId", new Class<?>[] {String.class, RowId.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
@@ -1679,7 +1679,7 @@ public class RemoteResultSet implements ResultSet
     {
         ensureOpen();
 
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getHoldability", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getHoldability", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -1691,35 +1691,35 @@ public class RemoteResultSet implements ResultSet
             return true;
         }
 
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isClosed", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isClosed", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNString(int pColumnIndex, String pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNString", new Class<?>[]{int.class, String.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateNString", new Class<?>[] {int.class, String.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNString(String pColumnLabel, String pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNString", new Class<?>[]{String.class, String.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateNString", new Class<?>[] {String.class, String.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNClob(int pColumnIndex, NClob pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNClob", new Class<?>[]{int.class, NClob.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateNClob", new Class<?>[] {int.class, NClob.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNClob(String pColumnLabel, NClob pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNClob", new Class<?>[]{String.class, NClob.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateNClob", new Class<?>[] {String.class, NClob.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
@@ -1763,14 +1763,14 @@ public class RemoteResultSet implements ResultSet
     @Override
     public void updateSQLXML(int pColumnIndex, SQLXML pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateSQLXML", new Class<?>[]{int.class, SQLXML.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateSQLXML", new Class<?>[] {int.class, SQLXML.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateSQLXML(String pColumnLabel, SQLXML pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateSQLXML", new Class<?>[]{String.class, SQLXML.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateSQLXML", new Class<?>[] {String.class, SQLXML.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
@@ -1827,196 +1827,196 @@ public class RemoteResultSet implements ResultSet
     @Override
     public void updateNCharacterStream(int pColumnIndex, Reader pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNCharacterStream", new Class<?>[]{int.class, Reader.class, long.class}, new Object[]{pColumnIndex, pValue, pLength});
+        invokeCurrentRowUpdate("updateNCharacterStream", new Class<?>[] {int.class, Reader.class, long.class}, new Object[] {pColumnIndex, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNCharacterStream(String pColumnLabel, Reader pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNCharacterStream", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pColumnLabel, pValue, pLength});
+        invokeCurrentRowUpdate("updateNCharacterStream", new Class<?>[] {String.class, Reader.class, long.class}, new Object[] {pColumnLabel, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAsciiStream(int pColumnIndex, InputStream pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[]{int.class, InputStream.class, long.class}, new Object[]{pColumnIndex, pValue, pLength});
+        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[] {int.class, InputStream.class, long.class}, new Object[] {pColumnIndex, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBinaryStream(int pColumnIndex, InputStream pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[]{int.class, InputStream.class, long.class}, new Object[]{pColumnIndex, pValue, pLength});
+        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[] {int.class, InputStream.class, long.class}, new Object[] {pColumnIndex, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateCharacterStream(int pColumnIndex, Reader pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[]{int.class, Reader.class, long.class}, new Object[]{pColumnIndex, pValue, pLength});
+        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[] {int.class, Reader.class, long.class}, new Object[] {pColumnIndex, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAsciiStream(String pColumnLabel, InputStream pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pColumnLabel, pValue, pLength});
+        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[] {String.class, InputStream.class, long.class}, new Object[] {pColumnLabel, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBinaryStream(String pColumnLabel, InputStream pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pColumnLabel, pValue, pLength});
+        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[] {String.class, InputStream.class, long.class}, new Object[] {pColumnLabel, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateCharacterStream(String pColumnLabel, Reader pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pColumnLabel, pValue, pLength});
+        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[] {String.class, Reader.class, long.class}, new Object[] {pColumnLabel, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBlob(int pColumnIndex, InputStream pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBlob", new Class<?>[]{int.class, InputStream.class, long.class}, new Object[]{pColumnIndex, pValue, pLength});
+        invokeCurrentRowUpdate("updateBlob", new Class<?>[] {int.class, InputStream.class, long.class}, new Object[] {pColumnIndex, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBlob(String pColumnLabel, InputStream pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBlob", new Class<?>[]{String.class, InputStream.class, long.class}, new Object[]{pColumnLabel, pValue, pLength});
+        invokeCurrentRowUpdate("updateBlob", new Class<?>[] {String.class, InputStream.class, long.class}, new Object[] {pColumnLabel, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateClob(int pColumnIndex, Reader pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateClob", new Class<?>[]{int.class, Reader.class, long.class}, new Object[]{pColumnIndex, pValue, pLength});
+        invokeCurrentRowUpdate("updateClob", new Class<?>[] {int.class, Reader.class, long.class}, new Object[] {pColumnIndex, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateClob(String pColumnLabel, Reader pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateClob", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pColumnLabel, pValue, pLength});
+        invokeCurrentRowUpdate("updateClob", new Class<?>[] {String.class, Reader.class, long.class}, new Object[] {pColumnLabel, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNClob(int pColumnIndex, Reader pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNClob", new Class<?>[]{int.class, Reader.class, long.class}, new Object[]{pColumnIndex, pValue, pLength});
+        invokeCurrentRowUpdate("updateNClob", new Class<?>[] {int.class, Reader.class, long.class}, new Object[] {pColumnIndex, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNClob(String pColumnLabel, Reader pValue, long pLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNClob", new Class<?>[]{String.class, Reader.class, long.class}, new Object[]{pColumnLabel, pValue, pLength});
+        invokeCurrentRowUpdate("updateNClob", new Class<?>[] {String.class, Reader.class, long.class}, new Object[] {pColumnLabel, pValue, pLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNCharacterStream(int pColumnIndex, Reader pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNCharacterStream", new Class<?>[]{int.class, Reader.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateNCharacterStream", new Class<?>[] {int.class, Reader.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNCharacterStream(String pColumnLabel, Reader pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNCharacterStream", new Class<?>[]{String.class, Reader.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateNCharacterStream", new Class<?>[] {String.class, Reader.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAsciiStream(int pColumnIndex, InputStream pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[]{int.class, InputStream.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[] {int.class, InputStream.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBinaryStream(int pColumnIndex, InputStream pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[]{int.class, InputStream.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[] {int.class, InputStream.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateCharacterStream(int pColumnIndex, Reader pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[]{int.class, Reader.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[] {int.class, Reader.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAsciiStream(String pColumnLabel, InputStream pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[]{String.class, InputStream.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateAsciiStream", new Class<?>[] {String.class, InputStream.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBinaryStream(String pColumnLabel, InputStream pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[]{String.class, InputStream.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateBinaryStream", new Class<?>[] {String.class, InputStream.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateCharacterStream(String pColumnLabel, Reader pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[]{String.class, Reader.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateCharacterStream", new Class<?>[] {String.class, Reader.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBlob(int pColumnIndex, InputStream pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBlob", new Class<?>[]{int.class, InputStream.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateBlob", new Class<?>[] {int.class, InputStream.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateBlob(String pColumnLabel, InputStream pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateBlob", new Class<?>[]{String.class, InputStream.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateBlob", new Class<?>[] {String.class, InputStream.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateClob(int pColumnIndex, Reader pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateClob", new Class<?>[]{int.class, Reader.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateClob", new Class<?>[] {int.class, Reader.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateClob(String pColumnLabel, Reader pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateClob", new Class<?>[]{String.class, Reader.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateClob", new Class<?>[] {String.class, Reader.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNClob(int pColumnIndex, Reader pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNClob", new Class<?>[]{int.class, Reader.class}, new Object[]{pColumnIndex, pValue});
+        invokeCurrentRowUpdate("updateNClob", new Class<?>[] {int.class, Reader.class}, new Object[] {pColumnIndex, pValue});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateNClob(String pColumnLabel, Reader pValue) throws SQLException
     {
-        invokeCurrentRowUpdate("updateNClob", new Class<?>[]{String.class, Reader.class}, new Object[]{pColumnLabel, pValue});
+        invokeCurrentRowUpdate("updateNClob", new Class<?>[] {String.class, Reader.class}, new Object[] {pColumnLabel, pValue});
     }
 
     /** {@inheritDoc} */
@@ -2037,28 +2037,28 @@ public class RemoteResultSet implements ResultSet
     @Override
     public void updateObject(int pColumnIndex, Object pValue, SQLType pSqlType, int pScaleOrLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateObject", new Class<?>[]{int.class, Object.class, SQLType.class, int.class}, new Object[]{pColumnIndex, pValue, pSqlType, pScaleOrLength});
+        invokeCurrentRowUpdate("updateObject", new Class<?>[] {int.class, Object.class, SQLType.class, int.class}, new Object[] {pColumnIndex, pValue, pSqlType, pScaleOrLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateObject(String pColumnLabel, Object pValue, SQLType pSqlType, int pScaleOrLength) throws SQLException
     {
-        invokeCurrentRowUpdate("updateObject", new Class<?>[]{String.class, Object.class, SQLType.class, int.class}, new Object[]{pColumnLabel, pValue, pSqlType, pScaleOrLength});
+        invokeCurrentRowUpdate("updateObject", new Class<?>[] {String.class, Object.class, SQLType.class, int.class}, new Object[] {pColumnLabel, pValue, pSqlType, pScaleOrLength});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateObject(int pColumnIndex, Object pValue, SQLType pSqlType) throws SQLException
     {
-        invokeCurrentRowUpdate("updateObject", new Class<?>[]{int.class, Object.class, SQLType.class}, new Object[]{pColumnIndex, pValue, pSqlType});
+        invokeCurrentRowUpdate("updateObject", new Class<?>[] {int.class, Object.class, SQLType.class}, new Object[] {pColumnIndex, pValue, pSqlType});
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateObject(String pColumnLabel, Object pValue, SQLType pSqlType) throws SQLException
     {
-        invokeCurrentRowUpdate("updateObject", new Class<?>[]{String.class, Object.class, SQLType.class}, new Object[]{pColumnLabel, pValue, pSqlType});
+        invokeCurrentRowUpdate("updateObject", new Class<?>[] {String.class, Object.class, SQLType.class}, new Object[] {pColumnLabel, pValue, pSqlType});
     }
     private final Map<String,Integer> columnCache = new HashMap<>();
 
@@ -2259,7 +2259,7 @@ public class RemoteResultSet implements ResultSet
 
         if (!pPositioned)
         {
-            boolean afterLast = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isAfterLast", new Class<?>[]{}, new Object[]{}, boolean.class);
+            boolean afterLast = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isAfterLast", new Class<?>[] {}, new Object[] {}, boolean.class);
 
             if (afterLast)
             {
@@ -2270,9 +2270,9 @@ public class RemoteResultSet implements ResultSet
             return false;
         }
 
-        int currentRow = (int)RemoteUtil.invoke(client, id, remoteInterface, "getRow", new Class<?>[]{}, new Object[]{}, int.class);
+        int currentRow = (int)RemoteUtil.invoke(client, id, remoteInterface, "getRow", new Class<?>[] {}, new Object[] {}, int.class);
         
-        boolean knownLast = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isLast", new Class<?>[]{}, new Object[]{}, boolean.class);
+        boolean knownLast = (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isLast", new Class<?>[] {}, new Object[] {}, boolean.class);
 
         Map<String,Object> request = new HashMap<String,Object>();
         request.put(RemoteConstants.ACTION, "fetchCurrentRow");
@@ -2326,7 +2326,7 @@ public class RemoteResultSet implements ResultSet
         	&& !serverUpdatePositioned
         	&& !"updateRow".equals(pMethod))
         {
-            RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[]{int.class}, new Object[]{rowNumber}, boolean.class);
+            RemoteUtil.invoke(client, id, remoteInterface, "absolute", new Class<?>[] {int.class}, new Object[] {rowNumber}, boolean.class);
             
             serverUpdatePositioned = true;
 

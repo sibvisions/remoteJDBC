@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sibvisions.rjdbc</groupId>
+	<artifactId>rjdbc-server-javax</artifactId>
+	<name>Remote JDBC Driver</name>
+	<description>Remote JDBC Driver (Server, javax)</description>
+	<version>1.0</version>
+	<url>https://github.com/sibvisions/remoteJDBC</url>
+	<packaging>jar</packaging>
+	
+	<licenses>
+		<license>
+		<name>GNU GENERAL PUBLIC LICENSE, Version 3</name>
+		<url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<name>René Jahn</name>
+		</developer>
+	</developers>
+	
+	<scm>
+		<url>http://svn.code.sf.net/p/jvxmobile/code/trunk/java</url>
+		<connection>scm:git:https://github.com/sibvisions/remoteJDBC.git</connection>
+		<developerConnection>scm:git:scm:git:git@github.com:sibvisions/remoteJDBC.git</developerConnection>
+	</scm>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.sibvisions.jvx</groupId>
+			<artifactId>jvxserialize</artifactId>
+			<version>3.5</version>
+		</dependency>
+	</dependencies>
+	
+</project>
+

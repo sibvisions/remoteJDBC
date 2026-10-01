@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -70,27 +70,27 @@ public class RemoteRef implements Ref
     @Override
     public String getBaseTypeName() throws SQLException
     {
-        return (String)RemoteUtil.invoke(client, id, Ref.class, "getBaseTypeName", new Class<?>[]{}, new Object[]{}, String.class);
+        return (String)RemoteUtil.invoke(client, id, Ref.class, "getBaseTypeName", new Class<?>[] {}, new Object[] {}, String.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public Object getObject(Map<String,Class<?>> pMap) throws SQLException
     {
-        return (Object)RemoteUtil.invoke(client, id, Ref.class, "getObject", new Class<?>[]{Map.class}, new Object[]{pMap}, Object.class);
+        return (Object)RemoteUtil.invoke(client, id, Ref.class, "getObject", new Class<?>[] {Map.class}, new Object[] {pMap}, Object.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public Object getObject() throws SQLException
     {
-        return (Object)RemoteUtil.invoke(client, id, Ref.class, "getObject", new Class<?>[]{}, new Object[]{}, Object.class);
+        return (Object)RemoteUtil.invoke(client, id, Ref.class, "getObject", new Class<?>[] {}, new Object[] {}, Object.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void setObject(Object pValue) throws SQLException
     {
-        RemoteUtil.invoke(client, id, Ref.class, "setObject", new Class<?>[]{Object.class}, new Object[]{pValue}, void.class);
+        RemoteUtil.invoke(client, id, Ref.class, "setObject", new Class<?>[] {Object.class}, new Object[] {pValue}, void.class);
     }
 }

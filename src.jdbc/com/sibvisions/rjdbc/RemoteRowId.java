@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -69,6 +69,6 @@ public class RemoteRowId implements RowId
     @Override
     public byte[] getBytes()
     {
-        return (byte[])RemoteUtil.invokeUnchecked(client, id, RowId.class, "getBytes", new Class<?>[]{}, new Object[]{}, byte[].class);
+        return (byte[])RemoteUtil.invokeUnchecked(client, id, RowId.class, "getBytes", new Class<?>[] {}, new Object[] {}, byte[].class);
     }
 }

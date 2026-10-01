@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -71,20 +71,20 @@ public class RemoteStruct implements Struct
     @Override
     public String getSQLTypeName() throws SQLException
     {
-        return (String)RemoteUtil.invoke(client, id, Struct.class, "getSQLTypeName", new Class<?>[]{}, new Object[]{}, String.class);
+        return (String)RemoteUtil.invoke(client, id, Struct.class, "getSQLTypeName", new Class<?>[] {}, new Object[] {}, String.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public Object[] getAttributes() throws SQLException
     {
-        return (Object[])RemoteUtil.invoke(client, id, Struct.class, "getAttributes", new Class<?>[]{}, new Object[]{}, Object[].class);
+        return (Object[])RemoteUtil.invoke(client, id, Struct.class, "getAttributes", new Class<?>[] {}, new Object[] {}, Object[].class);
     }
 
     /** {@inheritDoc} */
     @Override
     public Object[] getAttributes(Map<String,Class<?>> pMap) throws SQLException
     {
-        return (Object[])RemoteUtil.invoke(client, id, Struct.class, "getAttributes", new Class<?>[]{Map.class}, new Object[]{pMap}, Object[].class);
+        return (Object[])RemoteUtil.invoke(client, id, Struct.class, "getAttributes", new Class<?>[] {Map.class}, new Object[] {pMap}, Object[].class);
     }
 }

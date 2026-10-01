@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -95,7 +95,7 @@ public class RemoteArray implements java.sql.Array
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, Array.class, "getBaseTypeName", new Class<?>[]{}, new Object[]{}, String.class);
+        return (String)RemoteUtil.invoke(client, id, Array.class, "getBaseTypeName", new Class<?>[] {}, new Object[] {}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -104,7 +104,7 @@ public class RemoteArray implements java.sql.Array
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, Array.class, "getBaseType", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, Array.class, "getBaseType", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -115,7 +115,7 @@ public class RemoteArray implements java.sql.Array
 
         if (!arrayLoaded)
         {
-            array = RemoteUtil.invoke(client, id, java.sql.Array.class, "getArray", new Class<?>[]{}, new Object[]{}, Object.class);
+            array = RemoteUtil.invoke(client, id, java.sql.Array.class, "getArray", new Class<?>[] {}, new Object[] {}, Object.class);
             arrayLoaded = true;
         }
 
@@ -155,7 +155,7 @@ public class RemoteArray implements java.sql.Array
     {
         ensureOpen();
 
-        return (ResultSet)RemoteUtil.invoke(client, id, Array.class, "getResultSet", new Class<?>[]{}, new Object[]{}, ResultSet.class);
+        return (ResultSet)RemoteUtil.invoke(client, id, Array.class, "getResultSet", new Class<?>[] {}, new Object[] {}, ResultSet.class);
     }
 
     /** {@inheritDoc} */
@@ -164,7 +164,7 @@ public class RemoteArray implements java.sql.Array
     {
         ensureOpen();
 
-        return (ResultSet)RemoteUtil.invoke(client, id, Array.class, "getResultSet", new Class<?>[]{Map.class}, new Object[]{pMap}, ResultSet.class);
+        return (ResultSet)RemoteUtil.invoke(client, id, Array.class, "getResultSet", new Class<?>[] {Map.class}, new Object[] {pMap}, ResultSet.class);
     }
 
     /** {@inheritDoc} */
@@ -173,7 +173,7 @@ public class RemoteArray implements java.sql.Array
     {
         ensureOpen();
 
-        return (ResultSet)RemoteUtil.invoke(client, id, Array.class, "getResultSet", new Class<?>[]{long.class, int.class}, new Object[]{pIndex, pCount}, ResultSet.class);
+        return (ResultSet)RemoteUtil.invoke(client, id, Array.class, "getResultSet", new Class<?>[] {long.class, int.class}, new Object[] {pIndex, pCount}, ResultSet.class);
     }
 
     /** {@inheritDoc} */
@@ -182,7 +182,7 @@ public class RemoteArray implements java.sql.Array
     {
         ensureOpen();
 
-        return (ResultSet)RemoteUtil.invoke(client, id, Array.class, "getResultSet", new Class<?>[]{long.class, int.class, Map.class}, new Object[]{pIndex, pCount, pMap}, ResultSet.class);
+        return (ResultSet)RemoteUtil.invoke(client, id, Array.class, "getResultSet", new Class<?>[] {long.class, int.class, Map.class}, new Object[] {pIndex, pCount, pMap}, ResultSet.class);
     }
 
     /** {@inheritDoc} */
@@ -191,7 +191,7 @@ public class RemoteArray implements java.sql.Array
     {
         if (!freed)
         {
-            RemoteUtil.invoke(client, id, java.sql.Array.class, "free", new Class<?>[]{}, new Object[]{}, void.class);
+            RemoteUtil.invoke(client, id, java.sql.Array.class, "free", new Class<?>[] {}, new Object[] {}, void.class);
             
             array = null;
             arrayLoaded = false;

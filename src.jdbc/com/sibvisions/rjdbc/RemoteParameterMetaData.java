@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -84,62 +84,62 @@ public class RemoteParameterMetaData implements ParameterMetaData
     @Override
     public int getParameterCount() throws SQLException
     {
-        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getParameterCount", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getParameterCount", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public int isNullable(int pParameterIndex) throws SQLException
     {
-        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "isNullable", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, int.class);
+        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "isNullable", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, int.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean isSigned(int pParameterIndex) throws SQLException
     {
-        return (boolean)RemoteUtil.invoke(client, id, ParameterMetaData.class, "isSigned", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, ParameterMetaData.class, "isSigned", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, boolean.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public int getPrecision(int pParameterIndex) throws SQLException
     {
-        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getPrecision", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, int.class);
+        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getPrecision", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, int.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public int getScale(int pParameterIndex) throws SQLException
     {
-        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getScale", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, int.class);
+        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getScale", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, int.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public int getParameterType(int pParameterIndex) throws SQLException
     {
-        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getParameterType", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, int.class);
+        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getParameterType", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, int.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getParameterTypeName(int pParameterIndex) throws SQLException
     {
-        return (String)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getParameterTypeName", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, String.class);
+        return (String)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getParameterTypeName", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, String.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getParameterClassName(int pParameterIndex) throws SQLException
     {
-        return (String)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getParameterClassName", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, String.class);
+        return (String)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getParameterClassName", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, String.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public int getParameterMode(int pParameterIndex) throws SQLException
     {
-        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getParameterMode", new Class<?>[]{int.class}, new Object[]{pParameterIndex}, int.class);
+        return (int)RemoteUtil.invoke(client, id, ParameterMetaData.class, "getParameterMode", new Class<?>[] {int.class}, new Object[] {pParameterIndex}, int.class);
     }
 }

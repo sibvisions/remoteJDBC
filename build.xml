@@ -1,4 +1,24 @@
-<project name="RemoteJDBC" default="start.complete" 
+<!--
+Copyright (C) 2026 SIB Visions GmbH
+
+This file is part of RemoteJDBC.
+
+RemoteJDBC is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+RemoteJDBC is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
+--> 
+<project name="RemoteJDBC" default="start.complete"
+         xmlns:artifact="antlib:org.apache.maven.artifact.ant"
+         xmlns:staging="antlib:org.sonatype.nexus.ant.staging" 
 	     xmlns:if="ant:if" 
 	     xmlns:unless="ant:unless">
 
@@ -16,8 +36,13 @@
   	***************************************************************** 
   	-->
 
-  <property name="jar.name.driver" value="rjdbc.jar" />
-  <property name="jar.name.server" value="rjdbcserver.jar" />
+  <property name="product.name" value="rjdbc" />
+  <property name="product.title" value="Remote JDBC Driver" />
+	
+	
+  <property name="jar.driver.name"  value="${product.name}.jar" />
+  <property name="jar.javax.name"   value="${product.name}server_javax.jar" />
+  <property name="jar.jakarta.name" value="${product.name}server_jakarta.jar" />
 	
   <!-- 
   	***************************************************************** 
@@ -28,9 +53,11 @@
   <property name="build" location="${basedir}/build" />
   <property name="temp" location="${build}/temp" />
   <property name="buildnumber" location="${build}/buildnumber" />
+  <property name="transform" location="${build}/transform" />
 
   <property name="src.jdbc" location="${basedir}/src.jdbc" />
   <property name="src.server" location="${basedir}/src.server" />
+  <property name="src.jakarta" location="${temp}/src.jakarta" />
 	
   <property name="webcontent" location="${basedir}/WebContent/" />	
 	
@@ -38,9 +65,30 @@
   <property name="libs.server" location="${basedir}/lib" />
 	
   <property name="classes.jdbc" location="${temp}/classes.jdbc" />
-  <property name="classes.server" location="${temp}/classes.server" />
+  <property name="classes.javax" location="${temp}/classes.javax" />
+  <property name="classes.jakarta" location="${temp}/classes.jakarta" />
 	 
   <property name="install" location="${build}/install" />
+
+  <property name="javadoc.jdbc" location="${install}/javadoc.jdbc" />
+  <property name="javadoc.javax" location="${install}/javadoc.javax" />
+  <property name="javadoc.jakarta" location="${install}/javadoc.jakarta" />
+	
+  <property name="maven" location="${basedir}/maven" />	
+	
+  <!-- Maven snapshots and staging repository id and url -->
+  <property name="mvn.snapshotsrep.id" value="sonatype-nexus-snapshots" />
+  <property name="mvn.snapshotsrep.url" value="https://central.sonatype.com/repository/maven-snapshots" />
+  <property name="mvn.stagingrep.id" value="sonatype-nexus-staging" />
+  <property name="mvn.stagingrep.url" value="https://central.sonatype.com/api/v1/publisher/upload" />
+	
+  <!-- Compile properties -->
+  <property name="target.source"  value="11" />
+  <property name="target.version" value="11" />
+  <property name="encoding"       value="UTF-8" />
+  	
+  <property name="debug"      value="on"/>
+  <property name="debuglevel" value="lines,vars,source"/>
 	
   <!-- 
 	***************************************************************** 
@@ -51,7 +99,44 @@
   <!-- if(ant) suppport -->
   <taskdef resource="net/sf/antcontrib/antcontrib.properties"  classpath="${build}/ant-contrib.jar"/>
 	
+  <typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" classpath="${build}/maven/maven-ant-tasks-2.1.3.jar" />	
+	
   
+  <!--
+    * setup tasks
+  -->
+  
+  <target name="proxy.check">
+    <typedef name="canreach" classname="com.sibvisions.addons.ant.CanReach" classpath="${buildnumber}/addons.jar" />
+
+    <if>
+      <istrue value="true" />
+      <then>
+	    <condition property="proxy.enabled">
+	      <and>
+	        <canreach host="10.0.0.1" port="3128"/>
+	      </and>
+	    </condition>
+      </then>
+    </if>
+  </target>
+  
+  <target name="proxy.off" depends="proxy.check" unless="proxy.enabled">
+    <property name="proxy.host" value=""/>
+    <property name="proxy.port" value=""/>
+    <property name="proxy.user" value=""/>
+    <property name="proxy.pass" value=""/>
+  </target>
+	
+  <target name="proxy" depends="proxy.check,proxy.off" if="proxy.enabled">
+    <property name="proxy.host" value="10.0.0.1"/>
+    <property name="proxy.port" value="3128"/>
+    <property name="proxy.user" value=""/>
+    <property name="proxy.pass" value=""/>
+      
+    <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}" proxyuser="${proxy.user}" proxypassword="${proxy.password}"/>
+  </target>
+	
   <!-- 
 	* cleanup tasks 
 	-->
@@ -73,11 +158,13 @@
 
     <delete dir="${classes.jdbc}" />
     <mkdir dir="${classes.jdbc}" />
-    <delete dir="${classes.server}" />
-    <mkdir dir="${classes.server}" />
+    <delete dir="${classes.javax}" />
+    <mkdir dir="${classes.javax}" />
+    <delete dir="${classes.jakarta}" />
+    <mkdir dir="${classes.jakarta}" />
 
     <!-- compile the driver code -->
-    <javac srcdir="${src.jdbc}" destdir="${classes.jdbc}" debug="off" deprecation="on" source="11" target="11" encoding="UTF-8">
+    <javac srcdir="${src.jdbc}" destdir="${classes.jdbc}" debug="${debug}" debuglevel="${debuglevel}" deprecation="on" source="${target.source}" target="${target.version}" encoding="${encoding}">
       <classpath>
         <fileset dir="${libs}">
           <include name="*.jar" />
@@ -95,7 +182,7 @@
     </copy>
   	
     <!-- compile the server code -->
-    <javac srcdir="${src.server}" destdir="${classes.server}" debug="off" deprecation="on" source="11" target="11" encoding="UTF-8">
+    <javac srcdir="${src.server}" destdir="${classes.javax}" debug="${debug}" debuglevel="${debuglevel}" deprecation="on" source="${target.source}" target="${target.version}" encoding="${encoding}">
       <classpath>
         <fileset dir="${libs}">
           <include name="*.jar" />
@@ -107,14 +194,162 @@
     </javac>
 
     <!-- copy ressource files -->
-    <copy todir="${classes.server}">
+    <copy todir="${classes.javax}">
       <fileset dir="${src.server}">
         <include name="**/*" />
         <exclude name="**/*.java" />
         <exclude name="**/package.html" />
       </fileset>
     </copy>
+  	
+  	<!-- Prepare jakarta -->
 
+  	<copy todir="${src.jakarta}">
+  	  <fileset dir="${src.server}" />
+  	</copy>
+  	
+    <replace dir="${src.jakarta}" token="import javax.servlet." value="import jakarta.servlet.">
+      <include name="**/*.java" />
+    </replace>
+  	
+    <!-- compile the server code (jakarta) -->
+    <javac srcdir="${src.jakarta}" destdir="${classes.jakarta}" debug="${debug}" debuglevel="${debuglevel}" deprecation="on" source="${target.source}" target="${target.version}" encoding="${encoding}">
+      <classpath>
+        <fileset dir="${libs}">
+          <include name="*.jar" />
+        </fileset>
+        <fileset dir="${libs.server}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+
+    <!-- copy ressource files -->
+    <copy todir="${classes.jakarta}">
+      <fileset dir="${src.jakarta}">
+        <include name="**/*" />
+        <exclude name="**/*.java" />
+        <exclude name="**/package.html" />
+      </fileset>
+    </copy>  	
+
+  </target>
+	
+  <target name="javadoc" depends="proxy">
+  	
+  	<javadoc packagenames="*"  
+      		 defaultexcludes="yes" 
+             destdir="${javadoc.jdbc}" 
+             author="false" 
+             version="false" 
+             use="true" 
+             windowtitle="${product.title} (ver. ${build.version})"
+    		 source="${target.source}" 
+             encoding="UTF-8">
+	  <arg value="-J-Dhttp.proxyHost=${proxy.host}"/>
+	  <arg value="-J-Dhttp.proxyPort=${proxy.port}"/>
+	  <arg value="-J-Dhttp.proxyUser=${proxy.user}"/>
+	  <arg value="-J-Dhttp.proxyPassword=${proxy.password}"/>
+	  <arg value="-J-Dhttps.proxyHost=${proxy.host}"/>
+	  <arg value="-J-Dhttps.proxyPort=${proxy.port}"/>
+	  <arg value="-J-Dhttps.proxyUser=${proxy.user}"/>
+	  <arg value="-J-Dhttps.proxyPassword=${proxy.password}"/>
+      <sourcefiles>
+        <fileset dir="${src.jdbc}">
+          <include name="**/*.java" />
+        </fileset>
+      </sourcefiles>
+      <classpath>
+        <fileset dir="${libs}">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <doctitle>
+        <![CDATA[<h1>${product.title} (ver. ${build.version})</h1>]]>
+      </doctitle>
+      <bottom><![CDATA[<i>Copyright &#169; 2026 SIB Visions GmbH. All Rights Reserved.</i>]]></bottom>
+      <link href="https://docs.oracle.com/en/java/javase/11/docs/api/"/>
+      <link href="https://www.sibvisions.com/files/jvx/current/api/"/>
+   	</javadoc>	
+  	
+    <javadoc packagenames="*"  
+      		 defaultexcludes="yes" 
+             destdir="${javadoc.javax}" 
+             author="false" 
+             version="false" 
+             use="true" 
+             windowtitle="${product.title} (Server - javax) (ver. ${build.version})"
+    		 source="${target.source}" 
+             encoding="UTF-8">
+	  <arg value="-J-Dhttp.proxyHost=${proxy.host}"/>
+	  <arg value="-J-Dhttp.proxyPort=${proxy.port}"/>
+	  <arg value="-J-Dhttp.proxyUser=${proxy.user}"/>
+	  <arg value="-J-Dhttp.proxyPassword=${proxy.password}"/>
+	  <arg value="-J-Dhttps.proxyHost=${proxy.host}"/>
+	  <arg value="-J-Dhttps.proxyPort=${proxy.port}"/>
+	  <arg value="-J-Dhttps.proxyUser=${proxy.user}"/>
+	  <arg value="-J-Dhttps.proxyPassword=${proxy.password}"/>
+      <sourcefiles>
+        <fileset dir="${src.server}">
+          <include name="**/*.java" />
+        </fileset>
+      </sourcefiles>
+      <classpath>
+        <fileset dir="${libs}">
+          <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${libs.server}">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <doctitle>
+        <![CDATA[<h1>${product.title} (Server - javax) (ver. ${build.version})</h1>]]>
+      </doctitle>
+      <bottom><![CDATA[<i>Copyright &#169; 2026 SIB Visions GmbH. All Rights Reserved.</i>]]></bottom>
+      <link href="https://docs.oracle.com/en/java/javase/11/docs/api/"/>
+      <link href="https://docs.oracle.com/javaee/7/api/"/>
+      <link href="https://www.sibvisions.com/files/jvx/current/api/"/>
+   	</javadoc>
+  	
+	<javadoc packagenames="*"  
+      		 defaultexcludes="yes" 
+             destdir="${javadoc.jakarta}" 
+             author="false" 
+             version="false" 
+             use="true" 
+             windowtitle="${product.title} (Server - jakarta) (ver. ${build.version})"
+    		 source="${target.source}" 
+             encoding="UTF-8">
+	  <arg value="-J-Dhttp.proxyHost=${proxy.host}"/>
+	  <arg value="-J-Dhttp.proxyPort=${proxy.port}"/>
+	  <arg value="-J-Dhttp.proxyUser=${proxy.user}"/>
+	  <arg value="-J-Dhttp.proxyPassword=${proxy.password}"/>
+	  <arg value="-J-Dhttps.proxyHost=${proxy.host}"/>
+	  <arg value="-J-Dhttps.proxyPort=${proxy.port}"/>
+	  <arg value="-J-Dhttps.proxyUser=${proxy.user}"/>
+	  <arg value="-J-Dhttps.proxyPassword=${proxy.password}"/>
+      <sourcefiles>
+        <fileset dir="${src.jakarta}">
+          <include name="**/*.java" />
+        </fileset>
+      </sourcefiles>
+      <classpath>
+        <fileset dir="${libs}">
+          <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${libs.server}">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <doctitle>
+        <![CDATA[<h1>${product.title} (Server - jakarta) (ver. ${build.version})</h1>]]>
+      </doctitle>
+      <bottom><![CDATA[<i>Copyright &#169; 2026 SIB Visions GmbH. All Rights Reserved.</i>]]></bottom>
+      <link href="https://docs.oracle.com/en/java/javase/11/docs/api/"/>
+      <link href="https://javadoc.io/doc/jakarta.servlet/jakarta.servlet-api/6.0.0/"/>
+      <link href="https://www.sibvisions.com/files/jvx/current/api/"/>
+   	</javadoc>	  	
+	
   </target>
 	
   <target name="jar" depends="compile">
@@ -122,7 +357,7 @@
     <taskdef name="buildnr" classname="com.sibvisions.addons.ant.AntBuildNumber" classpath="${buildnumber}/addons.jar;${classes.jdbc}" />
     <buildnr buildfile="${buildnumber}/buildnr.properties" class="com.sibvisions.rjdbc.RemoteDriver" versionfield="VERSION" name="RemoteJDBC"/> 
 
-    <jar jarfile="${install}/${jar.name.driver}" basedir="${classes.jdbc}">
+    <jar jarfile="${install}/${jar.driver.name}" basedir="${classes.jdbc}">
 	  <manifest>
         <attribute name="Implementation-Title" value="${build.versionstring}${build.nightly}"/>
         <attribute name="Implementation-Version" value="b${build.number} ${build.date}${build.nightly}"/> 
@@ -133,7 +368,15 @@
       </metainf>
     </jar>
   	
-    <jar jarfile="${install}/${jar.name.server}" basedir="${classes.server}">
+    <jar jarfile="${install}/${jar.javax.name}" basedir="${classes.javax}">
+	  <manifest>
+        <attribute name="Implementation-Title" value="${build.versionstring}${build.nightly}"/>
+        <attribute name="Implementation-Version" value="b${build.number} ${build.date}${build.nightly}"/> 
+        <attribute name="Implementation-Vendor" value="SIB Visions GmbH"/>
+      </manifest>
+    </jar>  	
+
+    <jar jarfile="${install}/${jar.jakarta.name}" basedir="${classes.jakarta}">
 	  <manifest>
         <attribute name="Implementation-Title" value="${build.versionstring}${build.nightly}"/>
         <attribute name="Implementation-Version" value="b${build.number} ${build.date}${build.nightly}"/> 
@@ -141,7 +384,315 @@
       </manifest>
     </jar>  	
   	
+  	<!-- We compile it so not needed
+  	
+  	<java dir="${transform}" 
+  		  jar="${transform}/org.eclipse.transformer.cli-1.0.0.jar"
+  		  fork="true"
+  		  failonerror="true">
+  	  <arg value="- -help" />
+ 	  	
+  	  <arg value="${install}/${jar.name.server}" />
+  	  <arg value="${install}/${jar.name.server.jakarta}" />
+    </java>  	
+  	-->
+  	
   </target>	
+	
+  <target name="maven.snapshot" depends="proxy">
+
+  	<property name="maven.version.postfix" value="-SNAPSHOT" />
+
+    <property name="mvn.id" value="${mvn.snapshotsrep.id}" />
+    <property name="mvn.url" value="${mvn.snapshotsrep.url}" />
+    
+  </target>	
+	
+  <target name="maven" depends="proxy">
+  
+    <property name="maven.version.postfix" value="" />
+
+    <if>
+      <equals arg1="${os.name}" arg2="Mac OS X" />
+      <then>
+        <property name="gpgexecutable" location="/usr/local/bin/gpg" />
+      </then>
+      <else>
+	    <if>
+	      <equals arg1="${os.family}" arg2="Windows" />
+	      <then>
+	        <property name="gpgexecutable" location="C:\Program Files (x86)\GNU\GnuPG\pub\gpg.exe" />
+	      </then>
+	      <else>
+	        <property name="gpgexecutable" value="gpg"/>
+	      </else>
+	    </if>
+      </else>
+    </if>  	  	
+  
+    <!-- define late because of the classpath -->
+    <taskdef name="buildnr" classname="com.sibvisions.addons.ant.AntBuildNumber" classpath="${buildnumber}/addons.jar;${classes}" />
+    <buildnr buildfile="${buildnumber}/buildnr.properties" loadOnly="true"/> 
+
+    <!-- Maven coordinates -->
+    <property name="mvn.groupId" value="com.sibvisions" />
+
+    <propertyregex property="versionnumber" input="${build.version}" regexp=" " replace="_" global="true" defaultValue="${build.version}"/>
+
+    <!-- artifacts' name, which follows the convention of Maven -->
+  	<property name="mvn.driver.jar.name" value="${product.name}-driver-${versionnumber}${maven.version.postfix}.jar" />
+	<property name="mvn.driver.sources.jar.name" value="${product.name}-driver-${versionnumber}${maven.version.postfix}-sources.jar" />
+	<property name="mvn.driver.javadoc.jar.name" value="${product.name}-driver-${versionnumber}${maven.version.postfix}-javadoc.jar" />
+  	<property name="mvn.javax.jar.name" value="${product.name}-server-javax-${versionnumber}${maven.version.postfix}.jar" />
+	<property name="mvn.javax.sources.jar.name" value="${product.name}-server-javax-${versionnumber}${maven.version.postfix}-sources.jar" />
+	<property name="mvn.javax.javadoc.jar.name" value="${product.name}-server-javax-${versionnumber}${maven.version.postfix}-javadoc.jar" />
+  	<property name="mvn.jakarta.jar.name" value="${product.name}-server-jakarta-${versionnumber}${maven.version.postfix}.jar" />
+	<property name="mvn.jakarta.sources.jar.name" value="${product.name}-server-jakarta-${versionnumber}${maven.version.postfix}-sources.jar" />
+	<property name="mvn.jakarta.javadoc.jar.name" value="${product.name}-server-jakarta-${versionnumber}${maven.version.postfix}-javadoc.jar" />
+
+  	<property name="mvn.driver.jar" value="${install}/maven/${mvn.driver.jar.name}" />
+	<property name="mvn.driver.sources.jar" value="${install}/maven/${mvn.driver.sources.jar.name}" />
+	<property name="mvn.driver.javadoc.jar" value="${install}/maven/${mvn.driver.javadoc.jar.name}" />
+  	<property name="mvn.javax.jar" value="${install}/maven/${mvn.javax.jar.name}" />
+	<property name="mvn.javax.sources.jar" value="${install}/maven/${mvn.javax.sources.jar.name}" />
+	<property name="mvn.javax.javadoc.jar" value="${install}/maven/${mvn.javax.javadoc.jar.name}" />
+  	<property name="mvn.jakarta.jar" value="${install}/maven/${mvn.jakarta.jar.name}" />
+	<property name="mvn.jakarta.sources.jar" value="${install}/maven/${mvn.jakarta.sources.jar.name}" />
+	<property name="mvn.jakarta.javadoc.jar" value="${install}/maven/${mvn.jakarta.javadoc.jar.name}" />
+  
+    <property name="mvn.id" value="${mvn.stagingrep.id}" />
+    <property name="mvn.url" value="${mvn.stagingrep.url}" />
+  
+    <mkdir dir="${install}/maven" />
+
+    <zip destfile="${mvn.driver.jar}">
+      <zipfileset src="${install}/${jar.driver.name}"/>
+    </zip>
+  	
+    <zip destfile="${mvn.javax.jar}">
+      <zipfileset src="${install}/${jar.javax.name}"/>
+    </zip>
+    
+    <zip destfile="${mvn.jakarta.jar}">
+      <zipfileset src="${install}/${jar.jakarta.name}"/>
+    </zip>
+    
+    <zip destfile="${mvn.driver.sources.jar}">
+      <zipfileset dir="${src.jdbc}/" includes="**" excludes="**/package.html" prefix=""/>
+    </zip>
+
+    <zip destfile="${mvn.javax.sources.jar}">
+      <zipfileset dir="${src.server}/" includes="**" excludes="**/package.html" prefix=""/>
+    </zip>
+
+    <zip destfile="${mvn.jakarta.sources.jar}">
+      <zipfileset dir="${src.jakarta}/" includes="**" excludes="**/package.html" prefix=""/>
+    </zip>
+  	
+    <zip destfile="${mvn.driver.javadoc.jar}">
+      <zipfileset dir="${javadoc.jdbc}/" />
+    </zip>
+
+    <zip destfile="${mvn.javax.javadoc.jar}">
+      <zipfileset dir="${javadoc.javax}/" />
+    </zip>
+
+    <zip destfile="${mvn.jakarta.javadoc.jar}">
+      <zipfileset dir="${javadoc.jakarta}/" />
+    </zip>
+  	
+    <property name="maven.tmp" location="${temp}/maven" />
+        
+    <delete dir="${maven.tmp}" />
+    
+    <copy todir="${maven.tmp}">
+      <fileset dir="${maven}"/>
+      <mapper type="regexp" from="^([^/]+)/([^/]*)$$" to="\1/\1-${versionnumber}${maven.version.postfix}.pom"/>    	
+    </copy>    
+    
+    <replace dir="${maven.tmp}" token="&lt;version&gt;1.0&lt;/version&gt;" value="&lt;version&gt;${versionnumber}${maven.version.postfix}&lt;/version&gt;">
+      <include name="**/*.pom" />
+    </replace>
+  	
+  	<if>
+  	  <equals arg1="${mvn.stagingrep.url}" arg2="${mvn.url}" />
+  	
+  	  <then>
+	  	<property file="${user.home}/ant_maven.properties"/>  	
+	  	
+	  	<echo file="${maven.tmp}/gpgkey.txt">${gpg.passphrase}</echo>
+	  	
+		<trycatch property="fail-msg:gpg" reference="fail-ref:gpg">
+		  <try>
+		    
+			<foreach target="gpg.sign" param="foreach.file" inheritall="true">
+			  <path>
+		        <fileset dir="${install}/maven" includes="*.jar" />
+			  	<fileset dir="${maven.tmp}" includes="**/*.pom" />
+			  </path>
+			</foreach>
+		  	
+		  </try>
+		  <catch>
+		  	<delete file="${maven.tmp}/gpgkey.txt" deleteonexit="true" />
+		  	
+		  	<property name="fail-ref-msg:gpg" refid="fail-ref:gpg" />
+		  	<fail>${fail-ref-msg:gpg}</fail>
+		  </catch>  	
+		</trycatch>
+	
+	  	<delete file="${maven.tmp}/gpgkey.txt" deleteonexit="true" />
+	  	
+	  	<checksum algorithm="md5">
+	  	  <fileset dir="${install}/maven/">
+	  	    <include name="*.jar"/>
+	  	  </fileset>
+		  <fileset dir="${maven.tmp}">
+		    <include name="**/*.pom"/>
+		  </fileset>
+	  	</checksum>
+	  	<checksum algorithm="sha1">
+		  <fileset dir="${install}/maven/">
+		    <include name="*.jar"/>
+		  </fileset>
+	  	  <fileset dir="${maven.tmp}">
+	  	    <include name="**/*.pom"/>
+	  	  </fileset>
+	  	</checksum>
+	  	<checksum algorithm="SHA-256" fileext="sha256">
+		  <fileset dir="${install}/maven/">
+		    <include name="*.jar"/>
+		  </fileset>
+	  	  <fileset dir="${maven.tmp}">
+	  	    <include name="**/*.pom"/>
+	  	  </fileset>
+	  	</checksum>
+	  	<checksum algorithm="SHA-512" fileext="sha512">
+		  <fileset dir="${install}/maven/">
+		    <include name="*.jar"/>
+		  </fileset>
+	  	  <fileset dir="${maven.tmp}">
+	  	    <include name="**/*.pom"/>
+	  	  </fileset>
+	  	</checksum>
+	  	
+	    <zip destfile="${install}/maven/${product.name}-driver-${versionnumber}${maven.version.postfix}.zip">
+	      <zipfileset dir="${install}/maven" prefix="/com/sibvisions/${product.name}/${product.name}-driver/${versionnumber}${maven.version.postfix}" >
+	        <include name="${mvn.driver.jar.name}" />
+	      	<include name="${mvn.driver.jar.name}.*" />
+	        <include name="${mvn.driver.sources.jar.name}" />
+	      	<include name="${mvn.driver.sources.jar.name}.*" />
+	        <include name="${mvn.driver.javadoc.jar.name}" />
+	      	<include name="${mvn.driver.javadoc.jar.name}.*" />
+	      </zipfileset>
+	      <zipfileset dir="${maven.tmp}/${product.name}-driver" prefix="/com/sibvisions/${product.name}/${product.name}-driver/${versionnumber}${maven.version.postfix}" >
+	        <include name="*.pom" />
+	      	<include name="*.pom.*" />
+	      </zipfileset>
+	    </zip>
+
+	    <zip destfile="${install}/maven/${product.name}-server-javax-${versionnumber}${maven.version.postfix}.zip">
+	      <zipfileset dir="${install}/maven" prefix="/com/sibvisions/${product.name}/${product.name}-server-javax/${versionnumber}${maven.version.postfix}" >
+	        <include name="${mvn.javax.jar.name}" />
+	      	<include name="${mvn.javax.jar.name}.*" />
+	        <include name="${mvn.javax.sources.jar.name}" />
+	      	<include name="${mvn.javax.sources.jar.name}.*" />
+	        <include name="${mvn.javax.javadoc.jar.name}" />
+	      	<include name="${mvn.javax.javadoc.jar.name}.*" />
+	      </zipfileset>
+	      <zipfileset dir="${maven.tmp}/${product.name}-server-javax" prefix="/com/sibvisions/${product.name}/${product.name}-server-javax/${versionnumber}${maven.version.postfix}" >
+	        <include name="*.pom" />
+	      	<include name="*.pom.*" />
+	      </zipfileset>
+	    </zip>
+  	  	
+	    <zip destfile="${install}/maven/${product.name}-server-jakarta-${versionnumber}${maven.version.postfix}.zip">
+	      <zipfileset dir="${install}/maven" prefix="/com/sibvisions/${product.name}/${product.name}-server-jakarta/${versionnumber}${maven.version.postfix}" >
+	        <include name="${mvn.jakarta.jar.name}" />
+	      	<include name="${mvn.jakarta.jar.name}.*" />
+	        <include name="${mvn.jakarta.sources.jar.name}" />
+	      	<include name="${mvn.jakarta.sources.jar.name}.*" />
+	        <include name="${mvn.jakarta.javadoc.jar.name}" />
+	      	<include name="${mvn.jakarta.javadoc.jar.name}.*" />
+	      </zipfileset>
+	      <zipfileset dir="${maven.tmp}/${product.name}-server-jakarta" prefix="/com/sibvisions/${product.name}/${product.name}-server-jakarta/${versionnumber}${maven.version.postfix}" >
+	        <include name="*.pom" />
+	      	<include name="*.pom.*" />
+	      </zipfileset>
+	    </zip>
+	  	
+	  	<taskdef name="sonapublish" classname="com.sibvisions.addons.ant.SonatypeUploadTask" classpath="${buildnumber}/addons.jar;${classes};${buildnumber}/jvxclient.jar" />
+	
+  	  	<sonapublish unless:set="no_maven" bundleFile="${install}/maven/${product.name}-driver-${versionnumber}${maven.version.postfix}.zip" username="${sonatype.user}" password="${sonatype.password}"/>
+  	  	<sonapublish unless:set="no_maven" bundleFile="${install}/maven/${product.name}-server-javax-${versionnumber}${maven.version.postfix}.zip" username="${sonatype.user}" password="${sonatype.password}"/>
+  	  	<sonapublish unless:set="no_maven" bundleFile="${install}/maven/${product.name}-server-jakarta-${versionnumber}${maven.version.postfix}.zip" username="${sonatype.user}" password="${sonatype.password}"/>
+  	  	
+  	  </then>
+  	  <else>
+  	    <!-- 
+  	      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  	      ~ Server
+  	      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  	    -->
+  	  	
+  	  	<artifact:mvn unless:set="no_maven" mavenVersion="3.9.9" mavenHome="${build}/maven/apache-maven-3.9.9" fork="true">
+  			<jvmarg value="-Dmaven.multiModuleProjectDirectory=${maven.tmp}/server"/>
+  			<!-- logging
+  			<arg value="-e" />
+  			<arg value="-X" />
+  			-->
+  			<arg value="org.apache.maven.plugins:maven-deploy-plugin:3.1.4:deploy-file" />
+  			<arg value="-Durl=${mvn.url}" />
+  			<arg value="-DrepositoryId=${mvn.id}" />
+  			<arg value="-DgeneratePom=false" />
+  			<arg value="-DpomFile=${maven.tmp}/${release.simplename}-server/${release.simplename}-server-${versionnumber}${maven.version.postfix}.pom" />
+  			<arg value="-Dfile=${mvn.server.jar}" />
+  			<arg value="-Dsources=${mvn.server.sources.jar}" />
+  			<arg value="-Djavadoc=${mvn.server.javadoc.jar}" />
+  		</artifact:mvn>
+
+  	    <!-- 
+  	      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  	      ~ API
+  	      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  	    -->
+  	  	
+  	  	<artifact:mvn unless:set="no_maven" mavenVersion="3.9.9" mavenHome="${build}/maven/apache-maven-3.9.9" fork="true">
+  	  		<jvmarg value="-Dmaven.multiModuleProjectDirectory=${maven.tmp}/api"/>
+  			<arg value="org.apache.maven.plugins:maven-deploy-plugin:3.1.4:deploy-file" />
+  			<arg value="-Durl=${mvn.url}" />
+  			<arg value="-DrepositoryId=${mvn.id}" />
+  			<arg value="-DgeneratePom=false" />
+  	  		<arg value="-DpomFile=${maven.tmp}/${release.simplename}-api/${release.simplename}-api-${versionnumber}${maven.version.postfix}.pom" />
+  			<arg value="-Dfile=${mvn.api.jar}" />
+  			<arg value="-Dsources=${mvn.api.sources.jar}" />
+  			<arg value="-Djavadoc=${mvn.api.javadoc.jar}" />
+  		</artifact:mvn>
+  	  </else>
+  	</if>  	
+ 
+  </target>
+	
+  <target name="gpg.sign">
+  
+  	<echo>Sign ${foreach.file}</echo>
+  	
+  	<delete file="${foreach.file}.asc" />
+  	
+  	<exec executable="${gpgexecutable}" failonerror="true">
+  	  <arg value="--batch" />
+  	  <arg value="--pinentry-mode" />
+  	  <arg value="loopback"/>
+  	  <arg value="--passphrase-file" />
+  	  <arg value="${maven.tmp}/gpgkey.txt" />
+  	  <arg value="--armor" />
+  	  <arg value="--output" />
+  	  <arg value="${foreach.file}.asc" />
+  	  <arg value="--detach-sign" />
+	  <arg value="${foreach.file}" />
+    </exec>
+  	
+  </target>		
   
   <!-- 
   	***************************************************************** 
@@ -149,7 +700,9 @@
   	***************************************************************** 
   	-->
 
-  <target name="start.complete" depends="clean.start, jar, clean.stop" description="Creates the release libraries" />
-
+  <target name="start.complete" depends="clean.start, jar, javadoc, clean.stop" description="Creates the release libraries" />
+	
+  <target name="start.maven" depends="clean.start, jar, javadoc, maven" description="Publishing a maven release"/>
+  <target name="start.maven.snapshot" depends="clean.start, maven.snapshot, jar, javadoc, maven" description="Publishing a maven snapshot"/>
 	
 </project>

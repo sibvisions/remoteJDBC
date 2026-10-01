@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -179,7 +179,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Statement)RemoteUtil.invoke(client, id, remoteInterface, "createStatement", new Class<?>[]{}, new Object[]{}, Statement.class);
+        return (Statement)RemoteUtil.invoke(client, id, remoteInterface, "createStatement", new Class<?>[] {}, new Object[] {}, Statement.class);
     }
 
     /** {@inheritDoc} */
@@ -188,7 +188,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[]{String.class}, new Object[]{pSql}, PreparedStatement.class);
+        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[] {String.class}, new Object[] {pSql}, PreparedStatement.class);
     }
 
     /** {@inheritDoc} */
@@ -197,7 +197,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
 
-    	return (CallableStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareCall", new Class<?>[]{String.class}, new Object[]{pSql}, CallableStatement.class);
+    	return (CallableStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareCall", new Class<?>[] {String.class}, new Object[] {pSql}, CallableStatement.class);
     }
 
     /** {@inheritDoc} */
@@ -206,7 +206,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "nativeSQL", new Class<?>[]{String.class}, new Object[]{pSql}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "nativeSQL", new Class<?>[] {String.class}, new Object[] {pSql}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -215,7 +215,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setAutoCommit", new Class<?>[]{boolean.class}, new Object[]{pAutoCommit}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setAutoCommit", new Class<?>[] {boolean.class}, new Object[] {pAutoCommit}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -224,7 +224,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "getAutoCommit", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "getAutoCommit", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -233,7 +233,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "commit", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "commit", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -242,7 +242,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "rollback", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "rollback", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -262,7 +262,7 @@ public class RemoteConnection implements Connection
             }
             else
             {
-                RemoteUtil.invoke(client, id, remoteInterface, "close", new Class<?>[]{}, new Object[]{}, void.class);
+                RemoteUtil.invoke(client, id, remoteInterface, "close", new Class<?>[] {}, new Object[] {}, void.class);
             }
 
         }
@@ -283,7 +283,7 @@ public class RemoteConnection implements Connection
 
         }
 
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isClosed", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isClosed", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -292,7 +292,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (DatabaseMetaData)RemoteUtil.invoke(client, id, remoteInterface, "getMetaData", new Class<?>[]{}, new Object[]{}, DatabaseMetaData.class);
+        return (DatabaseMetaData)RemoteUtil.invoke(client, id, remoteInterface, "getMetaData", new Class<?>[] {}, new Object[] {}, DatabaseMetaData.class);
     }
 
     /** {@inheritDoc} */
@@ -301,7 +301,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setReadOnly", new Class<?>[]{boolean.class}, new Object[]{pReadOnly}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setReadOnly", new Class<?>[] {boolean.class}, new Object[] {pReadOnly}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -310,7 +310,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isReadOnly", new Class<?>[]{}, new Object[]{}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isReadOnly", new Class<?>[] {}, new Object[] {}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -319,7 +319,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setCatalog", new Class<?>[]{String.class}, new Object[]{pCatalog}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setCatalog", new Class<?>[] {String.class}, new Object[] {pCatalog}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -328,7 +328,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getCatalog", new Class<?>[]{}, new Object[]{}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getCatalog", new Class<?>[] {}, new Object[] {}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -337,7 +337,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setTransactionIsolation", new Class<?>[]{int.class}, new Object[]{pLevel}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setTransactionIsolation", new Class<?>[] {int.class}, new Object[] {pLevel}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -346,7 +346,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getTransactionIsolation", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getTransactionIsolation", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -355,7 +355,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (SQLWarning)RemoteUtil.invoke(client, id, remoteInterface, "getWarnings", new Class<?>[]{}, new Object[]{}, SQLWarning.class);
+        return (SQLWarning)RemoteUtil.invoke(client, id, remoteInterface, "getWarnings", new Class<?>[] {}, new Object[] {}, SQLWarning.class);
     }
 
     /** {@inheritDoc} */
@@ -364,7 +364,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "clearWarnings", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "clearWarnings", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -373,7 +373,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Statement)RemoteUtil.invoke(client, id, remoteInterface, "createStatement", new Class<?>[]{int.class, int.class}, new Object[]{pResultSetType, pResultSetConcurrency}, Statement.class);
+        return (Statement)RemoteUtil.invoke(client, id, remoteInterface, "createStatement", new Class<?>[] {int.class, int.class}, new Object[] {pResultSetType, pResultSetConcurrency}, Statement.class);
     }
 
     /** {@inheritDoc} */
@@ -382,7 +382,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[]{String.class, int.class, int.class}, new Object[]{pSql, pResultSetType, pResultSetConcurrency}, PreparedStatement.class);
+        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[] {String.class, int.class, int.class}, new Object[] {pSql, pResultSetType, pResultSetConcurrency}, PreparedStatement.class);
     }
 
     /** {@inheritDoc} */
@@ -391,7 +391,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (CallableStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareCall", new Class<?>[]{String.class, int.class, int.class}, new Object[]{pSql, pResultSetType, pResultSetConcurrency}, CallableStatement.class);
+        return (CallableStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareCall", new Class<?>[] {String.class, int.class, int.class}, new Object[] {pSql, pResultSetType, pResultSetConcurrency}, CallableStatement.class);
     }
 
     /** {@inheritDoc} */
@@ -401,7 +401,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Map<String,Class<?>>)RemoteUtil.invoke(client, id, remoteInterface, "getTypeMap", new Class<?>[]{}, new Object[]{}, Map.class);
+        return (Map<String,Class<?>>)RemoteUtil.invoke(client, id, remoteInterface, "getTypeMap", new Class<?>[] {}, new Object[] {}, Map.class);
     }
 
     /** {@inheritDoc} */
@@ -410,7 +410,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setTypeMap", new Class<?>[]{Map.class}, new Object[]{pMap}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setTypeMap", new Class<?>[] {Map.class}, new Object[] {pMap}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -419,7 +419,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setHoldability", new Class<?>[]{int.class}, new Object[]{pHoldability}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setHoldability", new Class<?>[] {int.class}, new Object[] {pHoldability}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -428,7 +428,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getHoldability", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getHoldability", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -437,7 +437,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Savepoint)RemoteUtil.invoke(client, id, remoteInterface, "setSavepoint", new Class<?>[]{}, new Object[]{}, Savepoint.class);
+        return (Savepoint)RemoteUtil.invoke(client, id, remoteInterface, "setSavepoint", new Class<?>[] {}, new Object[] {}, Savepoint.class);
     }
 
     /** {@inheritDoc} */
@@ -446,7 +446,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Savepoint)RemoteUtil.invoke(client, id, remoteInterface, "setSavepoint", new Class<?>[]{String.class}, new Object[]{pName}, Savepoint.class);
+        return (Savepoint)RemoteUtil.invoke(client, id, remoteInterface, "setSavepoint", new Class<?>[] {String.class}, new Object[] {pName}, Savepoint.class);
     }
 
     /** {@inheritDoc} */
@@ -455,7 +455,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "rollback", new Class<?>[]{Savepoint.class}, new Object[]{pSavepoint}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "rollback", new Class<?>[] {Savepoint.class}, new Object[] {pSavepoint}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -464,7 +464,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "releaseSavepoint", new Class<?>[]{Savepoint.class}, new Object[]{pSavepoint}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "releaseSavepoint", new Class<?>[] {Savepoint.class}, new Object[] {pSavepoint}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -473,7 +473,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Statement)RemoteUtil.invoke(client, id, remoteInterface, "createStatement", new Class<?>[]{int.class, int.class, int.class}, new Object[]{pResultSetType, pResultSetConcurrency, pResultSetHoldability}, Statement.class);
+        return (Statement)RemoteUtil.invoke(client, id, remoteInterface, "createStatement", new Class<?>[] {int.class, int.class, int.class}, new Object[] {pResultSetType, pResultSetConcurrency, pResultSetHoldability}, Statement.class);
     }
 
     /** {@inheritDoc} */
@@ -482,7 +482,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[]{String.class, int.class, int.class, int.class}, new Object[]{pSql, pResultSetType, pResultSetConcurrency, pResultSetHoldability}, PreparedStatement.class);
+        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[] {String.class, int.class, int.class, int.class}, new Object[] {pSql, pResultSetType, pResultSetConcurrency, pResultSetHoldability}, PreparedStatement.class);
     }
 
     /** {@inheritDoc} */
@@ -491,7 +491,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (CallableStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareCall", new Class<?>[]{String.class, int.class, int.class, int.class}, new Object[]{pSql, pResultSetType, pResultSetConcurrency, pResultSetHoldability}, CallableStatement.class);
+        return (CallableStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareCall", new Class<?>[] {String.class, int.class, int.class, int.class}, new Object[] {pSql, pResultSetType, pResultSetConcurrency, pResultSetHoldability}, CallableStatement.class);
     }
 
     /** {@inheritDoc} */
@@ -500,7 +500,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[]{String.class, int.class}, new Object[]{pSql, pResultSetType}, PreparedStatement.class);
+        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[] {String.class, int.class}, new Object[] {pSql, pResultSetType}, PreparedStatement.class);
     }
 
     /** {@inheritDoc} */
@@ -509,7 +509,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[]{String.class, int[].class}, new Object[]{pSql, pColumnIndexes}, PreparedStatement.class);
+        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[] {String.class, int[].class}, new Object[] {pSql, pColumnIndexes}, PreparedStatement.class);
     }
 
     /** {@inheritDoc} */
@@ -518,7 +518,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[]{String.class, String[].class}, new Object[]{pSql, pColumnNames}, PreparedStatement.class);
+        return (PreparedStatement)RemoteUtil.invoke(client, id, remoteInterface, "prepareStatement", new Class<?>[] {String.class, String[].class}, new Object[] {pSql, pColumnNames}, PreparedStatement.class);
     }
 
     /** {@inheritDoc} */
@@ -527,7 +527,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Clob)RemoteUtil.invoke(client, id, remoteInterface, "createClob", new Class<?>[]{}, new Object[]{}, Clob.class);
+        return (Clob)RemoteUtil.invoke(client, id, remoteInterface, "createClob", new Class<?>[] {}, new Object[] {}, Clob.class);
     }
 
     /** {@inheritDoc} */
@@ -536,7 +536,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Blob)RemoteUtil.invoke(client, id, remoteInterface, "createBlob", new Class<?>[]{}, new Object[]{}, Blob.class);
+        return (Blob)RemoteUtil.invoke(client, id, remoteInterface, "createBlob", new Class<?>[] {}, new Object[] {}, Blob.class);
     }
 
     /** {@inheritDoc} */
@@ -545,7 +545,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (NClob)RemoteUtil.invoke(client, id, remoteInterface, "createNClob", new Class<?>[]{}, new Object[]{}, NClob.class);
+        return (NClob)RemoteUtil.invoke(client, id, remoteInterface, "createNClob", new Class<?>[] {}, new Object[] {}, NClob.class);
     }
 
     /** {@inheritDoc} */
@@ -554,7 +554,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (SQLXML)RemoteUtil.invoke(client, id, remoteInterface, "createSQLXML", new Class<?>[]{}, new Object[]{}, SQLXML.class);
+        return (SQLXML)RemoteUtil.invoke(client, id, remoteInterface, "createSQLXML", new Class<?>[] {}, new Object[] {}, SQLXML.class);
     }
 
     /** {@inheritDoc} */
@@ -573,7 +573,7 @@ public class RemoteConnection implements Connection
         }
         try
         {
-            return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isValid", new Class<?>[]{int.class}, new Object[]{pTimeout}, boolean.class);
+            return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "isValid", new Class<?>[] {int.class}, new Object[] {pTimeout}, boolean.class);
         }
         catch (SQLException e)
         {
@@ -588,7 +588,7 @@ public class RemoteConnection implements Connection
     {
 		ensureOpenClientInfo();
     	
-        RemoteUtil.invokeClientInfo(client, id, remoteInterface, "setClientInfo", new Class<?>[]{String.class, String.class}, new Object[]{pName, pValue}, void.class);
+        RemoteUtil.invokeClientInfo(client, id, remoteInterface, "setClientInfo", new Class<?>[] {String.class, String.class}, new Object[] {pName, pValue}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -597,7 +597,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpenClientInfo();
     	
-        RemoteUtil.invokeClientInfo(client, id, remoteInterface, "setClientInfo", new Class<?>[]{Properties.class}, new Object[]{pClientInfo}, void.class);
+        RemoteUtil.invokeClientInfo(client, id, remoteInterface, "setClientInfo", new Class<?>[] {Properties.class}, new Object[] {pClientInfo}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -606,7 +606,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getClientInfo", new Class<?>[]{String.class}, new Object[]{pName}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getClientInfo", new Class<?>[] {String.class}, new Object[] {pName}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -615,7 +615,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Properties)RemoteUtil.invoke(client, id, remoteInterface, "getClientInfo", new Class<?>[]{}, new Object[]{}, Properties.class);
+        return (Properties)RemoteUtil.invoke(client, id, remoteInterface, "getClientInfo", new Class<?>[] {}, new Object[] {}, Properties.class);
     }
 
     /** {@inheritDoc} */
@@ -624,7 +624,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Array)RemoteUtil.invoke(client, id, remoteInterface, "createArrayOf", new Class<?>[]{String.class, Object[].class}, new Object[]{pTypeName, pElements}, Array.class);
+        return (Array)RemoteUtil.invoke(client, id, remoteInterface, "createArrayOf", new Class<?>[] {String.class, Object[].class}, new Object[] {pTypeName, pElements}, Array.class);
     }
 
     /** {@inheritDoc} */
@@ -633,7 +633,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (Struct)RemoteUtil.invoke(client, id, remoteInterface, "createStruct", new Class<?>[]{String.class, Object[].class}, new Object[]{pTypeName, pAttributes}, Struct.class);
+        return (Struct)RemoteUtil.invoke(client, id, remoteInterface, "createStruct", new Class<?>[] {String.class, Object[].class}, new Object[] {pTypeName, pAttributes}, Struct.class);
     }
 
     /** {@inheritDoc} */
@@ -642,7 +642,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setSchema", new Class<?>[]{String.class}, new Object[]{pSchema}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setSchema", new Class<?>[] {String.class}, new Object[] {pSchema}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -651,7 +651,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getSchema", new Class<?>[]{}, new Object[]{}, String.class);
+        return (String)RemoteUtil.invoke(client, id, remoteInterface, "getSchema", new Class<?>[] {}, new Object[] {}, String.class);
     }
 
     /** {@inheritDoc} */
@@ -667,7 +667,7 @@ public class RemoteConnection implements Connection
             remoteExecutor = createRemoteExecutor();
         }
         
-        RemoteUtil.invoke(client, id, remoteInterface, "abort", new Class<?>[]{Executor.class}, new Object[]{remoteExecutor}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "abort", new Class<?>[] {Executor.class}, new Object[] {remoteExecutor}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -683,7 +683,7 @@ public class RemoteConnection implements Connection
             remoteExecutor = createRemoteExecutor();
         }
         
-        RemoteUtil.invoke(client, id, remoteInterface, "setNetworkTimeout", new Class<?>[]{Executor.class, int.class}, new Object[]{remoteExecutor, pMilliseconds}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setNetworkTimeout", new Class<?>[] {Executor.class, int.class}, new Object[] {remoteExecutor, pMilliseconds}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -692,7 +692,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getNetworkTimeout", new Class<?>[]{}, new Object[]{}, int.class);
+        return (int)RemoteUtil.invoke(client, id, remoteInterface, "getNetworkTimeout", new Class<?>[] {}, new Object[] {}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -701,7 +701,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "beginRequest", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "beginRequest", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -710,7 +710,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "endRequest", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "endRequest", new Class<?>[] {}, new Object[] {}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -719,7 +719,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "setShardingKeyIfValid", new Class<?>[]{ShardingKey.class, ShardingKey.class, int.class}, new Object[]{pShardingKey, pSuperShardingKey, pTimeout}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "setShardingKeyIfValid", new Class<?>[] {ShardingKey.class, ShardingKey.class, int.class}, new Object[] {pShardingKey, pSuperShardingKey, pTimeout}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -728,7 +728,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "setShardingKeyIfValid", new Class<?>[]{ShardingKey.class, int.class}, new Object[]{pShardingKey, pTimeout}, boolean.class);
+        return (boolean)RemoteUtil.invoke(client, id, remoteInterface, "setShardingKeyIfValid", new Class<?>[] {ShardingKey.class, int.class}, new Object[] {pShardingKey, pTimeout}, boolean.class);
     }
 
     /** {@inheritDoc} */
@@ -737,7 +737,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setShardingKey", new Class<?>[]{ShardingKey.class, ShardingKey.class}, new Object[]{pShardingKey, pSuperShardingKey}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setShardingKey", new Class<?>[] {ShardingKey.class, ShardingKey.class}, new Object[] {pShardingKey, pSuperShardingKey}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -746,7 +746,7 @@ public class RemoteConnection implements Connection
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, remoteInterface, "setShardingKey", new Class<?>[]{ShardingKey.class}, new Object[]{pShardingKey}, void.class);
+        RemoteUtil.invoke(client, id, remoteInterface, "setShardingKey", new Class<?>[] {ShardingKey.class}, new Object[] {pShardingKey}, void.class);
     }
 
     /**

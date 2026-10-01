@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2026 SIB Visions GmbH
+ * Copyright (C) 2026 SIB Visions GmbH
  *
  * This file is part of RemoteJDBC.
  *
@@ -76,7 +76,7 @@ public class RemoteBlob implements Blob
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, Blob.class, "length", new Class<?>[]{}, new Object[]{}, long.class);
+        return (long)RemoteUtil.invoke(client, id, Blob.class, "length", new Class<?>[] {}, new Object[] {}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -85,7 +85,7 @@ public class RemoteBlob implements Blob
     {
     	ensureOpen();
     	
-        return (byte[]) RemoteUtil.invoke(client, id, Blob.class, "getBytes", new Class<?>[]{long.class, int.class}, new Object[]{pPosition, pLength}, byte[].class);
+        return (byte[])RemoteUtil.invoke(client, id, Blob.class, "getBytes", new Class<?>[] {long.class, int.class}, new Object[] {pPosition, pLength}, byte[].class);
     }
 
     /** {@inheritDoc} */
@@ -94,7 +94,7 @@ public class RemoteBlob implements Blob
     {
     	ensureOpen();
     	
-        return (InputStream)RemoteUtil.invoke(client, id, Blob.class, "getBinaryStream", new Class<?>[]{}, new Object[]{}, InputStream.class);
+        return (InputStream)RemoteUtil.invoke(client, id, Blob.class, "getBinaryStream", new Class<?>[] {}, new Object[] {}, InputStream.class);
     }
 
     /** {@inheritDoc} */
@@ -103,7 +103,7 @@ public class RemoteBlob implements Blob
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, Blob.class, "position", new Class<?>[]{byte[].class, long.class}, new Object[]{pPattern, pStart}, long.class);
+        return (long)RemoteUtil.invoke(client, id, Blob.class, "position", new Class<?>[] {byte[].class, long.class}, new Object[] {pPattern, pStart}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -112,7 +112,7 @@ public class RemoteBlob implements Blob
     {
     	ensureOpen();
     	
-        return (long)RemoteUtil.invoke(client, id, Blob.class, "position", new Class<?>[]{Blob.class, long.class}, new Object[]{pPattern, pStart}, long.class);
+        return (long)RemoteUtil.invoke(client, id, Blob.class, "position", new Class<?>[] {Blob.class, long.class}, new Object[] {pPattern, pStart}, long.class);
     }
 
     /** {@inheritDoc} */
@@ -121,7 +121,7 @@ public class RemoteBlob implements Blob
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, Blob.class, "setBytes", new Class<?>[]{long.class, byte[].class}, new Object[]{pPosition, pBytes}, int.class);
+        return (int)RemoteUtil.invoke(client, id, Blob.class, "setBytes", new Class<?>[] {long.class, byte[].class}, new Object[] {pPosition, pBytes}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -130,7 +130,7 @@ public class RemoteBlob implements Blob
     {
     	ensureOpen();
     	
-        return (int)RemoteUtil.invoke(client, id, Blob.class, "setBytes", new Class<?>[]{long.class, byte[].class, int.class, int.class}, new Object[]{pPosition, pBytes, pOffset, pLength}, int.class);
+        return (int)RemoteUtil.invoke(client, id, Blob.class, "setBytes", new Class<?>[] {long.class, byte[].class, int.class, int.class}, new Object[] {pPosition, pBytes, pOffset, pLength}, int.class);
     }
 
     /** {@inheritDoc} */
@@ -139,7 +139,7 @@ public class RemoteBlob implements Blob
     {
     	ensureOpen();
     	
-        return (OutputStream)RemoteUtil.invoke(client, id, Blob.class, "setBinaryStream", new Class<?>[]{long.class}, new Object[]{pPosition}, OutputStream.class);
+        return (OutputStream)RemoteUtil.invoke(client, id, Blob.class, "setBinaryStream", new Class<?>[] {long.class}, new Object[] {pPosition}, OutputStream.class);
     }
 
     /** {@inheritDoc} */
@@ -148,7 +148,7 @@ public class RemoteBlob implements Blob
     {
     	ensureOpen();
     	
-        RemoteUtil.invoke(client, id, Blob.class, "truncate", new Class<?>[]{long.class}, new Object[]{pLength}, void.class);
+        RemoteUtil.invoke(client, id, Blob.class, "truncate", new Class<?>[] {long.class}, new Object[] {pLength}, void.class);
     }
 
     /** {@inheritDoc} */
@@ -161,7 +161,7 @@ public class RemoteBlob implements Blob
 
         }
     	
-        RemoteUtil.invoke(client, id, Blob.class, "free", new Class<?>[]{}, new Object[]{}, void.class);
+        RemoteUtil.invoke(client, id, Blob.class, "free", new Class<?>[] {}, new Object[] {}, void.class);
         
         freed = true;
     }
@@ -172,7 +172,7 @@ public class RemoteBlob implements Blob
     {
     	ensureOpen();
     	
-        return (InputStream)RemoteUtil.invoke(client, id, Blob.class, "getBinaryStream", new Class<?>[]{long.class, long.class}, new Object[]{pPos, pLength}, InputStream.class);
+        return (InputStream)RemoteUtil.invoke(client, id, Blob.class, "getBinaryStream", new Class<?>[] {long.class, long.class}, new Object[] {pPos, pLength}, InputStream.class);
     }
     
     /**
