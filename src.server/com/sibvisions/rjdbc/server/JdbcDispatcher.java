@@ -70,6 +70,8 @@ import com.sibvisions.rjdbc.server.delegate.SavepointDelegate;
 import com.sibvisions.rjdbc.server.delegate.StatementDelegate;
 import com.sibvisions.rjdbc.server.delegate.StructDelegate;
 import com.sibvisions.util.log.Log;
+import com.sibvisions.util.log.LoggerFactory;
+import com.sibvisions.util.type.StringUtil;
 
 /**
  * Provides the {@code jdbc dispatcher} functionality.
@@ -769,58 +771,183 @@ final class JdbcDispatcher
      */
 	private Map<String,Object> connect(Map<String,Object> pPayload) throws SQLException
     {
-        String url = (String)pPayload.get("jdbcUrl");
+        String url = context.getJdbcUrl();
         
-        //sent from client
-        if (url != null && !url.trim().isEmpty())
+        //prod environment requires server-side database configuration
+        if (JdbcSecurity.isProdEnvironment(context.getEnvironment()))
         {
-            if (!context.isJdbcUrlAllowed(url))
+            if (StringUtil.isEmpty(url))
             {
-                throw new SQLException("JDBC URL is not allowed: " + url);
+                throw new SQLException("No JDBC URL configured for production environment");
             }
-        }
-        else
-        {
-            url = context.getJdbcUrl();
 
-            if (url == null || url.isEmpty())
+            if (StringUtil.isEmpty(context.getJdbcUsername()) || StringUtil.isEmpty(context.getJdbcPassword()))
             {
-                throw new SQLException("No JDBC URL configured on the client or server");
+                throw new SQLException("JDBC username and password are required for production environment");
             }
         }
         
-ServiceLoader<Driver> drivers = ServiceLoader.load(Driver.class, Thread.currentThread().getContextClassLoader());
-
-for (Driver driver : drivers)
-{
-    //already registered
-}
-        
-
         Properties properties = new Properties();
         
-        Object value = pPayload.get("properties");
+        boolean clientUrlMode = false;
 
-        if (value instanceof Map)
+        
+        if (context.isClientJdbcConfigurationAllowed())
         {
-            Map<?,?> values = (Map<?,?>)value;
-            
-            for (Map.Entry<?,?> entry : values.entrySet()) 
+            String clientUrl = (String)pPayload.get("jdbcUrl");
+
+            if (!StringUtil.isEmpty(clientUrl))
             {
-            	if (entry.getKey() != null && entry.getValue() != null)
-            	{
-            		properties.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
-            	}
+                if (!context.isJdbcUrlAllowed(clientUrl))
+                {
+                    throw new SQLException("JDBC URL is not allowed: " + clientUrl);
+                }
+
+                url = clientUrl;
+                
+                //if we use a client-URL, username and password from server config are not allowed
+                clientUrlMode = true; 
+            }
+
+            Object value = pPayload.get("properties");
+
+            if (value instanceof Map)
+            {
+                Map<?, ?> values = (Map<?, ?>)value;
+
+                for (Map.Entry<?, ?> entry : values.entrySet())
+                {
+                    if (entry.getKey() != null && entry.getValue() != null)
+                    {
+                        properties.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
+                    }
+                }
             }
         }
+
+        if (!clientUrlMode)
+        {
+        	String value = context.getJdbcUsername();
+        	
+	        if (!StringUtil.isEmpty(value))
+	        {
+	            properties.setProperty("user", value);
+	        }
+	
+	        value = context.getJdbcPassword();
+	        
+	        if (!StringUtil.isEmpty(value))
+	        {
+	            properties.setProperty("password", value);
+	        }
+        }
+
+        if (url == null || url.isEmpty())
+        {
+            throw new SQLException("Missing JDBC URL");
+        }
         
+        initDriver(url);
+
         long connectionId = context.addConnection(DriverManager.getConnection(url, properties));
-        
+
         Map<String,Object> result = new HashMap<>();
         result.put("id", connectionId);
 
         return result;
     }
+	
+	/**
+	 * Initializes driver for given JDBC url.
+	 * 
+	 * @param pJdbcUrl the JDBC url
+	 */
+	private void initDriver(String pJdbcUrl)
+	{
+		String[] sClass = null;
+		
+		if (pJdbcUrl.startsWith("jdbc:oracle:"))
+		{
+			sClass = new String[] {"oracle.jdbc.OracleDriver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:db2:"))
+		{
+			sClass = new String[] {"com.ibm.db2.jcc.DB2Driver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:as400:"))
+		{
+			sClass = new String[] {"com.ibm.as400.access.AS400JDBCDriver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:derby:"))
+		{
+			sClass = new String[] {"org.apache.derby.jdbc.ClientDriver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:jtds:sqlserver:"))
+		{
+			sClass = new String[] {"net.sourceforge.jtds.jdbc.Driver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:sqlserver:"))
+		{
+			sClass = new String[] {"com.microsoft.sqlserver.jdbc.SQLServerDriver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:mysql:"))
+		{
+			sClass = new String[] {"com.mysql.cj.jdbc.Driver", 
+					               "com.mysql.jdbc.Driver",
+					               "org.mariadb.jdbc.Driver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:postgresql:"))
+		{
+			sClass = new String[] {"org.postgresql.Driver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:edb:"))
+		{
+			sClass = new String[] {"com.edb.Driver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:hsqldb:"))
+		{
+			sClass = new String[] {"org.hsqldb.jdbcDriver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:sqlite:"))
+		{
+			sClass = new String[] {"org.sqlite.JDBC"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:h2:"))
+		{
+			sClass = new String[] {"org.h2.Driver"};
+		}
+		else if (pJdbcUrl.startsWith("jdbc:mariadb:"))
+		{
+			sClass = new String[] {"org.mariadb.jdbc.Driver"};
+		}
+		
+		if (sClass != null)
+		{
+			for (int i = 0; i < sClass.length; i++)
+			{
+				try
+				{
+					Class.forName(sClass[i], true, Thread.currentThread().getContextClassLoader());
+					
+					LoggerFactory.getInstance(JdbcDispatcher.class).debug("JDBC driver loaded: ", sClass[i]);
+				}
+				catch (Exception e)
+				{
+					LoggerFactory.getInstance(JdbcDispatcher.class).error(e);
+				}
+			}
+		}
+		else
+		{
+			ServiceLoader<Driver> drivers = ServiceLoader.load(Driver.class, Thread.currentThread().getContextClassLoader());
+
+			for (Driver driver : drivers)
+			{
+				LoggerFactory.getInstance(JdbcDispatcher.class).debug("JDBC driver loaded:", driver.getClass().getName(), 
+																	  ", version: ", Integer.valueOf(driver.getMajorVersion()), ".", Integer.valueOf(driver.getMinorVersion()));
+			}
+		}
+	}
 
     /**
      * Extracts column metadata required by the remote result-set protocol.

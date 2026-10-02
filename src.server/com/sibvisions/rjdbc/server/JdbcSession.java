@@ -18,6 +18,8 @@
  */
 package com.sibvisions.rjdbc.server;
 
+import java.util.Arrays;
+
 /**
  * Provides the {@code jdbc session} functionality.
  * 
@@ -30,6 +32,12 @@ final class JdbcSession
     private final JdbcContext context;
     
     private final JdbcDispatcher dispatcher;
+    
+    private byte[] connectionKey;
+
+    private long requestSequence;
+
+    private long responseSequence;    
     
 
     /**
@@ -74,4 +82,76 @@ final class JdbcSession
     {
         return dispatcher;
     }
+
+    void close()
+    {
+		clearConnectionKey();
+		
+		context.closeAll();
+    }
+    
+    /**
+     * Sets the connection key for the authenticated session.
+     *
+     * @param pConnectionKey the connection key
+     */
+    synchronized void setConnectionKey(byte[] pConnectionKey)
+    {
+        clearConnectionKey();
+        
+        connectionKey = pConnectionKey;
+        requestSequence = 0;
+        responseSequence = 0;
+    }
+
+    /**
+     * Returns the connection key.
+     *
+     * @return the connection key
+     */
+    synchronized byte[] getConnectionKey()
+    {
+        return connectionKey;
+    }
+
+    /**
+     * Accepts the next client request sequence.
+     *
+     * @param pSequence the sequence
+     * @return {@code true} if the sequence is new
+     */
+    synchronized boolean acceptRequestSequence(long pSequence)
+    {
+        if (pSequence != requestSequence + 1)
+        {
+            return false;
+        }
+
+        requestSequence = pSequence;
+
+        return true;
+    }
+
+    /**
+     * Returns the next server response sequence.
+     *
+     * @return the next response sequence
+     */
+    synchronized long nextResponseSequence()
+    {
+        return ++responseSequence;
+    }
+
+    /**
+     * Clears the connection key.
+     */
+    private synchronized void clearConnectionKey()
+    {
+        if (connectionKey != null)
+        {
+            Arrays.fill(connectionKey, (byte)0);
+            
+            connectionKey = null;
+        }
+    }    
 }

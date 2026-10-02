@@ -25,14 +25,21 @@ package com.sibvisions.rjdbc;
  */
 interface RemoteConstants
 {
-    static final String ACTION = "action";
-    static final String ID = "id";
-    static final String URL = "url";
     static final String JDBC_URL = "jdbcUrl";
     static final String HTTP_REQUEST_TIMEOUT = "httpRequestTimeout";
+    static final String SERVER_CERTIFICATE = "serverCertificate";
+    static final String TOKEN = "token";    
     static final String USER = "user";
     static final String PASSWORD = "password";
     static final String PROPERTIES = "properties";
+    
+    static final int  SECURITY_MAGIC = 0x524A4443;
+    static final byte SECURITY_CONNECT = 1;
+    static final byte SECURITY_REQUEST = 2;    
+
+    static final String ACTION = "action";
+    static final String ID = "id";
+    static final String URL = "url";
     static final String SQL = "sql";
     static final String INDEX = "index";
     static final String VALUE = "value";

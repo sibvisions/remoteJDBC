@@ -18,6 +18,9 @@
  */
 package com.sibvisions.rjdbc;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.PublicKey;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -27,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import com.sibvisions.util.type.StringUtil;
 
 /**
  * Remote JDBC implementation of {@code Driver} functionality.
@@ -38,7 +43,7 @@ public final class RemoteDriver implements Driver
     public static final String PREFIX = "jdbc:rjdbc:";
 
     public static final int MAJOR = 1;
-    public static final int MINOR = 10;
+    public static final int MINOR = 12;
 
     public static final String VERSION = "" + MAJOR + "." + MINOR;
 
@@ -101,8 +106,25 @@ public final class RemoteDriver implements Driver
                 throw new SQLException("HTTP request timeout must be >= 0");
             }
         }
+        
+        String certificate = properties.getProperty(RemoteConstants.SERVER_CERTIFICATE);
+        String token = properties.getProperty(RemoteConstants.TOKEN);
 
-        return RemoteConnection.connect(new RemoteClient(endpoint, requestTimeout), endpoint, properties);
+        try
+        {
+        	PublicKey serverPublicKey = null;
+        	
+        	if (!StringUtil.isEmpty(certificate))
+        	{
+        		serverPublicKey = RemoteSecurity.loadPublicKey(certificate);
+        	}
+
+            return RemoteConnection.connect(new RemoteClient(endpoint, requestTimeout, serverPublicKey, token), endpoint, properties);
+        }
+        catch (GeneralSecurityException | IOException e)
+        {
+            throw new SQLException("Could not load remote JDBC server certificate", e);
+        }
     }
 
     /** {@inheritDoc} */
@@ -117,8 +139,11 @@ public final class RemoteDriver implements Driver
     public DriverPropertyInfo[] getPropertyInfo(String pUrl, Properties pInfo)
     {
         List<DriverPropertyInfo> result = new ArrayList<>();
+        
         boolean hasJdbcUrl = false;
         boolean hasHttpRequestTimeout = false;
+        boolean hasServerCertificate = false;
+        boolean hasToken = false;        
 
         if (pInfo != null)
         {
@@ -127,32 +152,55 @@ public final class RemoteDriver implements Driver
                 if (RemoteConstants.JDBC_URL.equals(name))
                 {
                     hasJdbcUrl = true;
-
                 }
                 else if (RemoteConstants.HTTP_REQUEST_TIMEOUT.equals(name))
                 {
                     hasHttpRequestTimeout = true;
-
                 }
+                else if (RemoteConstants.SERVER_CERTIFICATE.equals(name))
+                {
+                    hasServerCertificate = true;
+                }
+                else if (RemoteConstants.TOKEN.equals(name))
+                {
+                    hasToken = true;
+                }                
+                
                 result.add(new DriverPropertyInfo(name, pInfo.getProperty(name)));
             }
 
         }
 
-        // Optional because the server may provide the JDBC URL via web.xml.
-
         if (!hasJdbcUrl)
         {
+        	// Optional because the server may provide the credentials
+        	
             result.add(new DriverPropertyInfo(RemoteConstants.JDBC_URL, null));
-
         }
 
         if (!hasHttpRequestTimeout)
         {
-            result.add(new DriverPropertyInfo(RemoteConstants.HTTP_REQUEST_TIMEOUT,
-                                              String.valueOf(DEFAULT_HTTP_REQUEST_TIMEOUT)));
-
+        	DriverPropertyInfo info = new DriverPropertyInfo(RemoteConstants.HTTP_REQUEST_TIMEOUT, String.valueOf(DEFAULT_HTTP_REQUEST_TIMEOUT));
+        	info.description = "Http request timeout in milliseconds";
+        	
+            result.add(info);
         }
+        
+        if (!hasServerCertificate)
+        {
+        	DriverPropertyInfo info = new DriverPropertyInfo(RemoteConstants.SERVER_CERTIFICATE, null);
+        	info.description = "Public server key for encrypted communication";
+        			
+            result.add(info);
+        }
+
+        if (!hasToken)
+        {
+            DriverPropertyInfo info = new DriverPropertyInfo(RemoteConstants.TOKEN, null);
+            info.description = "Authentication token instead of username/password";
+            
+            result.add(info);
+        }        
 
         return result.toArray(new DriverPropertyInfo[0]);
     }

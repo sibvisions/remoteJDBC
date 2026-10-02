@@ -409,7 +409,7 @@ idleTimeout
 The default idle timeout (in millis) is:
 
 ```text
-30 minutes
+1800000 (30 minutes)
 ```
 
 Active requests are protected from idle-session cleanup.
@@ -442,7 +442,10 @@ This makes it possible to avoid exposing arbitrary database URLs to clients.
 
 For production:
 
-- use HTTPS
+- use HTTPS, if not use `privateKey`
+- use production `environment` (client JDBC settings (url, user, password, properties) will be ignored
+- use `token` instead of username and password
+- define pre-configured JDBC url and credentials
 - configure a strict `allowedJdbcUrls` policy or a fixed server-side `jdbcUrl`
 - do not expose unrestricted database URLs to untrusted clients
 - use database credentials appropriate for the application
@@ -465,10 +468,17 @@ Supported servlet initialization parameters include:
 
 | Parameter | Default | Description |
 |---|---:|---|
-| `jdbcUrl` | empty | Server-side JDBC URL used when the client does not provide one |
+| `environment` | development | System environment (production, test, development, ...) |
 | `allowedJdbcUrls` | empty | Comma-separated allow-list for client-supplied JDBC URLs |
-| `idleTimeoutMinutes` | `30` | Session idle timeout; `0` disables expiration |
-| `clobPrefetchSize` | `102400` | Maximum CLOB length prefetched during row fetching |
+| `jdbcUrl` | empty | Server-side JDBC URL used when the client does not provide one |
+| `jdbcUsername` | empty | Server-side JDBC user name |
+| `jdbcPassword` | empty | Server-side JDBC password |
+| `token` | empty | Token for authentication to avoid username/password |
+| `privateKey` | empty | Private key resource (file, classpath) |
+| `privateKeyPassword` | empty | Private key password |
+| `privateKeyAlias` | empty | Private key password |
+| `idleTimeout` | `180000` (30 min) | Session idle timeout in millis; `0` disables expiration |
+| `clobPrefetchSize` | `102400` (10MB) | Maximum CLOB length prefetched during row fetching |
 
 Example:
 
@@ -477,20 +487,68 @@ Example:
     <servlet-name>rjdbc</servlet-name>
     <servlet-class>com.sibvisions.rjdbc.server.JdbcServlet</servlet-class>
 
+    <!--
+	<init-param>
+	    <param-name>environment</param-name>
+	    <param-value>development</param-value>
+	</init-param>
+
+	<init-param>
+	    <param-name>allowedJdbcUrls</param-name>
+	    <param-value>*</param-value>
+	</init-param>
+	
     <init-param>
         <param-name>jdbcUrl</param-name>
-        <param-value>jdbc:oracle:thin:@//hostname:1521/service</param-value>
+        <param-value>jdbc:oracle:thin:@localhost:1521/XE</param-value>
     </init-param>
+	
+	<init-param>
+	    <param-name>jdbcUrl</param-name>
+	    <param-value></param-value>
+	</init-param>    
+
+	<init-param>
+	    <param-name>jdbcUsername</param-name>
+	    <param-value></param-value>
+	</init-param>
+	
+	<init-param>
+	    <param-name>jdbcPassword</param-name>
+	    <param-value></param-value>
+	</init-param>
+    
+
+	<init-param>
+	    <param-name>token</param-name>
+	    <param-value></param-value>
+	</init-param>
+	
+	<init-param>
+	    <param-name>privateKey</param-name>
+	    <param-value></param-value>
+	</init-param>
+	
+	<init-param>
+	    <param-name>privateKeyPassword</param-name>
+	    <param-value></param-value>
+	</init-param>
+	
+	<init-param>
+	    <param-name>privateKeyAlias</param-name>
+	    <param-value></param-value>
+	</init-param>	
 
     <init-param>
-        <param-name>idleTimeoutMinutes</param-name>
-        <param-value>30</param-value>
+        <param-name>idleTimeout</param-name>
+        <param-value></param-value>
     </init-param>
 
     <init-param>
         <param-name>clobPrefetchSize</param-name>
-        <param-value>102400</param-value>
+        <param-value></param-value>
     </init-param>
+    -->
 </servlet>
 
 <servlet-mapping>

@@ -18,15 +18,18 @@
  */
 package com.sibvisions.rjdbc;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.Savepoint;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.sql.Savepoint;
 import java.sql.Statement;
 
 import org.junit.Test;
@@ -317,19 +320,20 @@ public class ConnectionContractTest
     public void testClientInfoProperties() throws Exception
     {
         try (Connection connection = TestConnection.create())
-        {
+        {	
             try
             {
-                connection.setClientInfo("ApplicationName", "RJdbcTest");
+            	//will work with Oracle
+                connection.setClientInfo("OCSID.CLIENTID", "RJdbcTest");
 
-                String value = connection.getClientInfo("ApplicationName");
+                String value = connection.getClientInfo("OCSID.CLIENTID");
 
                 if (value != null)
                 {
                     assertEquals("RJdbcTest", value);
                 }
                 
-                connection.setClientInfo("ApplicationName", null);
+                connection.setClientInfo("OCSID.CLIENTID", null);
             }
             catch (SQLFeatureNotSupportedException e)
             {

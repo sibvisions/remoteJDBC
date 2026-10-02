@@ -41,10 +41,29 @@ public class JdbcServlet extends HttpServlet
     @Override
     public void init(ServletConfig pConfig)
     {
-        manager = new JdbcSessionManager(pConfig.getInitParameter("allowedJdbcUrls"), 
-        								 pConfig.getInitParameter("jdbcUrl"), 
-        								 pConfig.getInitParameter("idleTimeoutMinutes"), 
-        								 pConfig.getInitParameter("clobPrefetchSize"));
+        JdbcSecurity security;
+        
+        try
+        {
+            security = new JdbcSecurity(pConfig.getInitParameter("privateKey"),
+                                        pConfig.getInitParameter("privateKeyPassword"), 
+                                        pConfig.getInitParameter("privateKeyAlias"),
+                                        pConfig.getInitParameter("token"));
+        }
+        catch (Exception e)
+        {
+            throw new IllegalStateException("Could not initialize remote JDBC security", e);
+        }
+        
+        manager = new JdbcSessionManager(pConfig.getInitParameter("allowedJdbcUrls"),
+                                         pConfig.getInitParameter("jdbcUrl"),
+                                         pConfig.getInitParameter("jdbcUsername"),
+                                         pConfig.getInitParameter("jdbcPassword"),
+                                         pConfig.getInitParameter("idleTimeoutMinutes"),
+                                         pConfig.getInitParameter("clobPrefetchSize"),
+                                         pConfig.getInitParameter("environment"),
+                                         security);
+        
         
         handler = new JdbcHttpHandler(manager);
     }

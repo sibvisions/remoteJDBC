@@ -2,6 +2,7 @@
     <wb-module deploy-name="RemoteJDBC">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src.server"/>
+        <wb-resource deploy-path="/WEB-INF/classes/logging.properties" source-path="/test/logging.properties"/>
         <property name="context-root" value="RemoteJDBC"/>
         <property name="java-output-path" value="/RemoteJDBC/build/classes"/>
     </wb-module>

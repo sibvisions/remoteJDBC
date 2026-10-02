@@ -31,6 +31,14 @@ import java.util.Properties;
  */
 public class TestConnection
 {
+	public static final String TEST_TOKEN = "rjdbc-test-token";
+	
+	public static final String TEST_SERVER_PRIVATE_KEY          = "/com/sibvisions/rjdbc/server/rjdbc-server-test.p12";
+	public static final String TEST_SERVER_PRIVATE_KEY_PASSWORD = "rjdbc-test-password";
+	public static final String TEST_SERVER_PRIVATE_KEY_ALIAS    = "rjdbc-server";
+	
+	public static final String TEST_CLIENT_PUBLIC_KEY  = "/rjdbc-server-test.crt";
+	
 	static Properties propDb;
 	
 	static
@@ -52,7 +60,7 @@ public class TestConnection
 	
 	
 	/**
-	 * Creates the requested test object for use by the tests.
+	 * Creates a remote JDBC connection.
 	 * 
 	 * @return the requested value
 	 * @throws Exception if the operation fails
@@ -63,12 +71,25 @@ public class TestConnection
         prop.put("user", propDb.getProperty("oracle.db.user"));
         prop.put("password", propDb.getProperty("oracle.db.pwd"));
         prop.put("jdbcUrl", propDb.getProperty("oracle.db.url"));
+        prop.put(RemoteConstants.SERVER_CERTIFICATE, TestConnection.TEST_CLIENT_PUBLIC_KEY);
 
-        return DriverManager.getConnection(propDb.getProperty("rjdbc.url"),  prop);
+        return create(prop);
     }
+    
+    /** 
+     * Creates a remote JDBC connection with the supplied properties.
+     *
+     * @param pProperties the remote JDBC properties
+     * @return the resulting connection
+     * @throws Exception if the operation fails
+     */
+    public static Connection create(Properties pProperties) throws Exception
+    {
+        return DriverManager.getConnection(propDb.getProperty("rjdbc.url"), pProperties);
+    }    
 
 	/**
-	 * Creates oracle for use by the tests.
+	 * Creates oracle JDBC connection.
 	 * 
 	 * @return the requested value
 	 * @throws Exception if the operation fails
@@ -78,7 +99,7 @@ public class TestConnection
         Properties prop = new Properties();
         prop.put("user", propDb.getProperty("oracle.db.user"));
         prop.put("password", propDb.getProperty("oracle.db.pwd"));
-
+        
         return DriverManager.getConnection(propDb.getProperty("oracle.db.url"),  prop);
     }
 }

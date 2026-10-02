@@ -75,15 +75,23 @@ public class RemoteConnection implements Connection
         if (jdbcUrl != null && !jdbcUrl.trim().isEmpty())
         {
             req.put(RemoteConstants.JDBC_URL, jdbcUrl);
-
         }
+        
+        String token = pProperties.getProperty(RemoteConstants.TOKEN);
+
+        if (token != null)
+        {
+            req.put(RemoteConstants.TOKEN, token);
+        }        
         
         Map<String,Object> remoteProperties = new HashMap<>();
         
         for (String name : pProperties.stringPropertyNames())
         {
             if (!RemoteConstants.JDBC_URL.equals(name)
-                && !RemoteConstants.HTTP_REQUEST_TIMEOUT.equals(name))
+                && !RemoteConstants.HTTP_REQUEST_TIMEOUT.equals(name)
+                && !RemoteConstants.SERVER_CERTIFICATE.equals(name)
+                && !RemoteConstants.TOKEN.equals(name))                
             {
                 remoteProperties.put(name, pProperties.getProperty(name));
             }
@@ -105,9 +113,7 @@ public class RemoteConnection implements Connection
         }
         else
         {
-            // Backward-compatible with a server that still returns the raw connection id.
             id = RemoteUtil.number(result);
-
         }
 
         return new RemoteConnection(pClient, id);

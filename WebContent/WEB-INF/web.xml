@@ -14,11 +14,48 @@
 		</init-param>
 		    
         <!--  
+		
+		<init-param>
+		    <param-name>environment</param-name>
+		    <param-value>production</param-value>
+		</init-param>
+		
 		<init-param>
 		    <param-name>jdbcUrl</param-name>
-		    <param-value>jdbc:postgresql://db01:5432/mydb</param-value>
+		    <param-value>jdbc:oracle:thin:@localhost:1521/XE</param-value>
 		</init-param>    
-        -->  
+
+		<init-param>
+		    <param-name>jdbcUsername</param-name>
+		    <param-value>...</param-value>
+		</init-param>
+		
+		<init-param>
+		    <param-name>jdbcPassword</param-name>
+		    <param-value>...</param-value>
+		</init-param>
+        -->
+        
+    	<init-param>
+		    <param-name>token</param-name>
+		    <param-value>rjdbc-test-token</param-value>
+		</init-param>
+		
+		<init-param>
+		    <param-name>privateKey</param-name>
+		    <param-value>/com/sibvisions/rjdbc/server/rjdbc-server-test.p12</param-value>
+		</init-param>
+		
+		<init-param>
+		    <param-name>privateKeyPassword</param-name>
+		    <param-value>rjdbc-test-password</param-value>
+		</init-param>
+		
+		<init-param>
+		    <param-name>privateKeyAlias</param-name>
+		    <param-value>rjdbc-server</param-value>
+		</init-param>		
+          
     </servlet>
     
      

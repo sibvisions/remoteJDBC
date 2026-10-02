@@ -85,6 +85,9 @@ public final class JdbcContext
 
     private final String[] allowedJdbcUrls;
     private final String jdbcUrl;
+    private final String jdbcUsername;
+    private final String jdbcPassword;
+    private final String environment;    
     
     private final long idleTimeoutMillis;
     private final long clobPrefetchSize;
@@ -92,63 +95,29 @@ public final class JdbcContext
     private long lastAccess = System.currentTimeMillis();
     
     private int activeRequests;
+
     
-
-    /**
-     * Creates a new {@code JdbcContext} instance.
-     */
-    JdbcContext()
-    {
-        this("", "", DEFAULT_IDLE_TIMEOUT, DEFAULT_CLOB_PREFETCH_SIZE);
-    }
-
     /**
      * Creates a new {@code JdbcContext} instance.
      *
-     * @param pAllowedJdbcUrls the allowed jdbc urls
-     */
-    JdbcContext(String pAllowedJdbcUrls)
-    {
-        this(pAllowedJdbcUrls, "", DEFAULT_IDLE_TIMEOUT, DEFAULT_CLOB_PREFETCH_SIZE);
-    }
-
-    /**
-     * Creates a new {@code JdbcContext} instance.
-     *
-     * @param pAllowedJdbcUrls the allowed jdbc urls
-     * @param pJdbcUrl the jdbc url
-     */
-    JdbcContext(String pAllowedJdbcUrls, String pJdbcUrl)
-    {
-        this(pAllowedJdbcUrls, pJdbcUrl, DEFAULT_IDLE_TIMEOUT, DEFAULT_CLOB_PREFETCH_SIZE);
-    }
-
-    /**
-     * Creates a new {@code JdbcContext} instance.
-     *
-     * @param pAllowedJdbcUrls the allowed jdbc urls
-     * @param pJdbcUrl the jdbc url
-     * @param pIdleTimeout the idle timeout in millis
-     */
-    JdbcContext(String pAllowedJdbcUrls, String pJdbcUrl, long pIdleTimeout)
-    {
-        this(pAllowedJdbcUrls, pJdbcUrl, pIdleTimeout, DEFAULT_CLOB_PREFETCH_SIZE);
-    }
-
-    /**
-     * Creates a new {@code JdbcContext} instance.
-     *
-     * @param pAllowedJdbcUrls the allowed jdbc urls
-     * @param pJdbcUrl the jdbc url
+     * @param pAllowedJdbcUrls the allowed client jdbc urls
+     * @param pJdbcUrl the server jdbc url
+     * @param pJdbcUsername the server jdbc username
+     * @param pJdbcPassword the server jdbc password
      * @param pIdleTimeout the idle timeout in millis
      * @param pClobPrefetchSize the clob prefetch size
+     * @param pEnvironment the server environment
      */
-    JdbcContext(String pAllowedJdbcUrls, String pJdbcUrl, long pIdleTimeout, long pClobPrefetchSize)
+    JdbcContext(String pAllowedJdbcUrls, String pJdbcUrl, String pJdbcUsername, String pJdbcPassword,
+                long pIdleTimeout, long pClobPrefetchSize, String pEnvironment)
     {
         allowedJdbcUrls = pAllowedJdbcUrls == null ? new String[0] : pAllowedJdbcUrls.trim().split(",");
-        
+
         jdbcUrl = pJdbcUrl == null ? "" : pJdbcUrl.trim();
-        
+        jdbcUsername = pJdbcUsername == null ? "" : pJdbcUsername;
+        jdbcPassword = pJdbcPassword == null ? "" : pJdbcPassword;
+        environment = pEnvironment == null || pEnvironment.trim().isEmpty() ? "test" : pEnvironment.trim();
+
         idleTimeoutMillis = pIdleTimeout <= 0 ? 0 : pIdleTimeout;
         clobPrefetchSize = Math.max(0, pClobPrefetchSize);
     }
@@ -241,6 +210,46 @@ public final class JdbcContext
     {
         return jdbcUrl;
     }
+    
+    /**
+     * Returns whether the client JDBC configuration may be used.
+     *
+     * @return whether the client configuration is allowed
+     */
+    boolean isClientJdbcConfigurationAllowed()
+    {
+        return !JdbcSecurity.isProdEnvironment(environment);
+    }
+
+    /**
+     * Returns the server JDBC username.
+     *
+     * @return the JDBC username
+     */
+    String getJdbcUsername()
+    {
+        return jdbcUsername;
+    }
+
+    /**
+     * Returns the server JDBC password.
+     *
+     * @return the JDBC password
+     */
+    String getJdbcPassword()
+    {
+        return jdbcPassword;
+    }
+
+    /**
+     * Returns the server environment.
+     *
+     * @return the environment
+     */
+    String getEnvironment()
+    {
+        return environment;
+    }    
 
 	/**
 	 * Returns maximum CLOB length in characters that is pre-fetched with fetchRows().
