@@ -921,27 +921,44 @@ for (Driver driver : drivers)
         ResultSetMetaData metadata = pResultSet.getMetaData();
         
         int columns = metadata.getColumnCount();
-        int[] sqlTypes = new int[columns];
         
-        String[] typeNames = new String[columns];
-
-        for (int i = 1; i <= columns; i++)
+        Object[] row;
+        
+        if (columns >= 0)
         {
-            sqlTypes[i - 1] = metadata.getColumnType(i);
-            typeNames[i - 1] = metadata.getColumnTypeName(i);
+	        int[] sqlTypes = new int[columns];
+	        
+	        String[] typeNames = new String[columns];
+	
+	        for (int i = 1; i <= columns; i++)
+	        {
+	            sqlTypes[i - 1] = metadata.getColumnType(i);
+	            typeNames[i - 1] = metadata.getColumnTypeName(i);
+	        }
+	
+	        ResultSetDelegate delegate = new ResultSetDelegate(context);
+	        
+	        row = new Object[columns];
+	        
+	        for (int i = 1; i <= columns; i++)
+	        {
+	            row[i - 1] = delegate.remoteResultSetValue(pResultSet, i, pResultSet.getObject(i), sqlTypes[i - 1], typeNames[i - 1]);
+	        }
         }
-
-        ResultSetDelegate delegate = new ResultSetDelegate(context);
-        
-        Object[] row = new Object[columns];
-        
-        for (int i = 1; i <= columns; i++)
+        else
         {
-            row[i - 1] = delegate.remoteResultSetValue(pResultSet, i, pResultSet.getObject(i), sqlTypes[i - 1], typeNames[i - 1]);
+        	if (pResultSet.next())
+        	{
+        		throw new SQLException("Invalid ResultSetMetaData: getColumnCount() returned " + columns + " although the ResultSet contains a row");
+        	}
+        	else
+        	{
+        		row = null;
+        	}
         }
         
         Map<String,Object> result = new HashMap<>();
-        result.put("rows", new Object[][] { row });
+        result.put("rows", row != null ? new Object[][] {row} : new Object[1][0]);
 
         return result;
     }
@@ -949,51 +966,74 @@ for (Driver driver : drivers)
     /**
      * Fetches up to the requested number of rows from the result set for transmission to the client.
      *
-     * @param pRs the JDBC result set
+     * @param pResultSet the JDBC result set
      * @param pMax the maximum number of rows
      * @return the resulting JDBC value
      * @throws SQLException if the JDBC operation cannot be completed
      */
-	private Map<String,Object> fetchRows(ResultSet pRs, int pMax) throws SQLException
+	private Map<String,Object> fetchRows(ResultSet pResultSet, int pMax) throws SQLException
     {
-        int fetch = Math.min(Math.max(1, pMax), MAX_FETCH_ROWS);
-        
-        List<Object[]> rows = new ArrayList<>(fetch + 1);
-        
-        ResultSetMetaData metadata = pRs.getMetaData();
+		int fetch = Math.min(Math.max(1, pMax), MAX_FETCH_ROWS);
+
+		ResultSetMetaData metadata = pResultSet.getMetaData();
         
         int columns = metadata.getColumnCount();
-        int[] sqlTypes = new int[columns];
+
+        List<Object[]> rows;
         
-        String[] typeNames = new String[columns];
-
-        for (int i = 1; i <= columns; i++)
+		// Some JDBC drivers may return a synthetic empty ResultSet from
+		// executeQuery() for statements that do not produce a tabular
+		// result (like ALTER SESSION SET ... in Oracle). 
+		// Such ResultSets may report a negative column count.
+        //
+		// We don't build column metadata in this case.
+        if (columns >= 0)
         {
-            sqlTypes[i - 1] = metadata.getColumnType(i);
-            typeNames[i - 1] = metadata.getColumnTypeName(i);
+			rows = new ArrayList<>(fetch + 1);
+        
+	        int[] sqlTypes = new int[columns];
+	        
+	        String[] typeNames = new String[columns];
+	
+	        for (int i = 1; i <= columns; i++)
+	        {
+	            sqlTypes[i - 1] = metadata.getColumnType(i);
+	            typeNames[i - 1] = metadata.getColumnTypeName(i);
+	        }
+	
+	        ResultSetDelegate delegate = new ResultSetDelegate(context);
+	
+	        // Read one extra row. This lets the client know whether the current
+	        // block contains the end of the ResultSet without requiring a second
+	        // network round-trip. The extra row is kept in the client cache and
+	        // is therefore not lost.
+	        while (rows.size() <= fetch && pResultSet.next())
+	        {
+	            Object[] row = new Object[columns];
+	            
+	            for (int i=1; i<=columns; i++)
+	            {
+	                row[i - 1] = delegate.remoteResultSetValue(pResultSet, i, pResultSet.getObject(i), sqlTypes[i - 1], typeNames[i - 1]);
+	            }
+	            
+	            rows.add(row);
+	        }
         }
-
-        ResultSetDelegate delegate = new ResultSetDelegate(context);
-
-        // Read one extra row. This lets the client know whether the current
-        // block contains the end of the ResultSet without requiring a second
-        // network round-trip. The extra row is kept in the client cache and
-        // is therefore not lost.
-        while (rows.size() <= fetch && pRs.next())
+        else
         {
-            Object[] row = new Object[columns];
-            
-            for (int i=1; i<=columns; i++)
-            {
-                row[i - 1] = delegate.remoteResultSetValue(pRs, i, pRs.getObject(i), sqlTypes[i - 1], typeNames[i - 1]);
-            }
-            
-            rows.add(row);
+        	if (pResultSet.next())
+        	{
+        		throw new SQLException("Invalid ResultSetMetaData: getColumnCount() returned " + columns + " although the ResultSet contains a row");
+        	}
+        	else
+        	{
+        		rows = null;	
+        	}
         }
 
         Map<String,Object> result = new HashMap<>();
-        result.put("rows", rows.toArray(new Object[rows.size()][]));
-        result.put("endOfRows", rows.size() <= fetch);
+        result.put("rows", rows != null ? rows.toArray(new Object[rows.size()][]) : new Object[0][]);
+        result.put("endOfRows", rows == null || rows.size() <= fetch);
 
         return result;
     }
