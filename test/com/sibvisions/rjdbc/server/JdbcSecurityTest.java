@@ -52,7 +52,7 @@ public class JdbcSecurityTest
         Path keyStore = copyKeyStore();
         
         JdbcSecurity security = new JdbcSecurity(keyStore.toString(), 
-        										 TestConnection.TEST_SERVER_PRIVATE_KEY_PASSWORD, TestConnection.TEST_SERVER_PRIVATE_KEY_ALIAS, "a-token");
+        										 TestConnection.TEST_SERVER_PRIVATE_KEY_PASSWORD, TestConnection.TEST_SERVER_PRIVATE_KEY_ALIAS, "a-token", null);
         
         byte[] connectionKey = RemoteSecurityWrapper.createConnectionKey();
         byte[] payload = "connect".getBytes(StandardCharsets.UTF_8);
@@ -87,7 +87,7 @@ public class JdbcSecurityTest
     {
         Path keyStore = copyKeyStore();
         
-        JdbcSecurity security = new JdbcSecurity(keyStore.toString(), TestConnection.TEST_SERVER_PRIVATE_KEY_PASSWORD, TestConnection.TEST_SERVER_PRIVATE_KEY_ALIAS, null);
+        JdbcSecurity security = new JdbcSecurity(keyStore.toString(), TestConnection.TEST_SERVER_PRIVATE_KEY_PASSWORD, TestConnection.TEST_SERVER_PRIVATE_KEY_ALIAS, null, null);
         
         byte[] connectionKey = RemoteSecurityWrapper.createConnectionKey();
         byte[] payload = "connect".getBytes(StandardCharsets.UTF_8);
@@ -120,7 +120,7 @@ public class JdbcSecurityTest
     public void testWrongAuthenticationToken() throws Exception
     {
         Path keyStore = copyKeyStore();
-        JdbcSecurity security = new JdbcSecurity(keyStore.toString(), TestConnection.TEST_SERVER_PRIVATE_KEY_PASSWORD, TestConnection.TEST_SERVER_PRIVATE_KEY_ALIAS, "a-token");
+        JdbcSecurity security = new JdbcSecurity(keyStore.toString(), TestConnection.TEST_SERVER_PRIVATE_KEY_PASSWORD, TestConnection.TEST_SERVER_PRIVATE_KEY_ALIAS, "a-token", null);
         
         byte[] connectionKey = RemoteSecurityWrapper.createConnectionKey();
         byte[] payload = "connect".getBytes(StandardCharsets.UTF_8);
@@ -160,7 +160,7 @@ public class JdbcSecurityTest
     public void testTamperedAuthenticationData() throws Exception
     {
         Path keyStore = copyKeyStore();
-        JdbcSecurity security = new JdbcSecurity(keyStore.toString(), TestConnection.TEST_SERVER_PRIVATE_KEY_PASSWORD, TestConnection.TEST_SERVER_PRIVATE_KEY_ALIAS, "a-token");
+        JdbcSecurity security = new JdbcSecurity(keyStore.toString(), TestConnection.TEST_SERVER_PRIVATE_KEY_PASSWORD, TestConnection.TEST_SERVER_PRIVATE_KEY_ALIAS, "a-token", null);
         
         byte[] connectionKey = RemoteSecurityWrapper.createConnectionKey();
         byte[] payload = "connect".getBytes(StandardCharsets.UTF_8);

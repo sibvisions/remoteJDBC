@@ -34,6 +34,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.sibvisions.util.log.LoggerFactory;
 import com.sibvisions.util.type.ResourceUtil;
 import com.sibvisions.util.type.StringUtil;
 
@@ -61,6 +62,8 @@ final class JdbcSecurity
 
     private final PrivateKey privateKey;
 
+    private final ITokenManager tokenManager;
+
     private final byte[] token;
     
 
@@ -71,12 +74,31 @@ final class JdbcSecurity
      * @param pKeyStorePassword the key store password
      * @param pKeyAlias the private key alias, or {@code null}
      * @param pToken the optional authentication token
+     * @param pTokenManager the optional token manager for authentication
      * @throws Exception if the key store cannot be loaded
      */
-    JdbcSecurity(String pKeyStore, String pKeyStorePassword, String pKeyAlias, String pToken) throws Exception
+    JdbcSecurity(String pKeyStore, String pKeyStorePassword, String pKeyAlias, String pToken, String pTokenManager) throws Exception
     {
         privateKey = loadPrivateKey(pKeyStore, pKeyStorePassword, pKeyAlias);
         token = StringUtil.isEmpty(pToken) ? null : pToken.getBytes(StandardCharsets.UTF_8);
+        
+    	ITokenManager newManager = null;
+
+    	if (!StringUtil.isEmpty(pTokenManager))
+        {
+        	try
+        	{
+		        Class<?> cls = Class.forName(pTokenManager, true, Thread.currentThread().getContextClassLoader());
+		        
+		        newManager = (ITokenManager)cls.getConstructor().newInstance();
+        	}
+        	catch (Exception e)
+        	{
+        		LoggerFactory.getInstance(JdbcSecurity.class).error(e);
+        	}
+        }
+    	
+        tokenManager = newManager;
     }
 
     /**
@@ -96,7 +118,7 @@ final class JdbcSecurity
      */
     boolean isAuthenticationEnabled()
     {
-        return token != null;
+        return token != null || tokenManager != null;
     }
 
     /**
@@ -113,11 +135,13 @@ final class JdbcSecurity
         {
         	boolean isProd = isProdEnvironment(pEnvironment);
         	
-            if (token == null)
+        	byte[] authToken = getToken(pEnvironment);
+        	
+            if (authToken == null)
             {
             	if (isProd)
             	{
-            		throw new SecurityException("Remote JDBC authentication without token failed");
+            		throw new SecurityException("Authentication token is not configured");
             	}
             	
                 if (suppliedToken != null && suppliedToken.length > 0)
@@ -133,12 +157,12 @@ final class JdbcSecurity
             		throw new SecurityException("Remote JDBC authentication without token failed");
             	}
             	
-            	if (!MessageDigest.isEqual(token, suppliedToken))
+            	if (!MessageDigest.isEqual(authToken, suppliedToken))
             	{
             		throw new SecurityException("Remote JDBC authentication with token failed");
             	}
             }
-            else if (!StringUtil.isEmpty(pToken) && !MessageDigest.isEqual(token, suppliedToken))
+            else if (!StringUtil.isEmpty(pToken) && !MessageDigest.isEqual(authToken, suppliedToken))
             {
             	//not in prod, but token available -> checked
         		throw new SecurityException("Remote JDBC authentication with token failed");
@@ -226,11 +250,13 @@ final class JdbcSecurity
 
         	boolean isProd = isProdEnvironment(pEnvironment);
         	
-            if (token == null)
+        	byte[] authToken = getToken(pEnvironment);
+        	
+            if (authToken == null)
             {
             	if (isProd)
             	{
-            		throw new SecurityException("Remote JDBC authentication without token failed");
+	        		throw new SecurityException("Authentication token is not configured");
             	}
             	
                 if (suppliedTokenLength > 0)
@@ -247,12 +273,12 @@ final class JdbcSecurity
             		throw new SecurityException("Remote JDBC authentication without token failed");
             	}
             	
-            	if (!MessageDigest.isEqual(token, suppliedToken))
+            	if (!MessageDigest.isEqual(authToken, suppliedToken))
             	{
             		throw new SecurityException("Remote JDBC authentication with token failed");
             	}
             }
-            else if (suppliedTokenLength > 0 && !MessageDigest.isEqual(token, suppliedToken))
+            else if (suppliedTokenLength > 0 && !MessageDigest.isEqual(authToken, suppliedToken))
             {
             	//not in prod, but token available -> checked
         		throw new SecurityException("Remote JDBC authentication with token failed");
@@ -502,6 +528,30 @@ final class JdbcSecurity
         cipher.updateAAD(pAad);
 
         return cipher.doFinal(pData);
+    }
+    
+    /**
+     * Gets authentication token for specific environment. If token manager is defined, it will be preferred.
+     * Otherwise the configured token will be used.
+     * 
+     * @param pEnvironment the environment
+     * @return the authentication token
+     */
+    private byte[] getToken(String pEnvironment)
+    {
+    	if (tokenManager != null)
+    	{
+    		try
+    		{
+    			return tokenManager.getToken(token, pEnvironment);
+    		}
+    		catch (Exception e)
+    		{
+    			LoggerFactory.getInstance(JdbcSecurity.class).error(e);
+       		}
+    	}
+    	
+		return token;
     }
     
     /**

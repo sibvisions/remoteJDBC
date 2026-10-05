@@ -19,7 +19,7 @@
 	
 	<licenses>
 		<license>
-		<name>GNU GENERAL PUBLIC LICENSE, Version 3</name>
+		<name>GNU GPL 3.0</name>
 		<url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
 		</license>
 	</licenses>
@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>com.sibvisions.jvx</groupId>
 			<artifactId>jvxserialize</artifactId>
-			<version>3.5</version>
+			<version>3.5.1</version>
 		</dependency>
 	</dependencies>
 	

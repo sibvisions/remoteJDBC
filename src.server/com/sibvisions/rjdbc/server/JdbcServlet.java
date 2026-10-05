@@ -48,7 +48,8 @@ public class JdbcServlet extends HttpServlet
             security = new JdbcSecurity(pConfig.getInitParameter("privateKey"),
                                         pConfig.getInitParameter("privateKeyPassword"), 
                                         pConfig.getInitParameter("privateKeyAlias"),
-                                        pConfig.getInitParameter("token"));
+                                        pConfig.getInitParameter("token"),
+                                        pConfig.getInitParameter("tokenManager"));
         }
         catch (Exception e)
         {

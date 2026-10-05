@@ -116,7 +116,7 @@ public final class JdbcContext
         jdbcUrl = pJdbcUrl == null ? "" : pJdbcUrl.trim();
         jdbcUsername = pJdbcUsername == null ? "" : pJdbcUsername;
         jdbcPassword = pJdbcPassword == null ? "" : pJdbcPassword;
-        environment = pEnvironment == null || pEnvironment.trim().isEmpty() ? "test" : pEnvironment.trim();
+        environment = StringUtil.isEmpty(pEnvironment) ? JdbcSecurity.ENVIRONMENT_DEV : pEnvironment.trim();
 
         idleTimeoutMillis = pIdleTimeout <= 0 ? 0 : pIdleTimeout;
         clobPrefetchSize = Math.max(0, pClobPrefetchSize);
