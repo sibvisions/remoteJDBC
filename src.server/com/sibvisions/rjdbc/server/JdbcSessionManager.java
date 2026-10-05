@@ -189,6 +189,49 @@ final class JdbcSessionManager
      * Handles the begin request operation for the remote JDBC resource.
      *
      * @param pId the remote resource identifier
+     * @pSequence the communication sequence number or {@code -1} to ignore sequence
+     * @return the resulting JDBC value
+     * @throws SQLException if the JDBC operation cannot be completed
+     */
+    JdbcSession beginRequest(JdbcSession pSession) throws SQLException
+    {
+    	return beginRequest(pSession, -1);
+    }    
+    
+    /**
+     * Handles the begin request operation for the remote JDBC resource.
+     *
+     * @param pId the remote resource identifier
+     * @pSequence the communication sequence number or {@code -1} to ignore sequence
+     * @return the resulting JDBC value
+     * @throws SQLException if the JDBC operation cannot be completed
+     */
+    JdbcSession beginRequest(JdbcSession pSession, long pSequence) throws SQLException
+    {
+        synchronized (pSession)
+        {
+            if (sessions.get(pSession.getId()) != pSession)
+            {
+                throw new JdbcSessionExpiredException(pSession.getId());
+            }
+
+            if (pSequence >= 0 && !pSession.acceptRequestSequence(pSequence))
+            {
+                throw new SecurityException("Invalid remote JDBC request sequence");
+            }
+
+            // The cleanup and close operations use the same lock, so a session
+            // cannot be closed between sequence validation and beginRequest().
+            pSession.getContext().beginRequest();
+
+            return pSession;
+        }
+    }
+    
+    /**
+     * Handles the begin request operation for the remote JDBC resource.
+     *
+     * @param pId the remote resource identifier
      * @return the resulting JDBC value
      * @throws SQLException if the JDBC operation cannot be completed
      */
@@ -196,43 +239,22 @@ final class JdbcSessionManager
     {
         JdbcSession session = get(pId);
         
-        synchronized (session)
-        {
-            if (sessions.get(pId) != session)
-            {
-                throw new JdbcSessionExpiredException(pId);
-            }
-
-            // The cleanup and close operations use the same lock, so a session
-            // cannot be closed between lookup and beginRequest()
-            session.getContext().beginRequest();
-
-            return session;
-        }
+        return beginRequest(session, -1);
     }
     
+    /**
+     * Handles the begin request operation for the remote JDBC resource.
+     *
+     * @param pId the remote resource identifier
+     * @pSequence the communication sequence number or {@code -1} to ignore sequence
+     * @return the resulting JDBC value
+     * @throws SQLException if the JDBC operation cannot be completed
+     */
     JdbcSession beginRequest(long pId, long pSequence) throws SQLException
     {
         JdbcSession session = get(pId);
-
-        synchronized (session)
-        {
-            if (sessions.get(pId) != session)
-            {
-                throw new JdbcSessionExpiredException(pId);
-            }
-
-            if (!session.acceptRequestSequence(pSequence))
-            {
-                throw new SecurityException("Invalid remote JDBC request sequence");
-            }
-
-            // The cleanup and close operations use the same lock, so a session
-            // cannot be closed between sequence validation and beginRequest().
-            session.getContext().beginRequest();
-
-            return session;
-        }
+        
+        return beginRequest(session, pSequence);
     }    
 
     /**

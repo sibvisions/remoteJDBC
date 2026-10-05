@@ -32,6 +32,30 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.sibvisions.rad.remote.UniversalSerializer;
+import com.sibvisions.rad.remote.serializer.BooleanArraySerializer;
+import com.sibvisions.rad.remote.serializer.BooleanSerializer;
+import com.sibvisions.rad.remote.serializer.ByteArraySerializer;
+import com.sibvisions.rad.remote.serializer.ByteSerializer;
+import com.sibvisions.rad.remote.serializer.CharArraySerializer;
+import com.sibvisions.rad.remote.serializer.CharacterSerializer;
+import com.sibvisions.rad.remote.serializer.DateSerializer;
+import com.sibvisions.rad.remote.serializer.DecimalSerializer;
+import com.sibvisions.rad.remote.serializer.DoubleArraySerializer;
+import com.sibvisions.rad.remote.serializer.DoubleSerializer;
+import com.sibvisions.rad.remote.serializer.FloatArraySerializer;
+import com.sibvisions.rad.remote.serializer.FloatSerializer;
+import com.sibvisions.rad.remote.serializer.IntArraySerializer;
+import com.sibvisions.rad.remote.serializer.IntegerSerializer;
+import com.sibvisions.rad.remote.serializer.ListSerializer;
+import com.sibvisions.rad.remote.serializer.LongArraySerializer;
+import com.sibvisions.rad.remote.serializer.LongSerializer;
+import com.sibvisions.rad.remote.serializer.MapSerializer;
+import com.sibvisions.rad.remote.serializer.NullSerializer;
+import com.sibvisions.rad.remote.serializer.SetSerializer;
+import com.sibvisions.rad.remote.serializer.ShortArraySerializer;
+import com.sibvisions.rad.remote.serializer.ShortSerializer;
+import com.sibvisions.rad.remote.serializer.StringSerializer;
+import com.sibvisions.rad.remote.serializer.ThrowableSerializer;
 import com.sibvisions.util.log.LoggerFactory;
 
 /**
@@ -51,6 +75,7 @@ final class JdbcHttpHandler
     
     private final JdbcSessionManager sessions;
     
+    private final UniversalSerializer serializerConnect;
     private final UniversalSerializer serializer = new UniversalSerializer();
     
 
@@ -62,6 +87,31 @@ final class JdbcHttpHandler
     JdbcHttpHandler(JdbcSessionManager pSessions)
     {
         sessions = pSessions;
+        
+        serializerConnect = new UniversalSerializer(
+        		new NullSerializer(),
+        		new ByteSerializer(),
+        		new CharacterSerializer(),
+        		new BooleanSerializer(),
+        		new FloatSerializer(),
+        		new DoubleSerializer(),
+        		new ShortSerializer(),
+        		new IntegerSerializer(), 
+        		new LongSerializer(),
+        		new DateSerializer(),
+        		new DecimalSerializer(),
+        		new StringSerializer(),
+        		new ByteArraySerializer(),
+        		new IntArraySerializer(),
+        		new CharArraySerializer(),
+        		new ListSerializer(),
+        		new MapSerializer(),
+        		new BooleanArraySerializer(),
+				new FloatArraySerializer(),
+				new DoubleArraySerializer(),
+				new ShortArraySerializer(),
+				new LongArraySerializer(),
+        		new SetSerializer());
     }
 
     /**
@@ -112,7 +162,7 @@ final class JdbcHttpHandler
                     byte[] connectMarker = new byte[markerLength];
                     in.readFully(connectMarker);
 
-                    Map<String,Object> candidate = readMap(connectMarker);
+                    Map<String,Object> candidate = readMap(serializerConnect, connectMarker);
                     Arrays.fill(connectMarker, (byte)0);
 
                     if (!"connect".equals(candidate.get("action")))
@@ -137,7 +187,7 @@ final class JdbcHttpHandler
 
                     try
                     {
-                        request = readMap(authentication.getPayload());
+                        request = readMap(serializerConnect, authentication.getPayload());
 
                         if (!"connect".equals(request.get("action")))
                         {
@@ -189,7 +239,7 @@ final class JdbcHttpHandler
             {
             	LoggerFactory.getInstance(getClass()).debug("Standard communication");
             	
-                request = readMap(body);
+                request = readMap(serializer, body);
                 
                 Object action = request.get("action");
 
@@ -211,7 +261,14 @@ final class JdbcHttpHandler
                 {
                     long sessionId = ((Number)request.get("sessionId")).longValue();
                     
-                    session = sessions.beginRequest(sessionId);
+                    session = sessions.get(sessionId);
+                    
+                    if (session.getConnectionKey() != null)
+                    {
+                    	throw new SecurityException("Communication upgrade is not possible");
+                    }
+                    
+                    sessions.beginRequest(session);
                     
                     requestStarted = true;
                 }
@@ -297,152 +354,6 @@ final class JdbcHttpHandler
     }
     
     /**
-     * Handles a remote JDBC HTTP request.
-     *
-     * @param pInput the input
-     * @param pOutput the output
-     * @throws IOException if the operation fails
-     	*/
-    @SuppressWarnings("unchecked")
-    void handleOld(InputStream pInput, OutputStream pOutput) throws IOException
-    {
-        LimitedInputStream limitedInput = new LimitedInputStream(pInput, MAX_REQUEST_SIZE);
-        
-        DataInputStream in = new DataInputStream(limitedInput);
-        
-        Map<String,Object> request;
-
-        try
-        {
-            Object value = serializer.read(in);
-
-            if (!(value instanceof Map))
-            {
-                throw new IOException("Remote JDBC request is not a Map");
-            }
-
-            request = (Map<String,Object>)value;
-
-            if (limitedInput.isExceeded())
-            {
-                throw new IOException("Remote JDBC request exceeds maximum size");
-            }
-        }
-        catch (Exception e)
-        {
-            if (limitedInput.isExceeded())
-            {
-                throw new IOException("Remote JDBC request exceeds maximum size", e);
-            }
-
-            throw new IOException("Remote JDBC request could not be read", e);
-        }
-        finally
-        {
-            if (!limitedInput.isDrained())
-            {
-                try
-                {
-                    limitedInput.drain();
-                }
-                catch (IOException ignored)
-                {
-                }
-            }
-        }
-
-        String action = (String)request.get("action");
-        
-        JdbcSession session = null;
-        
-        boolean created = false;
-        
-        try
-        {
-            if ("connect".equals(action))
-            {
-                session = sessions.create();
-                
-                created = true;
-                
-                request.put("sessionId", session.getId());
-            }
-            else if ("closeSession".equals(action))
-            {
-                Object sessionValue = request.get("sessionId");
-
-                if (!(sessionValue instanceof Number))
-                {
-                    throw new IOException("Missing JDBC session id");
-                }
-                
-                sessions.close(((Number)sessionValue).longValue());
-                
-                Map<String,Object> response = new java.util.HashMap<>();
-                response.put("success", Boolean.TRUE);
-                
-                DataOutputStream out = new DataOutputStream(pOutput);
-                serializer.write(out, response);
-                out.flush();
-
-                return;
-            }
-            else
-            {
-                Object sessionValue = request.get("sessionId");
-
-                if (!(sessionValue instanceof Number))
-                {
-                    throw new IOException("Missing JDBC session id");
-                }
-                
-                session = sessions.beginRequest(((Number)sessionValue).longValue());
-            }
-
-            if (created)
-            {
-                session.getContext().beginRequest();
-            }
-            
-            try
-            {
-                Map<String,Object> response = session.getDispatcher().execute(request);
-
-                if (created)
-                {
-                    response.put("sessionId", session.getId());
-                }
-
-                DataOutputStream out = new DataOutputStream(pOutput);
-                serializer.write(out, response);
-                out.flush();
-            }
-            finally
-            {
-                session.getContext().endRequest();
-            }
-        }
-        catch (JdbcSessionExpiredException e)
-        {
-            if (created && session != null)
-            {
-                sessions.close(session.getId());
-            }
-            
-            throw new JdbcHttpException(HttpURLConnection.HTTP_GONE, e.getMessage(), e);
-        }
-        catch (Exception e)
-        {
-            if (created && session != null)
-            {
-                sessions.close(session.getId());
-            }
-            
-            throw new IOException("Remote JDBC request failed", e);
-        }
-    }
-    
-    /**
      * Decrypts an encrypted request envelope.
      *
      * @param pHeader the serialized encrypted request header
@@ -455,6 +366,15 @@ final class JdbcHttpHandler
         DataInputStream header = new DataInputStream(new ByteArrayInputStream(pHeader));
         
         long sessionId = header.readLong();
+        
+        JdbcSession session = sessions.get(sessionId);
+
+        //not allowed to switch from encrypted to plain text
+        if (session.getConnectionKey() == null)
+        {
+        	throw new SecurityException("Communication downgrade is not possible");
+        }
+        
         long sequence = header.readLong();
         
         int nonceLength = header.readInt();
@@ -477,7 +397,6 @@ final class JdbcHttpHandler
         byte[] encrypted = new byte[payloadLength];
         header.readFully(encrypted);
 
-        JdbcSession session = sessions.get(sessionId);
         byte[] connectionKey = session.getConnectionKey();
 
         if (connectionKey == null)
@@ -494,9 +413,9 @@ final class JdbcHttpHandler
         try
         {
         	//will throw an exception, so before beginRequest
-        	Object value = readMap(plain);
+        	Object value = readMap(serializer, plain);
 
-            sessions.beginRequest(sessionId, sequence);
+            sessions.beginRequest(session, sequence);
 
             return new EncryptedRequest(session, (Map<String,Object>)value);
         }
@@ -637,14 +556,15 @@ final class JdbcHttpHandler
     /**
      * Reads a serialized request map.
      *
+     * @param pSerializer the serializer to use
      * @param pData the serialized map
      * @return the map
      * @throws Exception if the map cannot be read
      */
     @SuppressWarnings("unchecked")
-    private Map<String, Object> readMap(byte[] pData) throws Exception
+    private Map<String, Object> readMap(UniversalSerializer pSerializer, byte[] pData) throws Exception
     {
-        Object value = serializer.read(new DataInputStream(new ByteArrayInputStream(pData)));
+        Object value = pSerializer.read(new DataInputStream(new ByteArrayInputStream(pData)));
 
         if (!(value instanceof Map))
         {
