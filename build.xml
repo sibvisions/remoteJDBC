@@ -178,6 +178,8 @@ along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
         <include name="**/*" />
         <exclude name="**/*.java" />
         <exclude name="**/package.html" />
+      	<exclude name="*.crt" />
+      	<exclude name="**/*.crt" />
       </fileset>
     </copy>
   	
@@ -199,6 +201,8 @@ along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
         <include name="**/*" />
         <exclude name="**/*.java" />
         <exclude name="**/package.html" />
+      	<exclude name="*.p12" />
+      	<exclude name="**/*.p12" />
       </fileset>
     </copy>
   	
@@ -230,6 +234,8 @@ along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
         <include name="**/*" />
         <exclude name="**/*.java" />
         <exclude name="**/package.html" />
+      	<exclude name="*.p12" />
+      	<exclude name="**/*.p12" />
       </fileset>
     </copy>  	
 
@@ -478,15 +484,15 @@ along with RemoteJDBC. If not, see <https://www.gnu.org/licenses/>.
     </zip>
     
     <zip destfile="${mvn.driver.sources.jar}">
-      <zipfileset dir="${src.jdbc}/" includes="**" excludes="**/package.html" prefix=""/>
+      <zipfileset dir="${src.jdbc}/" includes="**" excludes="**/package.html,*.crt,**/*.crt" prefix=""/>
     </zip>
 
     <zip destfile="${mvn.javax.sources.jar}">
-      <zipfileset dir="${src.server}/" includes="**" excludes="**/package.html" prefix=""/>
+      <zipfileset dir="${src.server}/" includes="**" excludes="**/package.html,*.p12,**/*.p12" prefix=""/>
     </zip>
 
     <zip destfile="${mvn.jakarta.sources.jar}">
-      <zipfileset dir="${src.jakarta}/" includes="**" excludes="**/package.html" prefix=""/>
+      <zipfileset dir="${src.jakarta}/" includes="**" excludes="**/package.html,*.p12,**/*.p12" prefix=""/>
     </zip>
   	
     <zip destfile="${mvn.driver.javadoc.jar}">
