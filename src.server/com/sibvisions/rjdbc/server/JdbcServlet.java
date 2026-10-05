@@ -59,7 +59,7 @@ public class JdbcServlet extends HttpServlet
                                          pConfig.getInitParameter("jdbcUrl"),
                                          pConfig.getInitParameter("jdbcUsername"),
                                          pConfig.getInitParameter("jdbcPassword"),
-                                         pConfig.getInitParameter("idleTimeoutMinutes"),
+                                         pConfig.getInitParameter("idleTimeout"),
                                          pConfig.getInitParameter("clobPrefetchSize"),
                                          pConfig.getInitParameter("environment"),
                                          security);
