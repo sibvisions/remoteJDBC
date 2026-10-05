@@ -55,7 +55,6 @@ import com.sibvisions.rad.remote.serializer.SetSerializer;
 import com.sibvisions.rad.remote.serializer.ShortArraySerializer;
 import com.sibvisions.rad.remote.serializer.ShortSerializer;
 import com.sibvisions.rad.remote.serializer.StringSerializer;
-import com.sibvisions.rad.remote.serializer.ThrowableSerializer;
 import com.sibvisions.util.log.LoggerFactory;
 
 /**
