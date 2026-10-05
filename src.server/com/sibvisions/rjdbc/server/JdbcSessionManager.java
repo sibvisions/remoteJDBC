@@ -73,7 +73,7 @@ final class JdbcSessionManager
         jdbcUrl = pJdbcUrl;
         jdbcUsername = pJdbcUsername;
         jdbcPassword = pJdbcPassword;
-        environment = StringUtil.isEmpty(pEnvironment) ? JdbcSecurity.ENVIRONMENT_DEV : pEnvironment.trim();
+        environment = StringUtil.isEmpty(pEnvironment) ? JdbcSecurity.ENVIRONMENT_PROD : pEnvironment.trim();
         
         idleTimeout = toLong(pIdleTimeout, JdbcContext.DEFAULT_IDLE_TIMEOUT, "idleTimeout");
         clobPrefetchSize = Math.max(0, toLong(pClobPrefetchSize, JdbcContext.DEFAULT_CLOB_PREFETCH_SIZE, "clobPrefetchSize"));

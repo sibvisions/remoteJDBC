@@ -12,6 +12,11 @@
 		    <param-name>allowedJdbcUrls</param-name>
 		    <param-value>*</param-value>
 		</init-param>
+
+		<init-param>
+		    <param-name>environment</param-name>
+		    <param-value>development</param-value>
+		</init-param>
 		    
         <!--  
 		
