@@ -111,14 +111,21 @@ final class JdbcSecurity
 
         try
         {
+        	boolean isProd = isProdEnvironment(pEnvironment);
+        	
             if (token == null)
             {
+            	if (isProd)
+            	{
+            		throw new SecurityException("Remote JDBC authentication without token failed");
+            	}
+            	
                 if (suppliedToken != null && suppliedToken.length > 0)
                 {
                     throw new SecurityException("Remote JDBC authentication with token is not configured");
                 }
             }
-            else if (isProdEnvironment(pEnvironment))
+            else if (isProd)
             {
             	//in prod, a token is required
             	if (StringUtil.isEmpty(pToken))
@@ -217,14 +224,21 @@ final class JdbcSecurity
             suppliedToken = new byte[suppliedTokenLength];
             handshake.readFully(suppliedToken);
 
+        	boolean isProd = isProdEnvironment(pEnvironment);
+        	
             if (token == null)
             {
+            	if (isProd)
+            	{
+            		throw new SecurityException("Remote JDBC authentication without token failed");
+            	}
+            	
                 if (suppliedTokenLength > 0)
                 {
                     throw new SecurityException("Remote JDBC authentication with token is not configured");
                 }
             }
-            else if (isProdEnvironment(pEnvironment))
+            else if (isProd)
             {
             	//in prod, a token is required
             	
