@@ -1,3 +1,8 @@
+<p align="right">
+  <img src="design/png/logo_remoteJDBC.png" alt="Logo">
+</p>
+<br>
+
 **Remote JDBC** is a Type-3 remote JDBC driver for Java 11+.
 
 It allows a Java application to use the standard `java.sql` API while the
