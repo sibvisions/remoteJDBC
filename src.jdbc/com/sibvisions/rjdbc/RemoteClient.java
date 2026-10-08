@@ -28,6 +28,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.channels.ClosedChannelException;
 import java.security.PublicKey;
 import java.sql.SQLException;
 import java.time.Duration;
@@ -38,6 +39,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.sibvisions.rad.remote.UniversalSerializer;
 import com.sibvisions.util.log.LoggerFactory;
+import com.sibvisions.util.type.ExceptionUtil;
 
 /**
  * Handles communication for a remote JDBC resource.
@@ -128,7 +130,7 @@ final class RemoteClient
             {
             	if (!connectedOnce)
             	{
-            		throw new SQLException("Remote JDBC connection can't be established");
+            		throw new SQLException("Remote JDBC connection can't be established (Server not available?)");
             	}
             	
         		connectedOnce = false;
@@ -208,7 +210,7 @@ final class RemoteClient
                 clearSecurityState();
                 
                 sessionBroken = true;
-                
+
                 throw new SQLException("Remote JDBC session expired or is no longer available");
             }
 
@@ -342,9 +344,20 @@ final class RemoteClient
                 sessionBroken = true;
             }
 
+            LoggerFactory.getInstance(getClass()).error(e);
+            
         	if (!connectedOnce)
         	{
-        		throw new SQLException("Remote JDBC connection can't be established", e);
+        		if (ExceptionUtil.getRootCause(e) instanceof ClosedChannelException)
+        		{
+	        		//no root cause here, because most tools will show the root-cause of the exception but it's 
+	        		//just a connection exception
+	        		throw new SQLException("Remote JDBC connection can't be established (Server not available?)");
+        		}
+        		else
+        		{
+        			throw new SQLException("Remote JDBC connection can't be established", e);
+        		}
         	}
         	
     		connectedOnce = false;
@@ -385,6 +398,7 @@ final class RemoteClient
         {
         	clearSecurityState();
         	
+        	connectedOnce = false;
             sessionBroken = false;
 
             return;
@@ -401,9 +415,9 @@ final class RemoteClient
         {
         	clearSecurityState();
         	
+        	connectedOnce = false;
             sessionBroken = false;
         }
-
     }
 
     /**
