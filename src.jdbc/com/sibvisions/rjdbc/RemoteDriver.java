@@ -81,12 +81,34 @@ public final class RemoteDriver implements Driver
 
         Properties properties = new Properties();
 
+        //Parse URL parameters
+        int splitPos = pUrl.indexOf("?");
+        
+        if (splitPos > 0)
+        {
+        	String params = pUrl.substring(splitPos + 1);
+
+        	if (params.length() > 0)
+        	{
+        		String[] param;
+        		
+        		for (String pair : params.split("&"))
+        		{
+        			param = pair.split("=");
+        			
+        			if (param.length == 2)
+        			{
+        				properties.put(param[0], param[1]);
+        			}
+        		}
+        	}
+        }
+        
         if (pInfo != null)
         {
             properties.putAll(pInfo);
-
         }
-
+        
         long requestTimeout = DEFAULT_HTTP_REQUEST_TIMEOUT;
         String timeoutValue = properties.getProperty(RemoteConstants.HTTP_REQUEST_TIMEOUT);
 
