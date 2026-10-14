@@ -1080,7 +1080,7 @@ The project requires:
   <dependency>
       <groupId>com.sibvisions.jvx</groupId>
       <artifactId>jvxserialize</artifactId>
-      <version>3.5.1</version>
+      <version>3.5.2</version>
   </dependency>
   ```
   
