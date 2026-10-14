@@ -144,7 +144,7 @@ final class JdbcDispatcher
     private Object dispatch(Map<String, Object> pPayload) throws Exception
     {
     	Log.debug(JdbcDispatcher.class, pPayload);
-    	
+    
         String action = (String)pPayload.get("action");
 
         if ("connect".equals(action))
@@ -170,107 +170,24 @@ final class JdbcDispatcher
         
         switch (action)
         {
-            case "close": 
-            	context.close(id); 
-            	
-            	return null;
-            	
-            case "createStatement": return context.addStatement(context.connection(id).createStatement());
-            case "prepareStatement": return context.addStatement(context.connection(id).prepareStatement((String)pPayload.get("sql")));
-            case "setParameter":
-                ((PreparedStatement)context.statement(id)).setObject(number(pPayload.get("index"), int.class), pPayload.get("value"));
-
-                return null;
-                
-            case "executeQuery":
-            {
-                Statement statement = context.statement(id);
-                ResultSet rs = statement instanceof PreparedStatement ? ((PreparedStatement)statement).executeQuery() : statement.executeQuery((String)pPayload.get("sql"));
-
-                return context.addResultSet(rs);
-            }
-            case "executeUpdate":
-            {
-                Statement statement = context.statement(id);
-
-                if (statement instanceof PreparedStatement)
-                {
-                    return ((PreparedStatement)statement).executeUpdate();
-                }
-                
-                String sql = (String)pPayload.get("sql");
-
-                if (sql == null)
-                {
-                    throw new SQLException("SQL is required for a Statement");
-                }
-
-                return statement.executeUpdate(sql);
-            }
-            case "execute":
-            {
-                Statement statement = context.statement(id);
-
-                if (statement instanceof PreparedStatement)
-                {
-                    return ((PreparedStatement)statement).execute();
-                }
-                
-                String sql = (String)pPayload.get("sql");
-
-                if (sql == null)
-                {
-                    throw new SQLException("SQL is required for a Statement");
-                }
-
-                return statement.execute(sql);
-            }
-            case "fetchRows": return fetchRows(context.resultSet(id), ((Number)pPayload.get("fetch")).intValue());
-            case "fetchCurrentRow": return fetchCurrentRow(context.resultSet(id));
-            case "getObject": return context.resultSet(id).getObject(((Number)pPayload.get("index")).intValue());
-            case "getMetaData": return context.addResultSetMetadata(context.resultSet(id).getMetaData());
-            case "getColumnInfo": return getColumnInfo(context.resultSet(id));
-            case "getResultSetMetaDataInfo": return getResultSetMetaDataInfo(context.resultSetMetadata(id));
-            case "getDatabaseMetaData": return context.addDatabaseMetadata(context.connection(id).getMetaData());
-            case "commit": 
-            	context.connection(id).commit(); 
-            	
-            	return null;
-            	
-            case "rollback": 
-            	context.connection(id).rollback(); 
-            	
-            	return null;
-            case "setAutoCommit": 
-            	context.connection(id).setAutoCommit((Boolean)pPayload.get("value")); 
-            	
-            	return null;
-            	
-            case "getAutoCommit": return context.connection(id).getAutoCommit();
-            case "setReadOnly": 
-            	context.connection(id).setReadOnly((Boolean)pPayload.get("value")); 
-            	
-            	return null;
-            	
-            case "isReadOnly": return context.connection(id).isReadOnly();
-            case "setTransactionIsolation": 
-            	context.connection(id).setTransactionIsolation(((Number)pPayload.get("value")).intValue()); 
-            	
-            	return null;
-            	
-            case "getTransactionIsolation": return context.connection(id).getTransactionIsolation();
             case "genericCall": return directCall(pPayload);
+
+	        case "fetchRows": return fetchRows(context.resultSet(id), ((Number)pPayload.get("fetch")).intValue());
+            case "fetchCurrentRow": return fetchCurrentRow(context.resultSet(id));
+            
+            case "getResultSetMetaDataInfo": return getResultSetMetaDataInfo(context.resultSetMetadata(id));
+            
             case "executePreparedBatch": return executePreparedBatch(pPayload);
             case "executePreparedLargeBatch": return executePreparedLargeBatch(pPayload);
             case "executePreparedQuery": return executePreparedQuery(pPayload);
             case "executePreparedUpdate": return executePreparedUpdate(pPayload);
             case "executePrepared": return executePrepared(pPayload);
             case "executePreparedLargeUpdate": return executePreparedLargeUpdate(pPayload);
+
             case "writeStream": return writeStream(pPayload);
                 
             default: throw new SQLFeatureNotSupportedException("Unknown action: " + action);
         }
-
     }
 
     /**
@@ -963,41 +880,6 @@ final class JdbcDispatcher
 	}
 
     /**
-     * Extracts column metadata required by the remote result-set protocol.
-     *
-     * @param pResultSet the JDBC result set
-     * @return the resulting JDBC value
-     * @throws SQLException if the JDBC operation cannot be completed
-     */
-	private Map<String,Object> getColumnInfo(ResultSet pResultSet) throws SQLException
-    {
-        ResultSetMetaData metaData = pResultSet.getMetaData();
-        
-        int count = metaData.getColumnCount();
-
-        if (count < 0)
-        {
-            throw new SQLException("Invalid ResultSetMetaData column count: " + count);
-        }
-        
-        String[] labels = new String[count];
-        
-        String[] names = new String[count];
-        for (int i = 1; i <= count; i++)
-        {
-            labels[i - 1] = metaData.getColumnLabel(i);
-            names[i - 1] = metaData.getColumnName(i);
-        }
-
-        Map<String,Object> result = new HashMap<>();
-        result.put("count", count);
-        result.put("labels", labels);
-        result.put("names", names);
-
-        return result;
-    }
-
-    /**
      * Extracts result-set metadata into the protocol representation sent to the client.
      *
      * @param pMetaData the result-set metadata
@@ -1008,43 +890,46 @@ final class JdbcDispatcher
     {
         int count = pMetaData.getColumnCount();
 
+        Map<String,Object> result = new HashMap<>();
+        
         if (count < 0)
         {
-            throw new SQLException("Invalid ResultSetMetaData column count: " + count);
+	        result.put("count", 0);
         }
-        
-        Object[][] columns = new Object[count][];
-        
-        for (int i = 1; i <= count; i++)
+        else
         {
-            columns[i - 1] = new Object[] 
-    		{
-	            pMetaData.isAutoIncrement(i),
-	            pMetaData.isCaseSensitive(i),
-	            pMetaData.isSearchable(i),
-	            pMetaData.isCurrency(i),
-	            pMetaData.isNullable(i),
-	            pMetaData.isSigned(i),
-	            pMetaData.getColumnDisplaySize(i),
-	            pMetaData.getColumnLabel(i),
-	            pMetaData.getColumnName(i),
-	            pMetaData.getSchemaName(i),
-	            pMetaData.getPrecision(i),
-	            pMetaData.getScale(i),
-	            pMetaData.getTableName(i),
-	            pMetaData.getCatalogName(i),
-	            pMetaData.getColumnType(i),
-	            pMetaData.getColumnTypeName(i),
-	            pMetaData.isReadOnly(i),
-	            pMetaData.isWritable(i),
-	            pMetaData.isDefinitelyWritable(i),
-	            pMetaData.getColumnClassName(i)
-	        };
+	        Object[][] columns = new Object[count][];
+	        
+	        for (int i = 1; i <= count; i++)
+	        {
+	            columns[i - 1] = new Object[] 
+	    		{
+		            pMetaData.isAutoIncrement(i),
+		            pMetaData.isCaseSensitive(i),
+		            pMetaData.isSearchable(i),
+		            pMetaData.isCurrency(i),
+		            pMetaData.isNullable(i),
+		            pMetaData.isSigned(i),
+		            pMetaData.getColumnDisplaySize(i),
+		            pMetaData.getColumnLabel(i),
+		            pMetaData.getColumnName(i),
+		            pMetaData.getSchemaName(i),
+		            pMetaData.getPrecision(i),
+		            pMetaData.getScale(i),
+		            pMetaData.getTableName(i),
+		            pMetaData.getCatalogName(i),
+		            pMetaData.getColumnType(i),
+		            pMetaData.getColumnTypeName(i),
+		            pMetaData.isReadOnly(i),
+		            pMetaData.isWritable(i),
+		            pMetaData.isDefinitelyWritable(i),
+		            pMetaData.getColumnClassName(i)
+		        };
+	        }
+	        
+	        result.put("count", count);
+	        result.put("columns", columns);
         }
-
-        Map<String,Object> result = new HashMap<>();
-        result.put("count", count);
-        result.put("columns", columns);
 
         return result;
     }
@@ -1115,65 +1000,86 @@ final class JdbcDispatcher
     {
 		int fetch = Math.min(Math.max(1, pMax), MAX_FETCH_ROWS);
 
-		ResultSetMetaData metadata = pResultSet.getMetaData();
-        
-        int columns = metadata.getColumnCount();
+		ResultSetMetaData metadata = null;
+		
+		if (!pResultSet.isClosed())
+		{
+			metadata = pResultSet.getMetaData();
+		}
 
         List<Object[]> rows;
-        
-		// Some JDBC drivers may return a synthetic empty ResultSet from
-		// executeQuery() for statements that do not produce a tabular
-		// result (like ALTER SESSION SET ... in Oracle). 
-		// Such ResultSets may report a negative column count.
-        //
-		// We don't build column metadata in this case.
-        if (columns >= 0)
+
+        if (metadata != null)
         {
-			rows = new ArrayList<>(fetch + 1);
-        
-	        int[] sqlTypes = new int[columns];
+	        int columns = metadata.getColumnCount();
+	
+			// Some JDBC drivers may return a synthetic empty ResultSet from
+			// executeQuery() for statements that do not produce a tabular
+			// result (like ALTER SESSION SET ... in Oracle). 
+			// Such ResultSets may report a negative column count.
+	        //
+			// We don't build column metadata in this case.
+	        if (columns >= 0)
+	        {
+				rows = new ArrayList<>(fetch + 1);
 	        
-	        String[] typeNames = new String[columns];
-	
-	        for (int i = 1; i <= columns; i++)
-	        {
-	            sqlTypes[i - 1] = metadata.getColumnType(i);
-	            typeNames[i - 1] = metadata.getColumnTypeName(i);
+		        int[] sqlTypes = new int[columns];
+		        
+		        String[] typeNames = new String[columns];
+		
+		        for (int i = 1; i <= columns; i++)
+		        {
+		            sqlTypes[i - 1] = metadata.getColumnType(i);
+		            typeNames[i - 1] = metadata.getColumnTypeName(i);
+		        }
+		
+		        ResultSetDelegate delegate = new ResultSetDelegate(context);
+		
+		        // Read one extra row. This lets the client know whether the current
+		        // block contains the end of the ResultSet without requiring a second
+		        // network round-trip. The extra row is kept in the client cache and
+		        // is therefore not lost.
+		        while (rows.size() <= fetch && pResultSet.next())
+		        {
+		            Object[] row = new Object[columns];
+		            
+		            for (int i=1; i<=columns; i++)
+		            {
+		                row[i - 1] = delegate.remoteResultSetValue(pResultSet, i, pResultSet.getObject(i), sqlTypes[i - 1], typeNames[i - 1]);
+		            }
+		            
+		            rows.add(row);
+		        }
 	        }
-	
-	        ResultSetDelegate delegate = new ResultSetDelegate(context);
-	
-	        // Read one extra row. This lets the client know whether the current
-	        // block contains the end of the ResultSet without requiring a second
-	        // network round-trip. The extra row is kept in the client cache and
-	        // is therefore not lost.
-	        while (rows.size() <= fetch && pResultSet.next())
+	        else
 	        {
-	            Object[] row = new Object[columns];
-	            
-	            for (int i=1; i<=columns; i++)
-	            {
-	                row[i - 1] = delegate.remoteResultSetValue(pResultSet, i, pResultSet.getObject(i), sqlTypes[i - 1], typeNames[i - 1]);
-	            }
-	            
-	            rows.add(row);
+	        	if (pResultSet.next())
+	        	{
+	        		throw new SQLException("Invalid ResultSetMetaData: getColumnCount() returned " + columns + " although the ResultSet contains a row");
+	        	}
+	        	else
+	        	{
+	        		rows = null;	
+	        	}
 	        }
         }
         else
         {
-        	if (pResultSet.next())
-        	{
-        		throw new SQLException("Invalid ResultSetMetaData: getColumnCount() returned " + columns + " although the ResultSet contains a row");
-        	}
-        	else
-        	{
-        		rows = null;	
-        	}
+        	rows = null;
         }
 
         Map<String,Object> result = new HashMap<>();
         result.put("rows", rows != null ? rows.toArray(new Object[rows.size()][]) : new Object[0][]);
         result.put("endOfRows", rows == null || rows.size() <= fetch);
+        
+        if (metadata != null)
+        {
+        	result.put("metaData", JdbcDelegate.remoteValue(context, metadata));
+        }
+        else
+        {
+        	result.put("alreadyClosed", Boolean.TRUE);
+        }
 
         return result;
     }
@@ -1229,18 +1135,6 @@ final class JdbcDispatcher
     }
 
     /**
-     * Converts a protocol value to a numeric value.
-     *
-     * @param pValue the value to convert
-     * @param pType the requested Java type
-     * @return the resulting JDBC value
-     */
-	private static int number(Object pValue, Class<?> pType)
-    {
-        return ((Number)pValue).intValue();
-    }
-
-    /**
      * Builds the successful response envelope for a remote JDBC operation.
      *
      * @param pValue the value to convert
@@ -1273,7 +1167,7 @@ final class JdbcDispatcher
         result.put("success", false); 
         result.put("error", pCause instanceof SQLException ? pCause : new SQLException(pCause));
 
-        Log.debug(JdbcDispatcher.class, pCause);
+        Log.error(JdbcDispatcher.class, pCause);
         
         return result;
     }

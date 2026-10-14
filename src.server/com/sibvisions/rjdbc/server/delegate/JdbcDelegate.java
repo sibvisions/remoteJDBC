@@ -260,6 +260,11 @@ public abstract class JdbcDelegate
         return "oidvector".equalsIgnoreCase(pTypeName) || "int2vector".equalsIgnoreCase(pTypeName);
     }
 
+    protected Object remoteValue(Object pValue) throws SQLException
+    {
+    	return remoteValue(context, pValue);
+    }
+    
     /**
      * Creates JDBC object definition for client.
      *
@@ -267,7 +272,7 @@ public abstract class JdbcDelegate
      * @return the resulting JDBC value
      * @throws SQLException if the JDBC operation cannot be completed
      */
-    protected Object remoteValue(Object pValue) throws SQLException
+    public static Object remoteValue(JdbcContext pContext, Object pValue) throws SQLException
     {
         if (pValue == null)
         {
@@ -276,71 +281,71 @@ public abstract class JdbcDelegate
 
         if (pValue instanceof Connection)
         {
-            return jdbcObject("Connection", context.idFor(pValue));
+            return jdbcObject("Connection", pContext.idFor(pValue));
         }
         else if (pValue instanceof CallableStatement)
         {
-            return jdbcObject("CallableStatement", context.idFor(pValue));
+            return jdbcObject("CallableStatement", pContext.idFor(pValue));
         }
         else if (pValue instanceof PreparedStatement)
         {
-            return jdbcObject("PreparedStatement", context.idFor(pValue));
+            return jdbcObject("PreparedStatement", pContext.idFor(pValue));
         }
         else if (pValue instanceof Statement)
         {
-            return jdbcObject("Statement", context.idFor(pValue));
+            return jdbcObject("Statement", pContext.idFor(pValue));
         }
         else if (pValue instanceof ResultSet)
         {
-            return jdbcObject("ResultSet", context.idFor(pValue));
+            return jdbcObject("ResultSet", pContext.idFor(pValue));
         }
         else if (pValue instanceof ResultSetMetaData)
         {
-            return jdbcObject("ResultSetMetaData", context.idFor(pValue));
+            return jdbcObject("ResultSetMetaData", pContext.idFor(pValue));
         }
         else if (pValue instanceof DatabaseMetaData)
         {
-            return jdbcObject("DatabaseMetaData", context.idFor(pValue));
+            return jdbcObject("DatabaseMetaData", pContext.idFor(pValue));
         }
         else if (pValue instanceof Blob)
         {
-            return jdbcObject("Blob", context.idFor(pValue));
+            return jdbcObject("Blob", pContext.idFor(pValue));
         }
         else if (pValue instanceof NClob)
         {
-            return jdbcObject("NClob", context.idFor(pValue));
+            return jdbcObject("NClob", pContext.idFor(pValue));
         }
         else if (pValue instanceof Clob)
         {
-            return jdbcObject("Clob", context.idFor(pValue));
+            return jdbcObject("Clob", pContext.idFor(pValue));
         }
         else if (pValue instanceof SQLXML)
         {
-            return jdbcObject("SQLXML", context.idFor(pValue));
+            return jdbcObject("SQLXML", pContext.idFor(pValue));
         }
         else if (pValue instanceof Array)
         {
-            return jdbcObject("Array", context.idFor(pValue));
+            return jdbcObject("Array", pContext.idFor(pValue));
         }
         else if (pValue instanceof Struct)
         {
-            return jdbcObject("Struct", context.idFor(pValue));
+            return jdbcObject("Struct", pContext.idFor(pValue));
         }
         else if (pValue instanceof ParameterMetaData)
         {
-            return jdbcObject("ParameterMetaData", context.idFor(pValue));
+            return jdbcObject("ParameterMetaData", pContext.idFor(pValue));
         }
         else if (pValue instanceof Ref)
         {
-            return jdbcObject("Ref", context.idFor(pValue));
+            return jdbcObject("Ref", pContext.idFor(pValue));
         }
         else if (pValue instanceof RowId)
         {
-            return jdbcObject("RowId", context.idFor(pValue));
+            return jdbcObject("RowId", pContext.idFor(pValue));
         }
         else if (pValue instanceof Savepoint)
         {
-            return jdbcObject("Savepoint", context.idFor(pValue));
+            return jdbcObject("Savepoint", pContext.idFor(pValue));
         }
         else if (pValue instanceof InputStream)
         {

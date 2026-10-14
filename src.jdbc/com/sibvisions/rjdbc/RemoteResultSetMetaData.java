@@ -277,8 +277,10 @@ public class RemoteResultSetMetaData implements ResultSetMetaData
             count = ((Number)result.get("count")).intValue();
             Object raw = result.get("columns");
 
-            if (raw instanceof Object[][]) columns = (Object[][])raw;
-            
+            if (raw instanceof Object[][]) 
+            {
+            	columns = (Object[][])raw;
+            }
             else if (raw instanceof Object[])
             {
                 Object[] values = (Object[])raw;

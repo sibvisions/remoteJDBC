@@ -71,7 +71,6 @@ interface RemoteConstants
     static final String FETCH_ROWS = "fetchRows";
     static final String GET_OBJECT = "getObject";
     static final String GET_META_DATA = "getMetaData";
-    static final String GET_COLUMN_INFO = "getColumnInfo";
     static final String GET_RESULTSET_METADATA_INFO = "getResultSetMetaDataInfo";
     static final String GET_DATABASE_META_DATA = "getDatabaseMetaData";
     static final String COMMIT = "commit";

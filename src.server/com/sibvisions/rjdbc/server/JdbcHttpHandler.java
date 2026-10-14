@@ -305,7 +305,7 @@ final class JdbcHttpHandler
         {
         	closeSession(session, created);
         	
-        	LoggerFactory.getInstance(getClass()).error(e);
+        	LoggerFactory.getInstance(getClass()).debug(e);
         	
             throw new JdbcHttpException(HttpURLConnection.HTTP_GONE, e.getMessage(), e);
         }

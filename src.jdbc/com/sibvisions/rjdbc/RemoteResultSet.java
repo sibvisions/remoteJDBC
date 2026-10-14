@@ -177,6 +177,19 @@ public class RemoteResultSet implements ResultSet
         req.put("fetch", requestedFetchSize);
 
         Map<String,Object> response = client.call(req);
+        
+        if (metaDataCache == null)
+        {
+	        Object metaData = response.get("metaData");
+	        
+	        if (metaData != null)
+	        {
+	        	metaDataCache = (ResultSetMetaData)RemoteUtil.adapt(client, metaData, ResultSetMetaData.class);
+	        	
+	        	populateColumnCache(metaDataCache);
+	        }
+        }
+        
         Object rows = response.get("rows");
 
         if (!(rows instanceof Object[][]))
