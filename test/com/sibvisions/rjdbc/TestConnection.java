@@ -102,4 +102,19 @@ public class TestConnection
         
         return DriverManager.getConnection(propDb.getProperty("oracle.db.url"),  prop);
     }
+    
+	/**
+	 * Creates DB2 JDBC connection.
+	 * 
+	 * @return the requested value
+	 * @throws Exception if the operation fails
+	 */
+    public static Connection createDB2() throws Exception
+    {
+        Properties prop = new Properties();
+        prop.put("user", propDb.getProperty("db2.db.user"));
+        prop.put("password", propDb.getProperty("db2.db.pwd"));
+        
+        return DriverManager.getConnection(propDb.getProperty("db2.db.url"),  prop);
+    }    
 }

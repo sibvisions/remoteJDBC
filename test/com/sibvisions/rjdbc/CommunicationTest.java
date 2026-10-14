@@ -145,7 +145,7 @@ public class CommunicationTest
 
         return properties;
     }
-
+    
     /**
      * Executes a simple query through the configured remote JDBC endpoint.
      *
