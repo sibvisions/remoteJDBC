@@ -815,11 +815,21 @@ final class JdbcDispatcher
             {
                 Map<?, ?> values = (Map<?, ?>)value;
 
+                String keyAsString;
+                Object key;
+                
                 for (Map.Entry<?, ?> entry : values.entrySet())
                 {
-                    if (entry.getKey() != null && entry.getValue() != null)
+                	key = entry.getKey();
+                	
+                    if (key != null && entry.getValue() != null)
                     {
-                        properties.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
+                    	keyAsString = String.valueOf(key);
+                    	
+                    	if (!"jdbcUrl".equals(keyAsString))
+                    	{
+                    		properties.put(keyAsString, String.valueOf(entry.getValue()));
+                    	}
                     }
                 }
             }
@@ -848,7 +858,7 @@ final class JdbcDispatcher
         }
         
         initDriver(url);
-
+        
         long connectionId = context.addConnection(DriverManager.getConnection(url, properties));
 
         Map<String,Object> result = new HashMap<>();
@@ -930,6 +940,9 @@ final class JdbcDispatcher
 					Class.forName(sClass[i], true, Thread.currentThread().getContextClassLoader());
 					
 					LoggerFactory.getInstance(JdbcDispatcher.class).debug("JDBC driver loaded: ", sClass[i]);
+					
+					//one found driver is enough
+					break;
 				}
 				catch (Exception e)
 				{

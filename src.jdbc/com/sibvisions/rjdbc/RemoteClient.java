@@ -101,6 +101,7 @@ final class RemoteClient
             
             http = HttpClient.newBuilder()
         				.version(HttpClient.Version.HTTP_1_1)
+        				.connectTimeout(Duration.ofSeconds(30))
         				.build();
         }
         catch (RuntimeException e)
