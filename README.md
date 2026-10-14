@@ -1177,7 +1177,7 @@ properly secured application/server architecture.
 <dependency>
     <groupId>com.sibvisions.rjdbc</groupId>
     <artifactId>rjdbc-driver</artifactId>
-    <version>1.12</version>
+    <version>1.14</version>
 </dependency>
 ```
 
@@ -1187,7 +1187,7 @@ properly secured application/server architecture.
 <dependency>
     <groupId>com.sibvisions.rjdbc</groupId>
     <artifactId>rjdbc-server-javax</artifactId>
-    <version>1.12</version>
+    <version>1.14</version>
 </dependency>
 ```
   
@@ -1197,7 +1197,7 @@ properly secured application/server architecture.
 <dependency>
     <groupId>com.sibvisions.rjdbc</groupId>
     <artifactId>rjdbc-server-jakarta</artifactId>
-    <version>1.12</version>
+    <version>1.14</version>
 </dependency>
 ```
 
