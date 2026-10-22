@@ -43,7 +43,7 @@ public final class RemoteDriver implements Driver
     public static final String PREFIX = "jdbc:rjdbc:";
 
     public static final int MAJOR = 1;
-    public static final int MINOR = 14;
+    public static final int MINOR = 15;
 
     public static final String VERSION = "" + MAJOR + "." + MINOR;
 
