@@ -150,15 +150,14 @@ public abstract class JdbcDelegate
                 case Types.DATE:
                     if (!(pValue instanceof java.sql.Date))
                     {
-                    	pValue = pResultSet.getDate(pColumnIndex);
+                    	return remoteValue(pResultSet.getDate(pColumnIndex));
                     }
                     
                     break;
                 case Types.TIME:
                     if (!(pValue instanceof java.sql.Time))
                     {
-                    	pValue = pResultSet.getTime(pColumnIndex);
-
+                    	return remoteValue(pResultSet.getTime(pColumnIndex));
                     }
                     
                     break;
@@ -166,84 +165,66 @@ public abstract class JdbcDelegate
                 case Types.TIMESTAMP_WITH_TIMEZONE:
                     if (!(pValue instanceof java.sql.Timestamp))
                     {
-                    	pValue = pResultSet.getTimestamp(pColumnIndex);
-
+                    	return remoteValue(pResultSet.getTimestamp(pColumnIndex));
                     }
                     
                     break;
-                    
                 default:
+                	Object oValue = pValue;
+                	
+			        if (isVectorType(typeName))
+			        {
+			            oValue = JdbcArrayAdapter.fromVector(pValue, typeName);
+			        }
+
+			        if (oValue instanceof Array)
+			        {
+			            Array array = (Array)oValue;
+			            
+			            Map<String,Object> result = jdbcObject("Array", context.idFor(array));
+			            result.put("array", array.getArray());
+			
+			            return result;
+			        }
+			        else if (oValue instanceof Clob)
+			        {
+			            Clob clob = (Clob)oValue;
+			            
+			            long length = clob.length();
+			
+			            long lPrefetchSize = context.getClobPrefetchSize();
+			            
+			            if (lPrefetchSize > 0
+			            	&& length <= lPrefetchSize
+			            	&& length <= Integer.MAX_VALUE)
+			            {
+			                Map<String,Object> result = jdbcObject((oValue instanceof NClob) ? "NClob" : "Clob", context.idFor(clob));
+			                result.put("clob", clob.getSubString(1L, (int)length));
+			
+			                return result;
+			            }
+			        }
+			        else if (oValue instanceof SQLXML)
+			        {
+			            SQLXML sqlxml = (SQLXML)oValue;
+			            
+			            Map<String,Object> result = jdbcObject("SQLXML", context.idFor(sqlxml));
+			            String xml = sqlxml.getString();
+			            
+			            try
+			            {
+			                result.put("xmlNode", XmlWorker.readNode(new ByteArrayInputStream(xml.getBytes("UTF-8"))));
+			            }
+			            catch (Exception e)
+			            {
+			                throw new SQLException("Could not serialize SQLXML as XmlNode", e);
+			            }
+			
+			            return result;
+			        }             
+			        
                     break;
-            }
-        }
-
-        if (isVectorType(typeName))
-        {
-            return JdbcArrayAdapter.fromVector(pValue, typeName);
-        }
-
-        if (pValue instanceof Array)
-        {
-            Array array = (Array)pValue;
-            
-            Map<String,Object> result = jdbcObject("Array", context.idFor(array));
-            result.put("array", array.getArray());
-
-            return result;
-        }
-
-        if (pValue instanceof NClob)
-        {
-            NClob nclob = (NClob)pValue;
-            
-            long length = nclob.length();
-
-            if (context.getClobPrefetchSize() > 0
-                && length <= context.getClobPrefetchSize()
-                && length <= Integer.MAX_VALUE)
-            {
-                Map<String,Object> result = jdbcObject("NClob", context.idFor(nclob));
-                result.put("clob", nclob.getSubString(1L, (int)length));
-
-                return result;
-            }
-        }
-
-        if (pValue instanceof Clob)
-        {
-            Clob clob = (Clob)pValue;
-            
-            long length = clob.length();
-
-            if (context.getClobPrefetchSize() > 0
-            	&& length <= context.getClobPrefetchSize()
-            	&& length <= Integer.MAX_VALUE)
-            {
-                Map<String,Object> result = jdbcObject("Clob", context.idFor(clob));
-                result.put("clob", clob.getSubString(1L, (int)length));
-
-                return result;
-            }
-
-        }
-
-        if (pValue instanceof SQLXML)
-        {
-            SQLXML sqlxml = (SQLXML)pValue;
-            
-            Map<String,Object> result = jdbcObject("SQLXML", context.idFor(sqlxml));
-            String xml = sqlxml.getString();
-            
-            try
-            {
-                result.put("xmlNode", XmlWorker.readNode(new ByteArrayInputStream(xml.getBytes("UTF-8"))));
-            }
-            catch (Exception e)
-            {
-                throw new SQLException("Could not serialize SQLXML as XmlNode", e);
-            }
-
-            return result;
+        	}
         }
 
         return remoteValue(pValue);
