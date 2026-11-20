@@ -774,6 +774,11 @@ final class JdbcDispatcher
             throw new SQLException("Missing JDBC URL");
         }
         
+        if (url.contains("[:port]") || url.contains("://host"))
+        {
+        	throw new SQLException("Please replace JDBC URL placeholders");
+        }
+        
         initDriver(url);
         
         long connectionId = context.addConnection(DriverManager.getConnection(url, properties));

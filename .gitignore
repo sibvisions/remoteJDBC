@@ -3,6 +3,9 @@ backup/
 build/install
 build/temp
 
+lib/mssql/*
+lib/oracle/*
+
 WebContent/META-INF/
 WebContent/WEB-INF/lib/*
 !WebContent/WEB-INF/lib/
