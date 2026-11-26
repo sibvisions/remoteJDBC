@@ -197,7 +197,10 @@ public final class RemoteDriver implements Driver
         {
         	// Optional because the server may provide the credentials
         	
-            result.add(new DriverPropertyInfo(RemoteConstants.JDBC_URL, null));
+        	DriverPropertyInfo info = new DriverPropertyInfo(RemoteConstants.JDBC_URL, null); 
+        	info.description = "JDBC Url of remote database";
+        			
+            result.add(info);
         }
 
         if (!hasHttpRequestTimeout)
